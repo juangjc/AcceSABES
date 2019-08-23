@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package accesabes;
+package Vista;
 
 import javax.swing.JTextField;
 import java.awt.Color; 

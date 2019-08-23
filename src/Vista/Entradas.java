@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package accesabes;
+package Vista;
 
 import javax.swing.JOptionPane;
 
@@ -37,8 +37,8 @@ public class Entradas extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
-        txtBuscar = new accesabes.DiseñoCuadro();
-        txtBienvenido = new accesabes.DiseñoCuadro();
+        txtBuscar = new Vista.DiseñoCuadro();
+        txtBienvenido = new Vista.DiseñoCuadro();
         jLabel5 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
@@ -195,7 +195,7 @@ public class Entradas extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private accesabes.DiseñoCuadro txtBienvenido;
-    private accesabes.DiseñoCuadro txtBuscar;
+    private Vista.DiseñoCuadro txtBienvenido;
+    private Vista.DiseñoCuadro txtBuscar;
     // End of variables declaration//GEN-END:variables
 }

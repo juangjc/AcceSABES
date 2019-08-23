@@ -5,10 +5,36 @@
  */
 package Controlador;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
 /**
  *
  * @author Kalas
  */
 public class Conexion {
+        private static Connection cnx = null;
+   public static Connection obtener() throws SQLException, ClassNotFoundException {
+    if (cnx == null) {
+         try {
+            Class.forName("com.mysql.jdbc.Driver");
+            cnx = DriverManager.getConnection("jdbc:mysql://gilbertojc.com/Escuela", "juan", "Berlin01");
+             System.out.println("Conectado");
+         } catch (SQLException ex) {
+            throw new SQLException(ex);
+         } catch (ClassNotFoundException ex) {
+            throw new ClassCastException(ex.getMessage());
+         }
+    }
+//      else
+//           System.out.println("nulo");
+      return cnx;
+   }
+   public static void cerrar() throws SQLException {
+      if (cnx != null) {
+         cnx.close();
+      }
+   }
     
 }
