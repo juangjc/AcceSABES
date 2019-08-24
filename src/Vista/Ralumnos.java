@@ -5,17 +5,21 @@
  */
 package Vista;
 
+import Controlador.Calumno;
 import Controlador.Conexion;
 import Modelo.Alumno;
 import Modelo.Carrera;
 import Modelo.Status;
 import java.awt.Image;
+import java.awt.event.ItemEvent;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -26,8 +30,12 @@ import javax.swing.ImageIcon;
  */
 public class Ralumnos extends javax.swing.JPanel {
     static DefaultComboBoxModel modelo,modelo2;
+    String matricula,nombre,apellido, telefono;
+    int idcarrera,idstatus;
+    Blob fotografia=null;
 byte[] imagen;
 Alumno alumno;
+Calumno calumno=new Calumno();
     /**
      * Creates new form Ralumnos
      */
@@ -121,10 +129,20 @@ try {
         jLabel5.setText("Carrera");
 
         cbbcarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbcarrera.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbcarreraItemStateChanged(evt);
+            }
+        });
 
         jLabel6.setText("Status");
 
         cbbstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbstatus.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbstatusItemStateChanged(evt);
+            }
+        });
 
         jButton1.setText("Tomar foto");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -247,8 +265,46 @@ try {
     }//GEN-LAST:event_webcamKeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+       matricula=txtmatricula.getText();
+       nombre=txtnombre.getText();
+       apellido=txtnombre.getText();
+       telefono= txttelefono.getText();
+        Carrera cr =(Carrera)this.cbbcarrera.getSelectedItem();
+         idcarrera = cr.getIdcarrera();
+         Status st =(Status)this.cbbstatus.getSelectedItem();
+        idstatus  = st.getIdstatus();
+        try {
+            fotografia = new SerialBlob(imagen );
+        } catch (SQLException ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        alumno=new Alumno(matricula,nombre,apellido,telefono,idcarrera,idstatus,fotografia);
+        try {
+            calumno.guardar(Conexion.obtener(), alumno);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void cbbcarreraItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbcarreraItemStateChanged
+        Carrera cr =(Carrera)this.cbbcarrera.getSelectedItem();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+
+            int id = cr.getIdcarrera();
+            System.out.println(id);
+        }
+    }//GEN-LAST:event_cbbcarreraItemStateChanged
+
+    private void cbbstatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbstatusItemStateChanged
+        Status st =(Status)this.cbbstatus.getSelectedItem();
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+
+            int id = st.getIdstatus();
+            System.out.println(id);
+        }
+    }//GEN-LAST:event_cbbstatusItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

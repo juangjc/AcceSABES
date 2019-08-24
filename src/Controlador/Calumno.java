@@ -19,7 +19,7 @@ public class Calumno {
      
          PreparedStatement consulta;
          try{
-       consulta = conexion.prepareStatement("INSERT INTO alumnos VALUES(?,?,?,?,?,?,?)");
+       consulta = conexion.prepareStatement("INSERT INTO alumno VALUES(?,?,?,?,?,?,?)");
           
             consulta.setString(1, alumno.getMatricula());
             consulta.setString(2,alumno.getNombre());
