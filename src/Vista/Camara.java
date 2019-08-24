@@ -10,7 +10,7 @@ package Vista;
  * @author Kalas
  */
 public class Camara extends javax.swing.JFrame {
-
+ byte[] imagen;
     /**
      * Creates new form Camara
      */
@@ -29,6 +29,7 @@ public class Camara extends javax.swing.JFrame {
 
         webcam = new JPanelWebCam.JPanelWebCam();
         btnguardar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +53,13 @@ public class Camara extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -62,6 +70,8 @@ public class Camara extends javax.swing.JFrame {
                 .addContainerGap(17, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(59, 59, 59)
                 .addComponent(btnguardar)
                 .addGap(60, 60, 60))
         );
@@ -71,7 +81,9 @@ public class Camara extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnguardar)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnguardar)
+                    .addComponent(jButton1))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -79,9 +91,14 @@ public class Camara extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
-     byte[] imagen =webcam.getBytes();
+    imagen =webcam.getBytes();
         System.out.println(imagen);
     }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+     
+        webcam.setImagen(imagen);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -120,6 +137,7 @@ public class Camara extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnguardar;
+    private javax.swing.JButton jButton1;
     private JPanelWebCam.JPanelWebCam webcam;
     // End of variables declaration//GEN-END:variables
 }

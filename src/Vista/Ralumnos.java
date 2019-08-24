@@ -5,19 +5,77 @@
  */
 package Vista;
 
+import Controlador.Conexion;
+import Modelo.Carrera;
+import Modelo.Status;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author Kalas
  */
 public class Ralumnos extends javax.swing.JPanel {
+    static DefaultComboBoxModel modelo,modelo2;
 
     /**
      * Creates new form Ralumnos
      */
     public Ralumnos() {
         initComponents();
+        modelo = new DefaultComboBoxModel();
+        modelo2 = new DefaultComboBoxModel();
+        llena_combo_carrera();
+        llena_combo_status();
     }
+public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
+    Carrera carrera;
+        System.out.println("combo");
+try {
+    modelo.removeAllElements(); // eliminamos lo elementos
+    Connection conexion = Conexion.obtener();
+    PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM carrera" );
+    ResultSet rs=consulta.executeQuery();
+    while(rs.next())
+    {       
+        carrera= new Carrera(rs.getInt(1),rs.getString(2));
+        modelo.addElement(carrera);
+        System.out.println(rs.getString("carrera"));
+    }
+     cbbcarrera.setModel(modelo); // seteamos el modelo y se cargan los datos
+} catch (SQLException ex) {
+    System.out.println(ex.getMessage());
+    
+}   catch (ClassNotFoundException ex) {
+        Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+    }}
 
+public void llena_combo_status() { // static para poder llamarlo desde el otro frame o JDialog
+    Status status;
+       
+try {
+    modelo2.removeAllElements(); // eliminamos lo elementos
+    Connection conexion = Conexion.obtener();
+    PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM status" );
+    ResultSet rs=consulta.executeQuery();
+    while(rs.next())
+    {       
+        status= new Status(rs.getInt(1),rs.getString(2));
+        modelo2.addElement(status);
+        System.out.println(rs.getString("status"));
+    }
+     cbbstatus.setModel(modelo2); // seteamos el modelo y se cargan los datos
+} catch (SQLException ex) {
+    System.out.println(ex.getMessage());
+    
+}   catch (ClassNotFoundException ex) {
+        Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+    }}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -38,7 +96,7 @@ public class Ralumnos extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         cbbcarrera = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbbstatus = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
 
@@ -56,9 +114,14 @@ public class Ralumnos extends javax.swing.JPanel {
 
         jLabel6.setText("Status");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbbstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setText("Tomar foto");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("jLabel7");
 
@@ -88,9 +151,9 @@ public class Ralumnos extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel6)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(59, 59, 59)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 276, Short.MAX_VALUE))
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(2, 2, 2)
@@ -125,21 +188,26 @@ public class Ralumnos extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(97, Short.MAX_VALUE))
+                .addContainerGap(111, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Camara camara = new Camara();
+        camara.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbbcarrera;
+    private javax.swing.JComboBox<String> cbbstatus;
     private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
