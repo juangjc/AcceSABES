@@ -31,7 +31,7 @@
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtapeliidos" max="32767" attributes="0"/>
+                          <Component id="txtapellidos" max="32767" attributes="0"/>
                           <Component id="txtnombre" alignment="0" max="32767" attributes="0"/>
                           <Component id="txttelefono" min="-2" pref="114" max="-2" attributes="0"/>
                       </Group>
@@ -79,7 +79,7 @@
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txtapeliidos" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
+                          <Component id="txtapellidos" alignment="0" min="-2" pref="20" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -132,7 +132,7 @@
         <Property name="text" type="java.lang.String" value="Apellidos:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtapeliidos">
+    <Component class="javax.swing.JTextField" name="txtapellidos">
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>

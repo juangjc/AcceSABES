@@ -107,7 +107,7 @@ try {
         jLabel2 = new javax.swing.JLabel();
         txtnombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtapeliidos = new javax.swing.JTextField();
+        txtapellidos = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txttelefono = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
@@ -195,7 +195,7 @@ try {
                             .addComponent(jLabel3)
                             .addComponent(jLabel4))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtapeliidos)
+                            .addComponent(txtapellidos)
                             .addComponent(txtnombre)
                             .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
@@ -232,7 +232,7 @@ try {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3)
-                            .addComponent(txtapeliidos, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(22, 22, 22)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
@@ -267,7 +267,7 @@ try {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        matricula=txtmatricula.getText();
        nombre=txtnombre.getText();
-       apellido=txtnombre.getText();
+       apellido=txtapellidos.getText();
        telefono= txttelefono.getText();
         Carrera cr =(Carrera)this.cbbcarrera.getSelectedItem();
          idcarrera = cr.getIdcarrera();
@@ -318,7 +318,7 @@ try {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JTextField txtapeliidos;
+    private javax.swing.JTextField txtapellidos;
     private javax.swing.JTextField txtmatricula;
     private javax.swing.JTextField txtnombre;
     private javax.swing.JTextField txttelefono;
