@@ -10,7 +10,7 @@ package Vista;
  * @author Kalas
  */
 public class Camara extends javax.swing.JFrame {
- byte[] imagen;
+public static byte[] imagen;
     /**
      * Creates new form Camara
      */
@@ -93,6 +93,7 @@ public class Camara extends javax.swing.JFrame {
     private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
     imagen =webcam.getBytes();
         System.out.println(imagen);
+        
     }//GEN-LAST:event_btnguardarActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

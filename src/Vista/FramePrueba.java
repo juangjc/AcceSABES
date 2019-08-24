@@ -41,11 +41,11 @@ public class FramePrueba extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGap(0, 695, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 344, Short.MAX_VALUE)
+            .addGap(0, 394, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -87,7 +87,7 @@ public class FramePrueba extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
          Ralumnos ralumno = new Ralumnos();
-        ralumno.setSize(500,400);
+        ralumno.setSize(700,700);
         ralumno.setLocation(5,5);
          jPanel1.removeAll();
             jPanel1.add(ralumno,BorderLayout.CENTER);
