@@ -8,6 +8,7 @@ package Vista;
 import Controlador.Calumno;
 import Controlador.Conexion;
 import Modelo.Alumno;
+import Modelo.Alumnotarjeta;
 import Modelo.Carrera;
 import Modelo.Status;
 import com.panamahitek.ArduinoException;
@@ -15,6 +16,8 @@ import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,21 +37,26 @@ import jssc.SerialPortException;
  *
  * @author Kalas
  */
-public class Ralumnos extends javax.swing.JPanel {
+public class Ralumnos extends javax.swing.JPanel  {
     PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
     String idtarjeta=null;
 String dato;
+
     private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
         public void serialEvent(SerialPortEvent spe) {
             try {
                 
                 if (arduino.isMessageAvailable()) {
-                   
+                  
                     idtarjeta=arduino.printMessage();
+                    System.out.println(idtarjeta);
                   txttarjeta.setBackground(Color.GREEN);
                  
                    txttarjeta.setText("Registrada");
+                   arduino.killArduinoConnection();
+                    
+                   System.out.println("entro al label");
                 }
             } catch (SerialPortException | ArduinoException ex) {
              txttarjeta.setBackground(Color.RED);
@@ -59,21 +67,30 @@ String dato;
 
     };
     static DefaultComboBoxModel modelo,modelo2;
-    String matricula,nombre,apellido, telefono;
-    int idcarrera,idstatus;
+    String matricula,nombre,apellido, telefono,tarjeta;
+    int idcarrera,idstatus,control;
     Blob fotografia=null;
 byte[] imagen;
 Alumno alumno;
+Alumnotarjeta alumnotarjeta;
 Calumno calumno=new Calumno();
     /**
      * Creates new form Ralumnos
      */
     public Ralumnos() {
         initComponents();
+        
+        
+               
         try {
-         arduino.arduinoRXTX("COM4", 9600, listener);
+           
+             arduino.arduinoRXTX("COM4", 9600, listener);
+       
+         //System.out.println(arduino.getInputBytesAvailable());
+         
     } catch (Exception ex) {
-        Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+       // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+        
     }
         modelo = new DefaultComboBoxModel();
         modelo2 = new DefaultComboBoxModel();
@@ -83,6 +100,7 @@ Calumno calumno=new Calumno();
         Icon icono= new ImageIcon(imagen.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));
       //  lblimagen.setIcon(icono);
     }
+
 public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
     Carrera carrera;
         System.out.println("combo");
@@ -95,7 +113,7 @@ try {
     {       
         carrera= new Carrera(rs.getInt(1),rs.getString(2));
         modelo.addElement(carrera);
-        System.out.println(rs.getString("carrera"));
+       
     }
      cbbcarrera.setModel(modelo); // seteamos el modelo y se cargan los datos
 } catch (SQLException ex) {
@@ -117,7 +135,7 @@ try {
     {       
         status= new Status(rs.getInt(1),rs.getString(2));
         modelo2.addElement(status);
-        System.out.println(rs.getString("status"));
+       
     }
      cbbstatus.setModel(modelo2); // seteamos el modelo y se cargan los datos
 } catch (SQLException ex) {
@@ -231,42 +249,47 @@ try {
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
                                 .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jButton2)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel6)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txttarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtmatricula)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(layout.createSequentialGroup()
+                                .addComponent(txttarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jButton2)))
+                        .addGap(21, 21, 21))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(45, 45, 45)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel4))))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtapellidos)
+                                .addGap(8, 8, 8)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(4, 4, 4)
-                                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(3, 3, 3)))))
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel4))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(txtapellidos)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(4, 4, 4)
+                                                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addGap(3, 3, 3)))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(193, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -281,22 +304,19 @@ try {
                 .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(0, 41, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(65, 65, 65)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtmatricula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(24, 24, 24))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtnombre, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE)
+                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
@@ -305,10 +325,10 @@ try {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -317,9 +337,9 @@ try {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel7)
                     .addComponent(txttarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addGap(21, 21, 21))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -340,14 +360,23 @@ try {
          idcarrera = cr.getIdcarrera();
          Status st =(Status)this.cbbstatus.getSelectedItem();
         idstatus  = st.getIdstatus();
+        tarjeta=idtarjeta;
         try {
             fotografia = new SerialBlob(imagen );
         } catch (SQLException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
         alumno=new Alumno(matricula,nombre,apellido,telefono,idcarrera,idstatus,fotografia);
+        alumnotarjeta= new Alumnotarjeta(matricula,tarjeta);
         try {
             calumno.guardar(Conexion.obtener(), alumno);
+           try {
+               Thread.sleep(5*1000);
+                calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
+           } catch (InterruptedException ex) {
+               Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+               System.out.println("hilo");
+           }
         } catch (SQLException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
@@ -360,7 +389,7 @@ try {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
 
             int id = cr.getIdcarrera();
-            System.out.println(id);
+            
         }
     }//GEN-LAST:event_cbbcarreraItemStateChanged
 
@@ -369,7 +398,7 @@ try {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
 
             int id = st.getIdstatus();
-            System.out.println(id);
+            
         }
     }//GEN-LAST:event_cbbstatusItemStateChanged
 
@@ -393,4 +422,8 @@ try {
     private javax.swing.JTextField txttelefono;
     private JPanelWebCam.JPanelWebCam webcam;
     // End of variables declaration//GEN-END:variables
+
+  
+
+    
 }

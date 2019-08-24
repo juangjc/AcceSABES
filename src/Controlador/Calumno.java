@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.Alumno;
+import Modelo.Alumnotarjeta;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -35,4 +36,21 @@ public class Calumno {
      
     
 }
+     
+     public void guardartarjeta(Connection conexion,Alumnotarjeta alumnotarjeta) throws SQLException{
+         PreparedStatement consulta;
+         try{
+       consulta = conexion.prepareStatement("INSERT INTO alumno_tarjeta VALUES(?,?)");
+          
+            consulta.setString(1, alumnotarjeta.getMatricula());
+            consulta.setString(2,alumnotarjeta.getCodigotarjeta());
+       
+            consulta.executeUpdate();}
+         catch(SQLException ex){
+         throw new SQLException(ex);
+      }   
+     
+     
+     
+     }
 }
