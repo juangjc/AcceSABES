@@ -87,6 +87,7 @@ ImageIcon imageicon;
                 Blob bytesImagen = rs.getBlob(1);
 
                 byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
+                       
                 imageicon = new ImageIcon(bytesLeidos);           
                              }
             Icon icono= new ImageIcon(imageicon.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));
