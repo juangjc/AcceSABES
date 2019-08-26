@@ -19,18 +19,20 @@ import java.util.logging.Logger;
  */
 public class Cvacceso {
     
-    Vacceso vacceso= new Vacceso();
+    
     public Vacceso verificar(Connection conexion,String codigo){
+        Vacceso vacceso= new Vacceso();
          PreparedStatement consulta;
+         //vacceso=null;
         try {
             consulta = conexion.prepareStatement("SELECT matricula,nombre,apellido,fotografia FROM vacceso where status='Inscrito' and codigotarjeta='"+codigo+"'");
              ResultSet resultado = consulta.executeQuery();
-             resultado.next();
+             while(resultado.next()){
              vacceso.setMatricula(resultado.getString("matricula"));
              vacceso.setNombre(resultado.getString("nombre"));
              vacceso.setApellido(resultado.getString("apellido"));
              vacceso.setFotografia(resultado.getBlob("fotografia"));
-              
+             }
         
         } catch (SQLException ex) {
             Logger.getLogger(Cvacceso.class.getName()).log(Level.SEVERE, null, ex);

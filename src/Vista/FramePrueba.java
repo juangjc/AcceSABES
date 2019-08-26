@@ -6,6 +6,7 @@
 package Vista;
 
 import java.awt.BorderLayout;
+import javax.swing.JFrame;
 
 /**
  *
@@ -18,6 +19,7 @@ public class FramePrueba extends javax.swing.JFrame {
      */
     public FramePrueba() {
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
     /**
@@ -29,7 +31,7 @@ public class FramePrueba extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        dp = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -39,15 +41,15 @@ public class FramePrueba extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 695, Short.MAX_VALUE)
+        javax.swing.GroupLayout dpLayout = new javax.swing.GroupLayout(dp);
+        dp.setLayout(dpLayout);
+        dpLayout.setHorizontalGroup(
+            dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 715, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
+        dpLayout.setVerticalGroup(
+            dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 416, Short.MAX_VALUE)
         );
 
         jMenu1.setText("File");
@@ -87,50 +89,46 @@ public class FramePrueba extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(dp)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(dp)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-         Ralumnos ralumno = new Ralumnos();
-        ralumno.setSize(700,700);
-        ralumno.setLocation(5,5);
-         jPanel1.removeAll();
-            jPanel1.add(ralumno,BorderLayout.CENTER);
-            jPanel1.revalidate();
-            jPanel1.repaint();
+         JInternalralumnos ralumno = new JInternalralumnos();
+        
+       
+         dp.removeAll();
+            dp.add(ralumno,BorderLayout.CENTER);
+            dp.revalidate();
+            dp.repaint();
+            ralumno.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-Consultalumnos consultalumnos = new Consultalumnos();
-        consultalumnos.setSize(700,700);
-        consultalumnos.setLocation(5,5);
-         jPanel1.removeAll();
-            jPanel1.add(consultalumnos,BorderLayout.CENTER);
-            jPanel1.revalidate();
-            jPanel1.repaint();
+JInternalacceso acceso = new JInternalacceso();
+        
+       
+         dp.removeAll();
+            dp.add(acceso,BorderLayout.CENTER);
+            dp.revalidate();
+            dp.repaint();
+            acceso.show();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-    Acceso acceso = new Acceso();
-        acceso.setSize(750,390);
-        acceso.setLocation(5,5);
-         jPanel1.removeAll();
-            jPanel1.add(acceso,BorderLayout.CENTER);
-            jPanel1.revalidate();
-            jPanel1.repaint();
+//    Acceso acceso = new Acceso();
+//        acceso.setSize(750,390);
+//        acceso.setLocation(5,5);
+//         jPanel1.removeAll();
+//            jPanel1.add(acceso,BorderLayout.CENTER);
+//            jPanel1.revalidate();
+//            jPanel1.repaint();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
@@ -169,12 +167,12 @@ Consultalumnos consultalumnos = new Consultalumnos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDesktopPane dp;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

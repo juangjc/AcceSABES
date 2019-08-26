@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
@@ -26,7 +27,7 @@ import jssc.SerialPortException;
  *
  * @author Kalas
  */
-public class Acceso extends javax.swing.JPanel {
+public class JInternalacceso extends javax.swing.JInternalFrame {
 PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
 String codtarjeta,nombrecompleto;
 Vacceso vacceso= new Vacceso();
@@ -43,27 +44,38 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
                     codtarjeta=arduino.printMessage();
                     try {
                         vacceso= cvacceso.verificar(Conexion.obtener(), codtarjeta);
+                        if(vacceso.getApellido()!=null){
                         nombrecompleto=vacceso.getNombre()+" "+vacceso.getApellido();
+                        System.out.println("nomre"+nombrecompleto);
                         bytesImagen=vacceso.getFotografia();
                          byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
                 imageicon = new ImageIcon(bytesLeidos); 
                  Icon icono= new ImageIcon(imageicon.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));
             lblimagen.setIcon(icono);
             lblpaso.setBackground(Color.GREEN);
-            lblnombre.setText(nombrecompleto);
+            lblnombre.setText(nombrecompleto);}
+                        else{
+                        lblpaso.setBackground(Color.red);
+                        lblnombre.setText("usuario no registrado o en situacion de baja ");
+                        lblimagen.setIcon(null);
+                        }
+            
 //                  txttarjeta.setBackground(Color.GREEN);
 //                 
 //                   txttarjeta.setText("Registrada");
 // arduino.killArduinoConnection();
                     } catch (SQLException ex) {
+                        lblpaso.setBackground(Color.red);
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {
+                        lblpaso.setBackground(Color.red);
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
                    System.out.println("entro al label");
                 }
-            } catch (SerialPortException | ArduinoException ex) {
+            } catch (SerialPortException | ArduinoException  ex) {
+                lblpaso.setBackground(Color.red);
             // txttarjeta.setBackground(Color.RED);
                  
                    //txttarjeta.setText("Ocurrio un problema");
@@ -72,10 +84,12 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
 
     };
     /**
-     * Creates new form Acceso
+     * Creates new form JInternalacceso
      */
-    public Acceso() {
-          try {
+    public JInternalacceso() {
+        initComponents();
+        
+            try {
            
              arduino.arduinoRXTX("COM4", 9600, listener);
        
@@ -85,7 +99,6 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
        // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
         
     }
-        initComponents();
     }
 
     /**
@@ -112,36 +125,39 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
 
         lblimagen.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(53, 53, 53)
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(8, 8, 8)
                         .addComponent(jLabel1))
                     .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
                 .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45))
+                .addGap(48, 48, 48))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(54, 54, 54)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(34, 34, 34)
                         .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
-                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(41, 41, 41))
+                        .addGap(63, 63, 63)
+                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 39, Short.MAX_VALUE)))
+                .addGap(70, 70, 70))
         );
+
+        pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
