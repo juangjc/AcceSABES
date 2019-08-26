@@ -12,6 +12,8 @@ import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -19,6 +21,8 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
@@ -27,13 +31,55 @@ import jssc.SerialPortException;
  *
  * @author Kalas
  */
-public class JInternalacceso extends javax.swing.JInternalFrame {
+public class JInternalacceso extends javax.swing.JInternalFrame  {
 PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
 String codtarjeta,nombrecompleto;
 Vacceso vacceso= new Vacceso();
 Cvacceso cvacceso=new Cvacceso();
 ImageIcon imageicon;
 Blob bytesImagen;
+
+
+  
+
+   
+
+  InternalFrameListener listener1= new InternalFrameListener () {
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) {
+        System.out.println("opened");
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) {
+        System.out.println("closing");
+    }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+        System.out.println("closed");
+    }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) {
+        System.out.println("iconi");
+    }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+        System.out.println("deico");
+    }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) {
+        System.out.println("frameacti");
+    }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+        System.out.println("framedeac");
+    }
+};
 private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
         public void serialEvent(SerialPortEvent spe) {
@@ -43,8 +89,10 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
                   
                     codtarjeta=arduino.printMessage();
                     try {
+                        lblnombre.setForeground(Color.black);
                         vacceso= cvacceso.verificar(Conexion.obtener(), codtarjeta);
                         if(vacceso.getApellido()!=null){
+                            
                         nombrecompleto=vacceso.getNombre()+" "+vacceso.getApellido();
                         System.out.println("nomre"+nombrecompleto);
                         bytesImagen=vacceso.getFotografia();
@@ -57,6 +105,7 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
                         else{
                         lblpaso.setBackground(Color.red);
                         lblnombre.setText("usuario no registrado o en situacion de baja ");
+                        lblnombre.setForeground(Color.red);
                         lblimagen.setIcon(null);
                         }
             
@@ -88,7 +137,7 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
      */
     public JInternalacceso() {
         initComponents();
-        
+         addInternalFrameListener(listener1);
             try {
            
              arduino.arduinoRXTX("COM4", 9600, listener);
@@ -114,6 +163,8 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
         lblnombre = new javax.swing.JLabel();
         lblpaso = new javax.swing.JLabel();
         lblimagen = new javax.swing.JLabel();
+
+        setClosable(true);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Bienvenido:");
@@ -167,4 +218,8 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
     private javax.swing.JLabel lblnombre;
     private javax.swing.JLabel lblpaso;
     // End of variables declaration//GEN-END:variables
+
+   
+
+    
 }

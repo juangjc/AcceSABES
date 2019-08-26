@@ -6,6 +6,9 @@
 package Vista;
 
 import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -107,17 +110,27 @@ public class FramePrueba extends javax.swing.JFrame {
             dp.add(ralumno,BorderLayout.CENTER);
             dp.revalidate();
             dp.repaint();
+        try {
+            ralumno.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
             ralumno.show();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
 JInternalacceso acceso = new JInternalacceso();
         
-       
+       acceso.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
          dp.removeAll();
             dp.add(acceso,BorderLayout.CENTER);
             dp.revalidate();
             dp.repaint();
+             try {
+            acceso.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
             acceso.show();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
