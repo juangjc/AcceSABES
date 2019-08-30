@@ -72,12 +72,22 @@ Blob bytesImagen;
 
     @Override
     public void internalFrameActivated(InternalFrameEvent e) {
-        System.out.println("frameacti");
+        try {
+          //  arduino.arduinoRXTX("COM4", 9600, listener);
+            System.out.println("frameacti");
+        } catch (Exception ex) {
+            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-        System.out.println("framedeac");
+        try {
+            System.out.println("framedeac");
+            arduino.killArduinoConnection();
+        } catch (ArduinoException ex) {
+            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 };
 private SerialPortEventListener listener = new SerialPortEventListener() {
@@ -141,11 +151,13 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
             try {
            
              arduino.arduinoRXTX("COM4", 9600, listener);
+                System.out.println("se activo");
        
          //System.out.println(arduino.getInputBytesAvailable());
          
     } catch (Exception ex) {
        // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("fallo");
         
     }
     }
