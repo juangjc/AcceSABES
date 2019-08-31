@@ -24,6 +24,8 @@ JInternalacceso acceso;
     public FramePrueba() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        
+        
     }
 
     /**
@@ -105,58 +107,59 @@ JInternalacceso acceso;
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
        
-       cerrarventanas();
-    ralumno = new JInternalralumnos();
-       // Thread.sleep(2000);
-         dp.removeAll();      
-        dp.add(ralumno,BorderLayout.CENTER);
-            dp.revalidate();
-            dp.repaint();
+        cerrarventanas();
+        ralumno = new JInternalralumnos();
+        
+        // Thread.sleep(2000);
+        dp.removeAll();
+        dp.add(ralumno, BorderLayout.CENTER);
+        dp.revalidate();
+        dp.repaint();
         try {
             ralumno.setMaximum(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
-            ralumno.show();
+        ralumno.show();
    
        
             
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
-      cerrarventanas();
+        cerrarventanas();
         acceso = new JInternalacceso();
-       
-         dp.removeAll();
-            dp.add(acceso,BorderLayout.CENTER);
-            dp.revalidate();
-            dp.repaint();
-             try {
+        dp.removeAll();
+        dp.add(acceso, BorderLayout.CENTER);
+        dp.revalidate();
+        dp.repaint();
+        try {
             acceso.setMaximum(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
-            acceso.show();
+        acceso.show();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-//    Acceso acceso = new Acceso();
-//        acceso.setSize(750,390);
-//        acceso.setLocation(5,5);
-//         jPanel1.removeAll();
-//            jPanel1.add(acceso,BorderLayout.CENTER);
-//            jPanel1.revalidate();
-//            jPanel1.repaint();
+         JInternalConsulta consulta = new JInternalConsulta();
+        dp.removeAll();
+        dp.add(consulta, BorderLayout.CENTER);
+        dp.revalidate();
+        dp.repaint();
+        try {
+            consulta.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        consulta.show();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
     public void cerrarventanas(){
         try {            
-             if(ralumno.isShowing()){
-             System.out.println("se ve ");
+             if(ralumno.isShowing()){             
              ralumno.dispose();            
             } 
-             if(acceso.isShowing()){
-             System.out.println("se ve acceso ");
+             if(acceso.isShowing()){             
              acceso.dispose();            
             }
             }

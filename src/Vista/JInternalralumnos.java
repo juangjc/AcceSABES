@@ -39,154 +39,158 @@ import jssc.SerialPortException;
  * @author Kalas
  */
 public class JInternalralumnos extends javax.swing.JInternalFrame {
-  PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
-    String idtarjeta=null;
-String dato;
- InternalFrameListener listener1= new InternalFrameListener () {
-      @Override
-      public void internalFrameOpened(InternalFrameEvent e) {
-         
-      }
+    PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
+    String idtarjeta = null;
+    String dato;
+    InternalFrameListener listener1 = new InternalFrameListener() {
+        @Override
+        public void internalFrameOpened(InternalFrameEvent e) {
 
-      @Override
-      public void internalFrameClosing(InternalFrameEvent e) {
+        }
+
+        @Override
+        public void internalFrameClosing(InternalFrameEvent e) {
+            webcam.setACTIVARCAMARA(false);
             try {
-              arduino.killArduinoConnection();
-          } catch (ArduinoException ex) {
-              Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
-          }
-      }
+                arduino.killArduinoConnection();
 
-      @Override
-      public void internalFrameClosed(InternalFrameEvent e) {
-       
-          try {
-              arduino.killArduinoConnection();
-          } catch (ArduinoException ex) {
-              Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
-          }
-       
-      }
+            } catch (ArduinoException ex) {
+                Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
 
-      @Override
-      public void internalFrameIconified(InternalFrameEvent e) {
-          
-      }
+        @Override
+        public void internalFrameClosed(InternalFrameEvent e) {
 
-      @Override
-      public void internalFrameDeiconified(InternalFrameEvent e) {
-         
-      }
+            try {
+                arduino.killArduinoConnection();
+            } catch (ArduinoException ex) {
+                Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
-      @Override
-      public void internalFrameActivated(InternalFrameEvent e) {
-          
-      }
+        }
 
-      @Override
-      public void internalFrameDeactivated(InternalFrameEvent e) {
-          
-      }
-  };
+        @Override
+        public void internalFrameIconified(InternalFrameEvent e) {
+
+        }
+
+        @Override
+        public void internalFrameDeiconified(InternalFrameEvent e) {
+
+        }
+
+        @Override
+        public void internalFrameActivated(InternalFrameEvent e) {
+
+        }
+
+        @Override
+        public void internalFrameDeactivated(InternalFrameEvent e) {
+
+        }
+    };
 
     private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
         public void serialEvent(SerialPortEvent spe) {
             try {
-                
+
                 if (arduino.isMessageAvailable()) {
-                  
-                    idtarjeta=arduino.printMessage();
+
+                    idtarjeta = arduino.printMessage();
                     System.out.println(idtarjeta);
-                  txttarjeta.setBackground(Color.GREEN);
-                 
-                   txttarjeta.setText("Registrada");
-                   arduino.killArduinoConnection();
-                    
-                   System.out.println("entro al label");
+                    txttarjeta.setBackground(Color.GREEN);
+
+                    txttarjeta.setText("Registrada");
+                    arduino.killArduinoConnection();
+
+                    System.out.println("entro al label");
                 }
             } catch (SerialPortException | ArduinoException ex) {
-             txttarjeta.setBackground(Color.RED);
-                 
-                   txttarjeta.setText("Ocurrio un problema");
+                txttarjeta.setBackground(Color.RED);
+
+                txttarjeta.setText("Ocurrio un problema");
             }
         }
 
     };
-    static DefaultComboBoxModel modelo,modelo2;
-    String matricula,nombre,apellido, telefono,tarjeta;
-    int idcarrera,idstatus,control;
-    Blob fotografia=null;
-byte[] imagen;
-Alumno alumno;
-Alumnotarjeta alumnotarjeta;
-Calumno calumno=new Calumno();
+    static DefaultComboBoxModel modelo, modelo2;
+    String matricula, nombre, apellido, telefono, tarjeta;
+    int idcarrera, idstatus, control;
+    Blob fotografia = null;
+    byte[] imagen;
+    Alumno alumno;
+    Alumnotarjeta alumnotarjeta;
+    Calumno calumno = new Calumno();
+
     /**
      * Creates new form JInternalralumnos
      */
     public JInternalralumnos() {
         initComponents();
         addInternalFrameListener(listener1);
-        
+
         try {
-           
-             arduino.arduinoRXTX("COM4", 9600, listener);
-       
-         //System.out.println(arduino.getInputBytesAvailable());
-         
-    } catch (Exception ex) {
-       // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-        
-    }
+
+            arduino.arduinoRXTX("COM4", 9600, listener);
+
+            //System.out.println(arduino.getInputBytesAvailable());
+        } catch (Exception ex) {
+            // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
         modelo = new DefaultComboBoxModel();
         modelo2 = new DefaultComboBoxModel();
         llena_combo_carrera();
         llena_combo_status();
         ImageIcon imagen = new ImageIcon("src/iconos/sn.png");
-        Icon icono= new ImageIcon(imagen.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));
+        Icon icono = new ImageIcon(imagen.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
     }
+
     public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
-    Carrera carrera;
-       
-try {
-    modelo.removeAllElements(); // eliminamos lo elementos
-    Connection conexion = Conexion.obtener();
-    PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM carrera" );
-    ResultSet rs=consulta.executeQuery();
-    while(rs.next())
-    {       
-        carrera= new Carrera(rs.getInt(1),rs.getString(2));
-        modelo.addElement(carrera);
-       
+        Carrera carrera;
+
+        try {
+            modelo.removeAllElements(); // eliminamos lo elementos
+            Connection conexion = Conexion.obtener();
+            PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM carrera");
+            ResultSet rs = consulta.executeQuery();
+            while (rs.next()) {
+                carrera = new Carrera(rs.getInt(1), rs.getString(2));
+                modelo.addElement(carrera);
+
+            }
+            cbbcarrera.setModel(modelo); // seteamos el modelo y se cargan los datos
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-     cbbcarrera.setModel(modelo); // seteamos el modelo y se cargan los datos
-} catch (SQLException ex) {
-    System.out.println(ex.getMessage());
-    
-}   catch (ClassNotFoundException ex) {
-        Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-    }}
+
     public void llena_combo_status() { // static para poder llamarlo desde el otro frame o JDialog
-    Status status;
-       
-try {
-    modelo2.removeAllElements(); // eliminamos lo elementos
-    Connection conexion = Conexion.obtener();
-    PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM status" );
-    ResultSet rs=consulta.executeQuery();
-    while(rs.next())
-    {       
-        status= new Status(rs.getInt(1),rs.getString(2));
-        modelo2.addElement(status);
-       
+        Status status;
+
+        try {
+            modelo2.removeAllElements(); // eliminamos lo elementos
+            Connection conexion = Conexion.obtener();
+            PreparedStatement consulta = conexion.prepareStatement("SELECT * FROM status");
+            ResultSet rs = consulta.executeQuery();
+            while (rs.next()) {
+                status = new Status(rs.getInt(1), rs.getString(2));
+                modelo2.addElement(status);
+
+            }
+            cbbstatus.setModel(modelo2); // seteamos el modelo y se cargan los datos
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-     cbbstatus.setModel(modelo2); // seteamos el modelo y se cargan los datos
-} catch (SQLException ex) {
-    System.out.println(ex.getMessage());
-    
-}   catch (ClassNotFoundException ex) {
-        Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-    }}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -214,8 +218,10 @@ try {
         jLabel5 = new javax.swing.JLabel();
         cbbcarrera = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
 
         setClosable(true);
+        setTitle("Registro alumnos");
         setOpaque(true);
 
         jLabel1.setText("Matricula:");
@@ -283,6 +289,13 @@ try {
 
         jLabel6.setText("Status");
 
+        jButton3.setText("jButton3");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,10 +346,12 @@ try {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(4, 4, 4)
                                                 .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(3, 3, 3)))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
+                                        .addGap(3, 3, 3)))))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(246, Short.MAX_VALUE))
+                .addContainerGap(243, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton1)
@@ -349,38 +364,43 @@ try {
                 .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addGap(0, 95, Short.MAX_VALUE))
+                .addGap(0, 99, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtmatricula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel2)
-                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(txtapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel7)
-                    .addComponent(txttarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(29, 29, 29)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtmatricula, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2)
+                            .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(txtapellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel7)
+                            .addComponent(txttarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jButton3)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -388,7 +408,7 @@ try {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbbstatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbstatusItemStateChanged
-        Status st =(Status)this.cbbstatus.getSelectedItem();
+        Status st = (Status) this.cbbstatus.getSelectedItem();
         if (evt.getStateChange() == ItemEvent.SELECTED) {
 
             int id = st.getIdstatus();
@@ -397,7 +417,7 @@ try {
     }//GEN-LAST:event_cbbstatusItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        imagen =webcam.getBytes();
+        imagen = webcam.getBytes();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void webcamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_webcamKeyPressed
@@ -405,22 +425,22 @@ try {
     }//GEN-LAST:event_webcamKeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        matricula=txtmatricula.getText();
-        nombre=txtnombre.getText();
-        apellido=txtapellidos.getText();
-        telefono= txttelefono.getText();
-        Carrera cr =(Carrera)this.cbbcarrera.getSelectedItem();
+        matricula = txtmatricula.getText();
+        nombre = txtnombre.getText();
+        apellido = txtapellidos.getText();
+        telefono = txttelefono.getText();
+        Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
         idcarrera = cr.getIdcarrera();
-        Status st =(Status)this.cbbstatus.getSelectedItem();
-        idstatus  = st.getIdstatus();
-        tarjeta=idtarjeta;
+        Status st = (Status) this.cbbstatus.getSelectedItem();
+        idstatus = st.getIdstatus();
+        tarjeta = idtarjeta;
         try {
-            fotografia = new SerialBlob(imagen );
+            fotografia = new SerialBlob(imagen);
         } catch (SQLException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        alumno=new Alumno(matricula,nombre,apellido,telefono,idcarrera,idstatus,fotografia);
-        alumnotarjeta= new Alumnotarjeta(matricula,tarjeta);
+        alumno = new Alumno(matricula, nombre, apellido, telefono, idcarrera, idstatus, fotografia);
+        alumnotarjeta = new Alumnotarjeta(matricula, tarjeta);
         try {
             calumno.guardar(Conexion.obtener(), alumno);
             try {
@@ -438,7 +458,7 @@ try {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cbbcarreraItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbcarreraItemStateChanged
-        Carrera cr =(Carrera)this.cbbcarrera.getSelectedItem();
+        Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
         if (evt.getStateChange() == ItemEvent.SELECTED) {
 
             int id = cr.getIdcarrera();
@@ -446,12 +466,17 @@ try {
         }
     }//GEN-LAST:event_cbbcarreraItemStateChanged
 
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+      // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbbcarrera;
     private javax.swing.JComboBox<String> cbbstatus;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
