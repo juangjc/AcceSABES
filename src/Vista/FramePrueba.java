@@ -16,7 +16,8 @@ import javax.swing.JFrame;
  * @author Kalas
  */
 public class FramePrueba extends javax.swing.JFrame {
-
+JInternalralumnos ralumno ;
+JInternalacceso acceso;
     /**
      * Creates new form FramePrueba
      */
@@ -55,9 +56,9 @@ public class FramePrueba extends javax.swing.JFrame {
             .addGap(0, 416, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
+        jMenu1.setText("Accesos");
 
-        jMenuItem1.setText("jMenuItem1");
+        jMenuItem1.setText("Alta alumnos");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -65,7 +66,7 @@ public class FramePrueba extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("jMenuItem2");
+        jMenuItem2.setText("Acceso");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -73,7 +74,7 @@ public class FramePrueba extends javax.swing.JFrame {
         });
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("jMenuItem3");
+        jMenuItem3.setText("Consulta alumnos");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -103,11 +104,12 @@ public class FramePrueba extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-         JInternalralumnos ralumno = new JInternalralumnos();
-        
        
-         dp.removeAll();
-            dp.add(ralumno,BorderLayout.CENTER);
+       cerrarventanas();
+    ralumno = new JInternalralumnos();
+       // Thread.sleep(2000);
+         dp.removeAll();      
+        dp.add(ralumno,BorderLayout.CENTER);
             dp.revalidate();
             dp.repaint();
         try {
@@ -116,12 +118,16 @@ public class FramePrueba extends javax.swing.JFrame {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
             ralumno.show();
+   
+       
+            
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-JInternalacceso acceso = new JInternalacceso();
         
-       acceso.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+      cerrarventanas();
+        acceso = new JInternalacceso();
+       
          dp.removeAll();
             dp.add(acceso,BorderLayout.CENTER);
             dp.revalidate();
@@ -143,7 +149,21 @@ JInternalacceso acceso = new JInternalacceso();
 //            jPanel1.revalidate();
 //            jPanel1.repaint();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-
+    public void cerrarventanas(){
+        try {            
+             if(ralumno.isShowing()){
+             System.out.println("se ve ");
+             ralumno.dispose();            
+            } 
+             if(acceso.isShowing()){
+             System.out.println("se ve acceso ");
+             acceso.dispose();            
+            }
+            }
+        catch(Exception ex){
+           ex.printStackTrace();
+           }
+    }
     /**
      * @param args the command line arguments
      */

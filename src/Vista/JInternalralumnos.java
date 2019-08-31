@@ -28,6 +28,8 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
@@ -40,6 +42,52 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
   PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
     String idtarjeta=null;
 String dato;
+ InternalFrameListener listener1= new InternalFrameListener () {
+      @Override
+      public void internalFrameOpened(InternalFrameEvent e) {
+         
+      }
+
+      @Override
+      public void internalFrameClosing(InternalFrameEvent e) {
+            try {
+              arduino.killArduinoConnection();
+          } catch (ArduinoException ex) {
+              Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
+          }
+      }
+
+      @Override
+      public void internalFrameClosed(InternalFrameEvent e) {
+       
+          try {
+              arduino.killArduinoConnection();
+          } catch (ArduinoException ex) {
+              Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
+          }
+       
+      }
+
+      @Override
+      public void internalFrameIconified(InternalFrameEvent e) {
+          
+      }
+
+      @Override
+      public void internalFrameDeiconified(InternalFrameEvent e) {
+         
+      }
+
+      @Override
+      public void internalFrameActivated(InternalFrameEvent e) {
+          
+      }
+
+      @Override
+      public void internalFrameDeactivated(InternalFrameEvent e) {
+          
+      }
+  };
 
     private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
@@ -78,6 +126,8 @@ Calumno calumno=new Calumno();
      */
     public JInternalralumnos() {
         initComponents();
+        addInternalFrameListener(listener1);
+        
         try {
            
              arduino.arduinoRXTX("COM4", 9600, listener);
@@ -165,6 +215,7 @@ try {
         cbbcarrera = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
 
+        setClosable(true);
         setOpaque(true);
 
         jLabel1.setText("Matricula:");
@@ -373,7 +424,7 @@ try {
         try {
             calumno.guardar(Conexion.obtener(), alumno);
             try {
-                Thread.sleep(5*1000);
+                Thread.sleep(2000);
                 calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);

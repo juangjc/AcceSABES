@@ -52,12 +52,22 @@ Blob bytesImagen;
 
     @Override
     public void internalFrameClosing(InternalFrameEvent e) {
-        System.out.println("closing");
+        try {
+            System.out.println("framedeac");
+            arduino.killArduinoConnection();
+        } catch (ArduinoException ex) {
+            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void internalFrameClosed(InternalFrameEvent e) {
-        System.out.println("closed");
+        try {
+            System.out.println("closed");
+            arduino.killArduinoConnection();
+        } catch (ArduinoException ex) {
+            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -82,12 +92,7 @@ Blob bytesImagen;
 
     @Override
     public void internalFrameDeactivated(InternalFrameEvent e) {
-        try {
-            System.out.println("framedeac");
-            arduino.killArduinoConnection();
-        } catch (ArduinoException ex) {
-            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        System.out.println("deac");
     }
 };
 private SerialPortEventListener listener = new SerialPortEventListener() {
@@ -177,6 +182,7 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
         lblimagen = new javax.swing.JLabel();
 
         setClosable(true);
+        setTitle("Acceso");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel1.setText("Bienvenido:");
