@@ -50,7 +50,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 
         @Override
         public void internalFrameClosing(InternalFrameEvent e) {
-            webcam.setACTIVARCAMARA(false);
+            
             try {
                 arduino.killArduinoConnection();
 
@@ -61,7 +61,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 
         @Override
         public void internalFrameClosed(InternalFrameEvent e) {
-
+            
             try {
                 arduino.killArduinoConnection();
             } catch (ArduinoException ex) {
@@ -467,7 +467,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbbcarreraItemStateChanged
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-      // TODO add your handling code here:
+webcam.removeAll();  // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
 
