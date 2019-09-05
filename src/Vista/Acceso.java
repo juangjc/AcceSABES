@@ -29,49 +29,46 @@ import jssc.SerialPortException;
  * @author Kalas
  */
 public class Acceso extends javax.swing.JPanel {
-PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
-String codtarjeta,nombrecompleto,horaentrada;
-Vacceso vacceso= new Vacceso();
-Cvacceso cvacceso=new Cvacceso();
-Accesom accesom ;
-ImageIcon imageicon;
-Blob bytesImagen;
-Long prueba;
-private SerialPortEventListener listener = new SerialPortEventListener() {
+
+    PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
+    String codtarjeta, nombrecompleto, horaentrada;
+    Vacceso vacceso = new Vacceso();
+    Cvacceso cvacceso = new Cvacceso();
+    Accesom accesom;
+    ImageIcon imageicon;
+    Blob bytesImagen;
+    Long prueba;
+    private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
         public void serialEvent(SerialPortEvent spe) {
             try {
-                
                 if (arduino.isMessageAvailable()) {
-                  
-                    codtarjeta=arduino.printMessage();
+                    codtarjeta = arduino.printMessage();
                     try {
-                        vacceso= cvacceso.verificar(Conexion.obtener(), codtarjeta);
-                        nombrecompleto=vacceso.getNombre()+" "+vacceso.getApellido();
-                        bytesImagen=vacceso.getFotografia();
-                        
-                         byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
-                imageicon = new ImageIcon(bytesLeidos); 
-                 Icon icono= new ImageIcon(imageicon.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));
-            lblimagen.setIcon(icono);
-            lblpaso.setBackground(Color.GREEN);
-            lblnombre.setText(nombrecompleto);
-            //registro de ingresos
-            horaentrada=Generales.getDateTime();
-            accesom=new Accesom(codtarjeta,horaentrada);
-            cvacceso.registraracceso(Conexion.obtener(), accesom);
+                        vacceso = cvacceso.verificar(Conexion.obtener(), codtarjeta);
+                        nombrecompleto = vacceso.getNombre() + " " + vacceso.getApellido();
+                        bytesImagen = vacceso.getFotografia();
+                        byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
+                        imageicon = new ImageIcon(bytesLeidos);
+                        Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
+                        lblimagen.setIcon(icono);
+                        lblpaso.setBackground(Color.GREEN);
+                        lblnombre.setText(nombrecompleto);
+                        //registro de ingresos
+                        horaentrada = Generales.getDateTime();
+                        accesom = new Accesom(codtarjeta, horaentrada);
+                        cvacceso.registraracceso(Conexion.obtener(), accesom);
                     } catch (SQLException ex) {
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
-                   System.out.println("entro al label");
+                    System.out.println("entro al label");
                 }
             } catch (SerialPortException | ArduinoException ex) {
-            // txttarjeta.setBackground(Color.RED);
-                 
-                   //txttarjeta.setText("Ocurrio un problema");
+                // txttarjeta.setBackground(Color.RED);
+
+                //txttarjeta.setText("Ocurrio un problema");
             }
         }
 

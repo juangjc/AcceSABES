@@ -7,6 +7,7 @@ package Controlador;
 
 import Modelo.Alumno;
 import Modelo.Alumnotarjeta;
+import Modelo.Vconsultaalumnos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -52,20 +53,20 @@ public class Calumno {
      
      }
      
-     public ArrayList<Alumno> consulta(Connection conexion,String matricula) throws SQLException
+     public ArrayList<Vconsultaalumnos> consulta(Connection conexion,String matricula) throws SQLException
      {
-         ArrayList<Alumno> alumno = new ArrayList();         
+         ArrayList<Vconsultaalumnos> alumnos = new ArrayList();         
            try{
-         PreparedStatement consulta = conexion.prepareStatement("select * from alumno where matricula like '"+matricula+"%'");
+         PreparedStatement consulta = conexion.prepareStatement("select * from consultaalumnos where matricula like '"+matricula+"%'");
          ResultSet resultado = consulta.executeQuery();
          while(resultado.next()){
-            alumno.add(new Alumno(resultado.getString("matricula"), resultado.getString("nombre"),resultado.getString("apellido"),resultado.getString("telefono"),resultado.getInt("idcarrera"),
-            resultado.getInt("idstatus"),resultado.getBlob("fotografia")));
+            alumnos.add(new Vconsultaalumnos(resultado.getString("matricula"), resultado.getString("nombre"),resultado.getString("apellido"),resultado.getString("telefono"),resultado.getString("carrera"),
+            resultado.getString("status"),resultado.getBlob("fotografia")));
          }
       }catch(SQLException ex){
          throw new SQLException(ex);
       }
      
-         return alumno;
+         return alumnos;
      }
 }

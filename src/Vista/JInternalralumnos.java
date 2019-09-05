@@ -533,14 +533,14 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbbcarreraItemStateChanged
 
     private void btnactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactivarActionPerformed
-      webSource =new VideoCapture(0);
-            myThread = new DaemonThread();
-            Thread t = new Thread(myThread);
-            t.setDaemon(true);
-            myThread.runnable = true;
-            t.start();        // TODO add your handling code here:
-            btntomar.setEnabled(true);
-            btnactivar.setEnabled(false);
+        webSource = new VideoCapture(0);
+        myThread = new DaemonThread();
+        Thread t = new Thread(myThread);
+        t.setDaemon(true);
+        myThread.runnable = true;
+        t.start();        // TODO add your handling code here:
+        btntomar.setEnabled(true);
+        btnactivar.setEnabled(false);
     }//GEN-LAST:event_btnactivarActionPerformed
 
   public static byte[] long2bytearray(long l) {
