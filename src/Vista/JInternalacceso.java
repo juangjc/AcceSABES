@@ -41,7 +41,7 @@ import jssc.SerialPortException;
 public class JInternalacceso extends javax.swing.JInternalFrame {
 
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
-    String codtarjeta, nombrecompleto,horaentrada;
+    String codtarjeta, nombrecompleto, horaentrada;
     Vacceso vacceso = new Vacceso();
     Cvacceso cvacceso = new Cvacceso();
     Accesom accesom;
@@ -138,7 +138,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                             lblpaso.setBackground(Color.red);
                             lblnombre.setText("usuario no registrado o en situacion de baja ");
                             lblnombre.setForeground(Color.red);
-                             lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
+                            lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
                             inicial();
                         }
 
@@ -164,6 +164,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
         }
 
     };
+
     /**
      * Creates new form JInternalacceso
      */
@@ -179,18 +180,18 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
 
         }
     }
-    
-    private void inicial(){
+
+    private void inicial() {
         try {
-                Thread.sleep(2300);
-                lblnombre.setText("");
-                lblpaso.setBackground(Color.gray);
-                lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("hilo");
-            }
-   
+            Thread.sleep(2300);
+            lblnombre.setText("");
+            lblpaso.setBackground(Color.gray);
+            lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("hilo");
+        }
+
     }
 
     /**
@@ -236,8 +237,8 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                             .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(133, 133, 133)
-                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 535, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(167, Short.MAX_VALUE))
+                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(166, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,10 +249,10 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                 .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(95, 95, 95)
                 .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(236, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 567, Short.MAX_VALUE)
+                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -266,7 +267,4 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblpaso;
     // End of variables declaration//GEN-END:variables
 
-   
-
-    
 }

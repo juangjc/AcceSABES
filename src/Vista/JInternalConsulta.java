@@ -11,6 +11,11 @@ import Modelo.Alumno;
 import Modelo.Carrera;
 import Modelo.Status;
 import Modelo.Vconsultaalumnos;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,7 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,25 +35,30 @@ import javax.swing.table.DefaultTableModel;
  * @author Kalas
  */
 public class JInternalConsulta extends javax.swing.JInternalFrame {
-       String matricula; 
-       DefaultTableModel modelo = new DefaultTableModel(); 
-       List<Vconsultaalumnos> alumnos = new ArrayList<>();
-       Calumno calumno = new Calumno();
-       Object [] columnas= new Object[6];
-       Object [] datos= new Object[6];
-       DefaultComboBoxModel modelocarrera, modelostatus;
-       
+
+    String matricula;
+    DefaultTableModel modelo = new DefaultTableModel();
+    List<Vconsultaalumnos> alumnos = new ArrayList<>();
+    Calumno calumno = new Calumno();
+    Object[] columnas = new Object[6];
+    Object[] datos = new Object[6];
+    DefaultComboBoxModel modelocarrera, modelostatus;
+    Alumno alumno;
+    Blob bytesImagen;
+    byte[] bytesLeidos;
+    ImageIcon imageicon;
+
     /**
      * Creates new form JInternalConsulta
      */
     public JInternalConsulta() {
         initComponents();
-        columnas [0]="Matricula";
-        columnas [1]="Nombre";
-        columnas [2]="Apellido";
-        columnas [3]="Telefono";
-        columnas [4]="Carrera";
-        columnas [5]="Status";
+        columnas[0] = "Matricula";
+        columnas[1] = "Nombre";
+        columnas[2] = "Apellido";
+        columnas[3] = "Telefono";
+        columnas[4] = "Carrera";
+        columnas[5] = "Status";
         modelo.setColumnIdentifiers(columnas);
         tblalumnos.setModel(modelo);
         modelocarrera = new DefaultComboBoxModel();
@@ -141,62 +154,63 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(116, 116, 116)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtnombre))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(95, 95, 95))
+                        .addGap(116, 116, 116)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addGap(18, 18, 18)
+                                .addComponent(txtmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(17, 17, 17)
-                                .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                                .addGap(18, 18, 18))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(txtmatricula)
-                                .addGap(18, 18, 18)))
+                        .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtmatricula))
+                        .addGap(15, 15, 15)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(8, 8, 8)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 17, Short.MAX_VALUE))
+                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(lblmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -207,82 +221,95 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtapellido))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                            .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbbcarrera)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cbbstatus)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(51, 51, 51)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel5)
+                            .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(56, 56, 56)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(395, 395, 395))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtmatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmatriculaKeyTyped
-               
+
     }//GEN-LAST:event_txtmatriculaKeyTyped
 
     private void txtmatriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmatriculaKeyReleased
-       modelo.setRowCount(0);
-        matricula= txtmatricula.getText();
-           try {
-               alumnos=calumno.consulta(Conexion.obtener(), matricula);
-               for(int i=0;i<=alumnos.size()-1;i++)
-               {
-                   datos[0]=alumnos.get(i).getMatricula();
-                   datos[1]=alumnos.get(i).getNombre();
-                   datos[2]=alumnos.get(i).getApellidos();
-                   datos[3]=alumnos.get(i).getTelefono();
-                   datos[4]=alumnos.get(i).getCarrera();
-                   datos[5]=alumnos.get(i).getStatus();
-                   modelo.addRow(datos);
-               
-               
-               }
-                     tblalumnos.setModel(modelo);
-                       
-                       
-                       
-                       } catch (SQLException ex) {
-               Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
-           } catch (ClassNotFoundException ex) {
-               Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
-           }
-                
-        
-        
-              
+        modelo.setRowCount(0);
+        matricula = txtmatricula.getText();
+        try {
+            alumnos = calumno.consulta(Conexion.obtener(), matricula);
+            for (int i = 0; i <= alumnos.size() - 1; i++) {
+                datos[0] = alumnos.get(i).getMatricula();
+                datos[1] = alumnos.get(i).getNombre();
+                datos[2] = alumnos.get(i).getApellidos();
+                datos[3] = alumnos.get(i).getTelefono();
+                datos[4] = alumnos.get(i).getCarrera();
+                datos[5] = alumnos.get(i).getStatus();
+                modelo.addRow(datos);
+
+            }
+            tblalumnos.setModel(modelo);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }//GEN-LAST:event_txtmatriculaKeyReleased
 
     private void tblalumnosKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblalumnosKeyPressed
-      
+
     }//GEN-LAST:event_tblalumnosKeyPressed
 
     private void tblalumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblalumnosMouseClicked
-        int y= tblalumnos.getSelectedRow();
-          int x=tblalumnos.getSelectedColumn();
-          System.out.println(x);
-          System.out.println(y);
-          System.out.println(tblalumnos.getValueAt(y, 0));
-          
-          
+        
+            int y = tblalumnos.getSelectedRow();
+            int x = tblalumnos.getSelectedColumn();
+            System.out.println(x);
+            System.out.println(y);
+            matricula=(String) tblalumnos.getValueAt(y, 0);
+            try {
+            alumno=calumno.recuperaralumno(Conexion.obtener(), matricula);
+            lblmatricula.setText(alumno.getMatricula());
+            txtnombre.setText(alumno.getNombre());
+            txtapellido.setText(alumno.getApellido());
+            txttelefono.setText(alumno.getTelefono());
+            bytesImagen = alumno.getFotografia();
+            bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
+            BufferedImage img = null;
+            try {
+                                img = ImageIO.read(new ByteArrayInputStream(bytesLeidos));
+                            } catch (IOException ex) {
+                                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            imageicon = new ImageIcon(img);
+                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(150, 150, Image.SCALE_DEFAULT));
+                            lblimagen.setIcon(imageicon);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+
+
     }//GEN-LAST:event_tblalumnosMouseClicked
 
-public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
+    public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
         Carrera carrera;
 
         try {
