@@ -151,7 +151,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-                    System.out.println("entro al label");
+                    
                 }
             } catch (SerialPortException | ArduinoException ex) {
                 lblpaso.setBackground(Color.red);

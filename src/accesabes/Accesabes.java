@@ -6,6 +6,7 @@
 package accesabes;
 
 import Controlador.Conexion;
+import Vista.FramePrueba;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,7 +21,8 @@ public class Accesabes {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+     FramePrueba frameprueba = new FramePrueba();
+     frameprueba.setVisible(true);
     }
     
 }

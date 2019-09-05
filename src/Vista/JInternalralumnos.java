@@ -70,21 +70,48 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             synchronized (this) {
                 while (runnable) {
                     if (webSource.grab()) {
-                        try {
-                            webSource.retrieve(frame);
-                            Imgcodecs.imencode(".bmp", frame, mem);
-                            Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
-                            BufferedImage buff = (BufferedImage) im;
-                            Graphics g = panelcamara.getGraphics();
-                            if (g.drawImage(buff, 0, 0, 550,400, 0, 0, buff.getWidth(), buff.getHeight(), null)) {
-                                if (runnable == false) {
-                                    System.out.println("Going to wait()");
-                                    this.wait();
-                                }
-                            }
-                        } catch (Exception ex) {
-                            System.out.println(ex.toString());
-                        }
+                        
+                        try
+                        {
+                            //webSource.retrieve(frame);
+                          webSource.read(frame);
+                            
+            
+			   Imgcodecs.imencode(".jpg", frame, mem);
+                           
+			    Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
+
+			    BufferedImage buff = (BufferedImage) im;
+			    Graphics g=panelcamara.getGraphics();
+                            
+                           
+			   // if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -10 , 0, 0, buff.getWidth(), buff.getHeight(), null))
+			    g.drawImage(buff, 0,0,550,400,0,0,buff.getWidth(),buff.getHeight(), null);
+			    if(runnable == false)
+                            {
+			    	System.out.println("Going to wait()");
+			    	this.wait();
+			    }
+			 }
+			 catch(Exception ex)
+                         {
+			    System.out.println(ex.toString());
+                         }
+//                        try {
+//                            webSource.read(frame);
+//                            Imgcodecs.imencode(".bmp", frame, mem);
+//                            Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
+//                            BufferedImage buff = (BufferedImage) im;
+//                            Graphics g = panelcamara.getGraphics();
+//                            g.drawImage(buff, 0, 0, 550,400, 0, 0, buff.getWidth(), buff.getHeight(), null);
+//                                if (runnable == false) {
+//                                    System.out.println("Going to wait()");
+//                                    this.wait();
+//                                }
+//                            
+//                        } catch (Exception ex) {
+//                            System.out.println(ex.toString());
+//                        }
                     }
                 }
             }
@@ -255,9 +282,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         cbbstatus = new javax.swing.JComboBox<>();
         txtmatricula = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        webcam = new JPanelWebCam.JPanelWebCam();
         txtnombre = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
@@ -286,34 +311,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton1.setText("Tomar foto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
         jLabel2.setText("Nombre: ");
-
-        webcam.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        webcam.setToolTipText("Da click para activar camara");
-        webcam.setFONDO(false);
-        webcam.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                webcamKeyPressed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout webcamLayout = new javax.swing.GroupLayout(webcam);
-        webcam.setLayout(webcamLayout);
-        webcamLayout.setHorizontalGroup(
-            webcamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 158, Short.MAX_VALUE)
-        );
-        webcamLayout.setVerticalGroup(
-            webcamLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 137, Short.MAX_VALUE)
-        );
 
         jButton2.setText("Guardar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -377,12 +375,6 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -427,6 +419,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                                                 .addGap(4, 4, 4)
                                                 .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGap(3, 3, 3)))))))
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
@@ -480,12 +473,8 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                             .addComponent(jLabel7)
                             .addComponent(txttarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(webcam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)))
-                .addContainerGap(68, Short.MAX_VALUE))
+                        .addComponent(jButton2)))
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         pack();
@@ -499,15 +488,6 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 
         }
     }//GEN-LAST:event_cbbstatusItemStateChanged
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        imagen = webcam.getBytes();
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void webcamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_webcamKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_webcamKeyPressed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         matricula = txtmatricula.getText();
@@ -589,6 +569,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 //       
 //        imagen = long2bytearray(imagen2);
 //        System.out.println(imagen);
+imagen=null;
 imagen=convertir2(frame);
         webSource.release();
         
@@ -602,7 +583,6 @@ imagen=convertir2(frame);
     private javax.swing.JButton btntomar;
     private javax.swing.JComboBox<String> cbbcarrera;
     private javax.swing.JComboBox<String> cbbstatus;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -617,6 +597,5 @@ imagen=convertir2(frame);
     private javax.swing.JTextField txtnombre;
     private javax.swing.JLabel txttarjeta;
     private javax.swing.JTextField txttelefono;
-    private JPanelWebCam.JPanelWebCam webcam;
     // End of variables declaration//GEN-END:variables
 }
