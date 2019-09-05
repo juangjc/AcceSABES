@@ -530,7 +530,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         try {
             calumno.guardar(Conexion.obtener(), alumno);
             try {
-                Thread.sleep(2000);
+                Thread.sleep(1000);
                 calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
@@ -570,20 +570,20 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
   buf.putLong(l);
   return b;
 }
-  private byte[] convertir2(Mat imagen)
- {
-     MatOfByte mem2 = new MatOfByte();
-Imgcodecs.imencode(".bmp",imagen , mem2);
-byte[] byteArray =mem2.toArray();
-     System.out.println(byteArray);
-BufferedImage bufImage=null;
-try{
-InputStream in= new ByteArrayInputStream(byteArray);
-bufImage= ImageIO.read(in);
-}catch(Exception e){
-    e.printStackTrace();}
- return byteArray;
- }
+    private byte[] convertir2(Mat imagen) {
+        MatOfByte mem2 = new MatOfByte();
+        Imgcodecs.imencode(".bmp", imagen, mem2);
+        byte[] byteArray = mem2.toArray();
+        System.out.println(byteArray);
+        BufferedImage bufImage = null;
+        try {
+            InputStream in = new ByteArrayInputStream(byteArray);
+            bufImage = ImageIO.read(in);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return byteArray;
+    }
     private void btntomarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntomarActionPerformed
 //       imagen2=frame.nativeObj;
 //       

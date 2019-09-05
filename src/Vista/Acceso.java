@@ -7,6 +7,8 @@ package Vista;
 
 import Controlador.Conexion;
 import Controlador.Cvacceso;
+import Controlador.Generales;
+import Modelo.Accesom;
 import Modelo.Vacceso;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
@@ -28,9 +30,10 @@ import jssc.SerialPortException;
  */
 public class Acceso extends javax.swing.JPanel {
 PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
-String codtarjeta,nombrecompleto;
+String codtarjeta,nombrecompleto,horaentrada;
 Vacceso vacceso= new Vacceso();
 Cvacceso cvacceso=new Cvacceso();
+Accesom accesom ;
 ImageIcon imageicon;
 Blob bytesImagen;
 Long prueba;
@@ -53,10 +56,10 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
             lblimagen.setIcon(icono);
             lblpaso.setBackground(Color.GREEN);
             lblnombre.setText(nombrecompleto);
-//                  txttarjeta.setBackground(Color.GREEN);
-//                 
-//                   txttarjeta.setText("Registrada");
-// arduino.killArduinoConnection();
+            //registro de ingresos
+            horaentrada=Generales.getDateTime();
+            accesom=new Accesom(codtarjeta,horaentrada);
+            cvacceso.registraracceso(Conexion.obtener(), accesom);
                     } catch (SQLException ex) {
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {

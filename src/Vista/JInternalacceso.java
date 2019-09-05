@@ -7,6 +7,8 @@ package Vista;
 
 import Controlador.Conexion;
 import Controlador.Cvacceso;
+import Controlador.Generales;
+import Modelo.Accesom;
 import Modelo.Vacceso;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
@@ -38,9 +40,10 @@ import jssc.SerialPortException;
 public class JInternalacceso extends javax.swing.JInternalFrame {
 
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
-    String codtarjeta, nombrecompleto;
+    String codtarjeta, nombrecompleto,horaentrada;
     Vacceso vacceso = new Vacceso();
     Cvacceso cvacceso = new Cvacceso();
+    Accesom accesom;
     ImageIcon imageicon;
     Blob bytesImagen;
 
@@ -106,8 +109,8 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                     try {
                         lblnombre.setForeground(Color.black);
                         vacceso = cvacceso.verificar(Conexion.obtener(), codtarjeta);
-                        if (vacceso.getApellido() != null) {
-
+                        if (vacceso.getApellido() != null)
+                        {
                             nombrecompleto = vacceso.getNombre() + " " + vacceso.getApellido();
                             System.out.println("nomre" + nombrecompleto);
                             bytesImagen = vacceso.getFotografia();
@@ -123,7 +126,13 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                             lblimagen.setIcon(imageicon);
                             lblpaso.setBackground(Color.GREEN);
                             lblnombre.setText(nombrecompleto);
-                        } else {
+                            
+                            //registro de entrdas
+                            horaentrada=Generales.getDateTime();
+            accesom=new Accesom(codtarjeta,horaentrada);
+            cvacceso.registraracceso(Conexion.obtener(), accesom);
+                        } 
+                        else  {
                             lblpaso.setBackground(Color.red);
                             lblnombre.setText("usuario no registrado o en situacion de baja ");
                             lblnombre.setForeground(Color.red);
@@ -158,19 +167,14 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
      */
     public JInternalacceso() {
         initComponents();
-         addInternalFrameListener(listener1);
-            try {
-           
-             arduino.arduinoRXTX("COM4", 9600, listener);
-                System.out.println("se activo");
-       
-         //System.out.println(arduino.getInputBytesAvailable());
-         
-    } catch (Exception ex) {
-       // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("fallo");
-        
-    }
+        addInternalFrameListener(listener1);
+        try {
+            arduino.arduinoRXTX("COM4", 9600, listener);
+
+        } catch (Exception ex) {
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
     }
 
     /**

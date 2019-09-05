@@ -14,27 +14,27 @@ import java.sql.SQLException;
  * @author Kalas
  */
 public class Conexion {
-        private static Connection cnx = null;
-   public static Connection obtener() throws SQLException, ClassNotFoundException {
-    if (cnx == null) {
-         try {
+
+    private static Connection cnx = null;
+
+    public static Connection obtener() throws SQLException, ClassNotFoundException {
+        //if (cnx == null) {
+        try {
             Class.forName("com.mysql.jdbc.Driver");
             cnx = DriverManager.getConnection("jdbc:mysql://gilbertojc.com/Escuela", "juan", "Berlin01");
-             System.out.println("Conectado");
-         } catch (SQLException ex) {
+        } catch (SQLException ex) {
             throw new SQLException(ex);
-         } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex) {
             throw new ClassCastException(ex.getMessage());
-         }
+        }
+        // }
+        return cnx;
     }
-//      else
-//           System.out.println("nulo");
-      return cnx;
-   }
-   public static void cerrar() throws SQLException {
-      if (cnx != null) {
-         cnx.close();
-      }
-   }
-    
+
+    public static void cerrar() throws SQLException {
+        if (cnx != null) {
+            cnx.close();
+        }
+    }
+
 }
