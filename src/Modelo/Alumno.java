@@ -19,6 +19,7 @@ public class Alumno {
     private int idcarrera;
     private int idstatus;
     private Blob fotografia;
+   
 
     public Alumno() {
     }

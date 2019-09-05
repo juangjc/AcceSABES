@@ -33,6 +33,7 @@ Vacceso vacceso= new Vacceso();
 Cvacceso cvacceso=new Cvacceso();
 ImageIcon imageicon;
 Blob bytesImagen;
+Long prueba;
 private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
         public void serialEvent(SerialPortEvent spe) {
@@ -45,6 +46,7 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
                         vacceso= cvacceso.verificar(Conexion.obtener(), codtarjeta);
                         nombrecompleto=vacceso.getNombre()+" "+vacceso.getApellido();
                         bytesImagen=vacceso.getFotografia();
+                        
                          byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
                 imageicon = new ImageIcon(bytesLeidos); 
                  Icon icono= new ImageIcon(imageicon.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));

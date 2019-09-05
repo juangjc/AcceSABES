@@ -14,10 +14,14 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -31,99 +35,101 @@ import jssc.SerialPortException;
  *
  * @author Kalas
  */
-public class JInternalacceso extends javax.swing.JInternalFrame  {
-PanamaHitek_Arduino arduino =new  PanamaHitek_Arduino();
-String codtarjeta,nombrecompleto;
-Vacceso vacceso= new Vacceso();
-Cvacceso cvacceso=new Cvacceso();
-ImageIcon imageicon;
-Blob bytesImagen;
+public class JInternalacceso extends javax.swing.JInternalFrame {
 
+    PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
+    String codtarjeta, nombrecompleto;
+    Vacceso vacceso = new Vacceso();
+    Cvacceso cvacceso = new Cvacceso();
+    ImageIcon imageicon;
+    Blob bytesImagen;
 
-  
-
-   
-
-  InternalFrameListener listener1= new InternalFrameListener () {
-    @Override
-    public void internalFrameOpened(InternalFrameEvent e) {
-        System.out.println("opened");
-    }
-
-    @Override
-    public void internalFrameClosing(InternalFrameEvent e) {
-        try {
-            System.out.println("framedeac");
-            arduino.killArduinoConnection();
-        } catch (ArduinoException ex) {
-            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+    InternalFrameListener listener1 = new InternalFrameListener() {
+        @Override
+        public void internalFrameOpened(InternalFrameEvent e) {
+            System.out.println("opened");
         }
-    }
 
-    @Override
-    public void internalFrameClosed(InternalFrameEvent e) {
-        try {
-            System.out.println("closed");
-            arduino.killArduinoConnection();
-        } catch (ArduinoException ex) {
-            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+        @Override
+        public void internalFrameClosing(InternalFrameEvent e) {
+            try {
+                System.out.println("framedeac");
+                arduino.killArduinoConnection();
+            } catch (ArduinoException ex) {
+                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }
 
-    @Override
-    public void internalFrameIconified(InternalFrameEvent e) {
-        System.out.println("iconi");
-    }
-
-    @Override
-    public void internalFrameDeiconified(InternalFrameEvent e) {
-        System.out.println("deico");
-    }
-
-    @Override
-    public void internalFrameActivated(InternalFrameEvent e) {
-        try {
-          //  arduino.arduinoRXTX("COM4", 9600, listener);
-            System.out.println("frameacti");
-        } catch (Exception ex) {
-            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+        @Override
+        public void internalFrameClosed(InternalFrameEvent e) {
+            try {
+                System.out.println("closed");
+                arduino.killArduinoConnection();
+            } catch (ArduinoException ex) {
+                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-    }
 
-    @Override
-    public void internalFrameDeactivated(InternalFrameEvent e) {
-        System.out.println("deac");
-    }
-};
-private SerialPortEventListener listener = new SerialPortEventListener() {
+        @Override
+        public void internalFrameIconified(InternalFrameEvent e) {
+            System.out.println("iconi");
+        }
+
+        @Override
+        public void internalFrameDeiconified(InternalFrameEvent e) {
+            System.out.println("deico");
+        }
+
+        @Override
+        public void internalFrameActivated(InternalFrameEvent e) {
+            try {
+                //  arduino.arduinoRXTX("COM4", 9600, listener);
+                System.out.println("frameacti");
+            } catch (Exception ex) {
+                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override
+        public void internalFrameDeactivated(InternalFrameEvent e) {
+            System.out.println("deac");
+        }
+    };
+    private SerialPortEventListener listener = new SerialPortEventListener() {
         @Override
         public void serialEvent(SerialPortEvent spe) {
             try {
-                
+
                 if (arduino.isMessageAvailable()) {
-                  
-                    codtarjeta=arduino.printMessage();
+
+                    codtarjeta = arduino.printMessage();
                     try {
                         lblnombre.setForeground(Color.black);
-                        vacceso= cvacceso.verificar(Conexion.obtener(), codtarjeta);
-                        if(vacceso.getApellido()!=null){
-                            
-                        nombrecompleto=vacceso.getNombre()+" "+vacceso.getApellido();
-                        System.out.println("nomre"+nombrecompleto);
-                        bytesImagen=vacceso.getFotografia();
-                         byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
-                imageicon = new ImageIcon(bytesLeidos); 
-                 Icon icono= new ImageIcon(imageicon.getImage().getScaledInstance(300,300,Image.SCALE_DEFAULT));
-            lblimagen.setIcon(icono);
-            lblpaso.setBackground(Color.GREEN);
-            lblnombre.setText(nombrecompleto);}
-                        else{
-                        lblpaso.setBackground(Color.red);
-                        lblnombre.setText("usuario no registrado o en situacion de baja ");
-                        lblnombre.setForeground(Color.red);
-                        lblimagen.setIcon(null);
+                        vacceso = cvacceso.verificar(Conexion.obtener(), codtarjeta);
+                        if (vacceso.getApellido() != null) {
+
+                            nombrecompleto = vacceso.getNombre() + " " + vacceso.getApellido();
+                            System.out.println("nomre" + nombrecompleto);
+                            bytesImagen = vacceso.getFotografia();
+                            byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
+                             BufferedImage img = null;
+                            try {
+                                img = ImageIO.read(new ByteArrayInputStream(bytesLeidos));
+                            } catch (IOException ex) {
+                                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            imageicon = new ImageIcon(img);
+                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
+                            lblimagen.setIcon(imageicon);
+                            lblpaso.setBackground(Color.GREEN);
+                            lblnombre.setText(nombrecompleto);
+                        } else {
+                            lblpaso.setBackground(Color.red);
+                            lblnombre.setText("usuario no registrado o en situacion de baja ");
+                            lblnombre.setForeground(Color.red);
+                            lblimagen.setIcon(null);
                         }
-            
+
 //                  txttarjeta.setBackground(Color.GREEN);
 //                 
 //                   txttarjeta.setText("Registrada");
@@ -135,14 +141,14 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
                         lblpaso.setBackground(Color.red);
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
-                   System.out.println("entro al label");
+
+                    System.out.println("entro al label");
                 }
-            } catch (SerialPortException | ArduinoException  ex) {
+            } catch (SerialPortException | ArduinoException ex) {
                 lblpaso.setBackground(Color.red);
-            // txttarjeta.setBackground(Color.RED);
-                 
-                   //txttarjeta.setText("Ocurrio un problema");
+                // txttarjeta.setBackground(Color.RED);
+
+                //txttarjeta.setText("Ocurrio un problema");
             }
         }
 
@@ -206,9 +212,9 @@ private SerialPortEventListener listener = new SerialPortEventListener() {
                         .addComponent(jLabel1))
                     .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 80, Short.MAX_VALUE)
-                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(48, 48, 48))
+                .addGap(18, 18, 18)
+                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 393, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

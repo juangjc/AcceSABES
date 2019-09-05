@@ -7,9 +7,12 @@ package Vista;
 
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
+import java.io.File;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
+import org.opencv.core.Core;
 
 /**
  *
@@ -167,10 +170,38 @@ JInternalacceso acceso;
            ex.printStackTrace();
            }
     }
+    private static void loadLibraries() {
+
+    try {
+        InputStream in = null;
+        File fileOut = null;
+        String osName = System.getProperty("os.name");
+        String opencvpath = System.getProperty("user.dir");
+        if(osName.startsWith("Windows")) {
+            int bitness = Integer.parseInt(System.getProperty("sun.arch.data.model"));
+            if(bitness == 32) {
+                opencvpath=opencvpath+"\\opencv\\x86\\";
+            }
+            else if (bitness == 64) { 
+                opencvpath=opencvpath+"\\opencv\\x64\\";
+            } else { 
+                opencvpath=opencvpath+"\\opencv\\x86\\"; 
+            }           
+        } 
+        else if(osName.equals("Mac OS X")){
+            opencvpath = opencvpath+"Your path to .dylib";
+        }
+        System.out.println(opencvpath);
+        System.load(opencvpath + Core.NATIVE_LIBRARY_NAME + ".dll");
+    } catch (Exception e) {
+        throw new RuntimeException("Failed to load opencv native library", e);
+    }
+}
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        loadLibraries();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

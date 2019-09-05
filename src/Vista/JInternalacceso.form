@@ -33,9 +33,9 @@
                   <Component id="lblnombre" alignment="0" min="-2" pref="316" max="-2" attributes="0"/>
                   <Component id="lblpaso" alignment="0" min="-2" pref="316" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="80" max="32767" attributes="0"/>
-              <Component id="lblimagen" min="-2" pref="293" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="lblimagen" pref="393" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
