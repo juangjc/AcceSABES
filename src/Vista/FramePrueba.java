@@ -21,6 +21,7 @@ import org.opencv.core.Core;
 public class FramePrueba extends javax.swing.JFrame {
 JInternalralumnos ralumno ;
 JInternalacceso acceso;
+Jinternalalta_libro accebiblioteca;
     /**
      * Creates new form FramePrueba
      */
@@ -47,6 +48,7 @@ JInternalacceso acceso;
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -89,7 +91,16 @@ JInternalacceso acceso;
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Biblioteca");
+
+        jMenuItem4.setText("jMenuItem4");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem4);
+
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
@@ -157,6 +168,21 @@ JInternalacceso acceso;
         }
         consulta.show();
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+         accebiblioteca = new Jinternalalta_libro();
+        dp.removeAll();
+        dp.add(accebiblioteca, BorderLayout.CENTER);
+        dp.revalidate();
+        dp.repaint();
+        try {
+            accebiblioteca.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        accebiblioteca.show();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
     public void cerrarventanas(){
         try {            
              if(ralumno.isShowing()){             
@@ -241,5 +267,6 @@ JInternalacceso acceso;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     // End of variables declaration//GEN-END:variables
 }
