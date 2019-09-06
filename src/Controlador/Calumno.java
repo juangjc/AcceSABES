@@ -85,4 +85,27 @@ public class Calumno {
         }
         return alumno;
     }
+    
+    public void actualizaralumno (Connection conexion,Alumno alumno) throws SQLException
+    {
+        PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("update alumno set nombre=?,apellido=?,telefono=?,idcarrera=?,idstatus=? where matricula=?");
+            
+            consulta.setString(1, alumno.getNombre());
+            consulta.setString(2, alumno.getApellido());
+            consulta.setString(3, alumno.getTelefono());
+            consulta.setInt(4, alumno.getIdcarrera());
+            consulta.setInt(5, alumno.getIdstatus());
+            consulta.setString(6, alumno.getMatricula());
+            consulta.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+
+    
+    
+    
+    }
+    
 }

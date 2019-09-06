@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -36,7 +37,9 @@ import javax.swing.table.DefaultTableModel;
  */
 public class JInternalConsulta extends javax.swing.JInternalFrame {
 
-    String matricula;
+   
+    String matricula, nombre, apellido, telefono, tarjeta;
+    int idcarrera, idstatus;
     DefaultTableModel modelo = new DefaultTableModel();
     List<Vconsultaalumnos> alumnos = new ArrayList<>();
     Calumno calumno = new Calumno();
@@ -93,6 +96,7 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         txtmatricula = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         lblmatricula = new javax.swing.JLabel();
+        btnactualizar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("consulta de alumnos");
@@ -149,6 +153,13 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Buscar:");
 
+        btnactualizar.setText("Actualizar");
+        btnactualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnactualizarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -188,8 +199,10 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(lblmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnactualizar)
+                                .addGap(130, 130, 130)))))
                 .addGap(18, 18, 18)
                 .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -206,12 +219,17 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtmatricula))
-                        .addGap(15, 15, 15)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(lblmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(15, 15, 15)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE))
+                                    .addComponent(lblmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnactualizar)))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -309,6 +327,29 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_tblalumnosMouseClicked
 
+    private void btnactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarActionPerformed
+        matricula = lblmatricula.getText();
+        nombre = txtnombre.getText();
+        apellido = txtapellido.getText();
+        telefono = txttelefono.getText();
+        Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
+        idcarrera = cr.getIdcarrera();
+        Status st = (Status) this.cbbstatus.getSelectedItem();
+        idstatus = st.getIdstatus();
+        alumno = new Alumno(matricula, nombre, apellido, telefono, idcarrera, idstatus);
+        try {
+            calumno.actualizaralumno(Conexion.obtener(), alumno);
+            JOptionPane.showMessageDialog(this,
+        "Registro actualizado",
+        "Actualización de registro",
+        JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnactualizarActionPerformed
+
     public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
         Carrera carrera;
 
@@ -353,6 +394,7 @@ public void llena_combo_status() { // static para poder llamarlo desde el otro f
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnactualizar;
     private javax.swing.JComboBox<String> cbbcarrera;
     private javax.swing.JComboBox<String> cbbstatus;
     private javax.swing.JLabel jLabel1;
