@@ -18,6 +18,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -35,6 +36,7 @@ import javax.sql.rowset.serial.SerialBlob;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import jssc.SerialPortEvent;
@@ -54,6 +56,15 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
     String idtarjeta = null;
     String dato;
+    static DefaultComboBoxModel modelo, modelo2;
+    String matricula, nombre, apellido, telefono, tarjeta;
+    int idcarrera, idstatus, control;
+    Blob fotografia = null;
+    byte[] imagen;
+    long  imagen2;
+    Alumno alumno;
+    Alumnotarjeta alumnotarjeta;
+    Calumno calumno = new Calumno();
     //variables de la camara
     private DaemonThread myThread = null;
     int count = 0;
@@ -192,15 +203,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         }
 
     };
-    static DefaultComboBoxModel modelo, modelo2;
-    String matricula, nombre, apellido, telefono, tarjeta;
-    int idcarrera, idstatus, control;
-    Blob fotografia = null;
-    byte[] imagen;
-    long  imagen2;
-    Alumno alumno;
-    Alumnotarjeta alumnotarjeta;
-    Calumno calumno = new Calumno();
+    
 
     /**
      * Creates new form JInternalralumnos
@@ -313,6 +316,12 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Nombre: ");
 
+        txtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtnombreKeyTyped(evt);
+            }
+        });
+
         jButton2.setText("Guardar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,10 +333,27 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Tarjeta:");
 
+        txtapellidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtapellidosActionPerformed(evt);
+            }
+        });
+        txtapellidos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtapellidosKeyTyped(evt);
+            }
+        });
+
         txttarjeta.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         txttarjeta.setOpaque(true);
 
         jLabel4.setText("Telefono:");
+
+        txttelefono.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txttelefonoKeyTyped(evt);
+            }
+        });
 
         jLabel5.setText("Carrera");
 
@@ -512,14 +538,26 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             try {
                 Thread.sleep(1000);
                 calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
+                JOptionPane.showMessageDialog(this,
+        "Registro Insertado correctamente",
+        "Inserción de registro",
+        JOptionPane.INFORMATION_MESSAGE);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println("hilo");
             }
         } catch (SQLException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+        "Error al insertar registro, compruebe que la matricula a insertar no este ya registrada",
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this,
+        "Error al insertar tarjeta",
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -576,6 +614,39 @@ imagen=convertir2(frame);
         btnactivar.setEnabled(true);
         btntomar.setEnabled(false);
     }//GEN-LAST:event_btntomarActionPerformed
+
+    private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) == false) {
+        }else{
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtnombreKeyTyped
+
+    private void txtapellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtapellidosActionPerformed
+       
+    }//GEN-LAST:event_txtapellidosActionPerformed
+
+    private void txtapellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) == false) {
+        }else{
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtapellidosKeyTyped
+
+    private void txttelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttelefonoKeyTyped
+        int k=(int)evt.getKeyChar();
+if (k >= 97 && k <= 122 || k>=65 && k<=90){
+evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+//JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+}
+if(k==241 || k==209){
+evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+//JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+}
+
+    }//GEN-LAST:event_txttelefonoKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

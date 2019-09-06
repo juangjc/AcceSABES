@@ -24,6 +24,16 @@ public class Alumno {
     public Alumno() {
     }
 
+    public Alumno(String matricula, String nombre, String apellido, String telefono, int idcarrera, int idstatus) {
+        this.matricula = matricula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.idcarrera = idcarrera;
+        this.idstatus = idstatus;
+    }
+    
+
     public Alumno(String matricula, String nombre, String apellido, String telefono, int idcarrera, int idstatus, Blob fotografia) {
         this.matricula = matricula;
         this.nombre = nombre;
