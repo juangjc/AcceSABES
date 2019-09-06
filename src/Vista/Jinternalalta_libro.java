@@ -132,9 +132,16 @@ public class Jinternalalta_libro extends javax.swing.JInternalFrame {
 
     private void txtNombrelibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombrelibroActionPerformed
         // TODO add your handling code here:
-        int a = txtCodigo.getText().length();
-        txtCodigo.setText(""+a);
+        if (txtNombrelibro.getText().equals("")) {
+            System.out.println("falta dato");
+        }else{
+            long  a = Long.valueOf(txtNombrelibro.getText().trim());
+                
+       txtCodigo.setText(""+a);
         txtNombrelibro.setText("");
+            System.out.println("Error de espacio"+a);
+        }
+        
     }//GEN-LAST:event_txtNombrelibroActionPerformed
 
 
