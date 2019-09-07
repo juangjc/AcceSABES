@@ -5,12 +5,24 @@
  */
 package Vista;
 
+import Controlador.Clibro;
+import Controlador.Conexion;
+import Modelo.Alta_libro;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author MUÑOZ
  */
 public class Jinternalalta_libro extends javax.swing.JInternalFrame {
-
+String  nombre_libro, clasificacion, autor, edicion, isbn;
+    int cod_libro;
+    Alta_libro libro;
+    Clibro clibro = new Clibro();
     /**
      * Creates new form Registro_libro
      */
@@ -63,6 +75,11 @@ public class Jinternalalta_libro extends javax.swing.JInternalFrame {
         jLabel6.setText("ISBN");
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Borrar");
 
@@ -132,6 +149,7 @@ public class Jinternalalta_libro extends javax.swing.JInternalFrame {
 
     private void txtNombrelibroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombrelibroActionPerformed
         // TODO add your handling code here:
+        
         if (txtNombrelibro.getText().equals("")) {
             System.out.println("falta dato");
         }else{
@@ -143,6 +161,26 @@ public class Jinternalalta_libro extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_txtNombrelibroActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+            cod_libro = Integer.valueOf(txtCodigo.getText());
+            nombre_libro = txtNombrelibro.getText();
+            clasificacion = txtclasificacion.getText();
+            autor = txtautor.getText();
+            edicion = txtEdicion.getText();
+            isbn = txtIsbn.getText();
+            libro = new Alta_libro(cod_libro, nombre_libro, clasificacion, autor,edicion, isbn );
+            try{
+                
+                clibro.guardar(Conexion.obtener(), libro);
+                JOptionPane.showMessageDialog(this, "Guatdado");
+            }catch(SQLException ex){
+                System.out.println(""+ex);
+            } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

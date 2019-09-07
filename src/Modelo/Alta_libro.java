@@ -16,10 +16,14 @@ public class Alta_libro {
     private String autor;
     private String edicion;
     private String isbn;
-    
-    
-    public Alta_libro(){
-        
+
+    public Alta_libro(int id_libro, String nombre_libro, String clasificacion, String autor, String edicion, String isbn) {
+        this.id_libro = id_libro;
+        this.nombre_libro = nombre_libro;
+        this.clasificacion = clasificacion;
+        this.autor = autor;
+        this.edicion = edicion;
+        this.isbn = isbn;
     }
 
     public int getId_libro() {
@@ -69,6 +73,6 @@ public class Alta_libro {
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
-    
-    
+   
+   
 }
