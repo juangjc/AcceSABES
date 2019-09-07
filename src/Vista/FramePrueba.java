@@ -156,7 +156,8 @@ Jinternalalta_libro accebiblioteca;
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-         JInternalConsulta consulta = new JInternalConsulta();
+        cerrarventanas(); 
+        JInternalConsulta consulta = new JInternalConsulta();
         dp.removeAll();
         dp.add(consulta, BorderLayout.CENTER);
         dp.revalidate();
