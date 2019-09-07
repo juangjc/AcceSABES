@@ -130,6 +130,12 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
 
         jLabel3.setText("Apellido:");
 
+        txtnombre.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtnombreKeyTyped(evt);
+            }
+        });
+
         jLabel4.setText("Telefono:");
 
         cbbcarrera.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -349,6 +355,14 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
             Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnactualizarActionPerformed
+
+    private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
+        char c = evt.getKeyChar();
+        if (Character.isDigit(c) == false) {
+        }else{
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtnombreKeyTyped
 
     public void llena_combo_carrera() { // static para poder llamarlo desde el otro frame o JDialog
         Carrera carrera;

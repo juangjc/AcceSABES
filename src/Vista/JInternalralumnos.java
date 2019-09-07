@@ -637,14 +637,23 @@ imagen=convertir2(frame);
 
     private void txttelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttelefonoKeyTyped
         int k=(int)evt.getKeyChar();
-if (k >= 97 && k <= 122 || k>=65 && k<=90){
-evt.setKeyChar((char)KeyEvent.VK_CLEAR);
-//JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
-}
-if(k==241 || k==209){
-evt.setKeyChar((char)KeyEvent.VK_CLEAR);
-//JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
-}
+        System.out.println(k);
+        
+        if (k>=48 && k<=57)
+        {
+       // evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+        }
+        else
+             evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+            
+//if (k >= 97 && k <= 122 || k>=65 && k<=90){
+//evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+////JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+//}
+//if(k==241 || k==209){
+//evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+////JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
+//}
 
     }//GEN-LAST:event_txttelefonoKeyTyped
 
