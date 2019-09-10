@@ -162,6 +162,15 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         
     }//GEN-LAST:event_txtNombrelibroActionPerformed
 
+   public void borrar(){
+       txtCodigo.setText("");
+       txtNombrelibro.setText("");
+       txtclasificacion.setText("");
+       txtautor.setText("");
+       txtEdicion.setText("");
+       txtIsbn.setText("");
+   }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
             cod_libro = Integer.valueOf(txtCodigo.getText());
@@ -174,9 +183,11 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
             try{
                 
                 clibro.guardar(Conexion.obtener(), libro);
-                JOptionPane.showMessageDialog(this, "Guatdado");
+                this.borrar();
+                JOptionPane.showMessageDialog(this, "Guardado");
             }catch(SQLException ex){
                 System.out.println(""+ex);
+                JOptionPane.showMessageDialog(this,"Codigo de barras existente");
             } catch (ClassNotFoundException ex) {
         Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
     }
