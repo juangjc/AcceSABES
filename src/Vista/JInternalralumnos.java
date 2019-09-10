@@ -513,7 +513,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                             .addComponent(txttarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         pack();
@@ -529,6 +529,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cbbstatusItemStateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (comprobarnombre()){
         matricula = txtmatricula.getText();
         nombre = txtnombre.getText();
         apellido = txtapellidos.getText();
@@ -572,6 +573,15 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         "Error al insertar tarjeta",
         "Error",
         JOptionPane.ERROR_MESSAGE);
+        }
+        }
+        else
+        {
+        JOptionPane.showMessageDialog(this,
+        "Error al insertar registro, compruebe que todos los campos tengas datos a introducir",
+        "Campos vacios",
+        JOptionPane.INFORMATION_MESSAGE);
+        
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -661,6 +671,8 @@ imagen=convertir2(frame);
         } else {
             evt.setKeyChar((char) KeyEvent.VK_CLEAR);
         }
+        
+      
             
 //if (k >= 97 && k <= 122 || k>=65 && k<=90){
 //evt.setKeyChar((char)KeyEvent.VK_CLEAR);
@@ -673,6 +685,13 @@ imagen=convertir2(frame);
 
     }//GEN-LAST:event_txttelefonoKeyTyped
 
+    public boolean comprobarnombre(){
+          if(txtmatricula.getText().isEmpty() || txtnombre.getText().isEmpty()||txtapellidos.getText().isEmpty()||
+                  txttelefono.getText().isEmpty()||txtemail.getText().isEmpty() || txttarjeta.getText().isEmpty())
+      return false;
+          else 
+              return true;
+      }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnactivar;
