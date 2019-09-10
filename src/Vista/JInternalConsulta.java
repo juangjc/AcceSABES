@@ -38,13 +38,13 @@ import javax.swing.table.DefaultTableModel;
 public class JInternalConsulta extends javax.swing.JInternalFrame {
 
    
-    String matricula, nombre, apellido, telefono, tarjeta;
+    String matricula, nombre, apellido, telefono, tarjeta,email;
     int idcarrera, idstatus;
     DefaultTableModel modelo = new DefaultTableModel();
     List<Vconsultaalumnos> alumnos = new ArrayList<>();
     Calumno calumno = new Calumno();
-    Object[] columnas = new Object[6];
-    Object[] datos = new Object[6];
+    Object[] columnas = new Object[7];
+    Object[] datos = new Object[7];
     DefaultComboBoxModel modelocarrera, modelostatus;
     Alumno alumno;
     Blob bytesImagen;
@@ -60,8 +60,9 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         columnas[1] = "Nombre";
         columnas[2] = "Apellido";
         columnas[3] = "Telefono";
-        columnas[4] = "Carrera";
-        columnas[5] = "Status";
+        columnas[4] = "Correo electronico";
+        columnas[5] = "Carrera";
+        columnas[6] = "Status";
         modelo.setColumnIdentifiers(columnas);
         tblalumnos.setModel(modelo);
         modelocarrera = new DefaultComboBoxModel();
@@ -97,6 +98,8 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         lblmatricula = new javax.swing.JLabel();
         btnactualizar = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        txtemail = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("consulta de alumnos");
@@ -166,6 +169,8 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setText("Email:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -179,36 +184,43 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                         .addGap(116, 116, 116)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(18, 18, 18)
-                                .addComponent(txtmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnactualizar)
-                                .addGap(130, 130, 130)))))
+                                .addGap(130, 130, 130))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel6)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel5)
+                                            .addComponent(jLabel7))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(18, 18, 18)
                 .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 499, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -231,7 +243,7 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(8, 8, 8)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 18, Short.MAX_VALUE))
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
                                     .addComponent(lblmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -250,13 +262,17 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel7)
+                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(56, 56, 56)
+                        .addGap(18, 18, 18)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(395, 395, 395))))
         );
@@ -269,6 +285,8 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtmatriculaKeyTyped
 
     private void txtmatriculaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmatriculaKeyReleased
+        
+        
         modelo.setRowCount(0);
         matricula = txtmatricula.getText();
         try {
@@ -278,8 +296,9 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
                 datos[1] = alumnos.get(i).getNombre();
                 datos[2] = alumnos.get(i).getApellidos();
                 datos[3] = alumnos.get(i).getTelefono();
-                datos[4] = alumnos.get(i).getCarrera();
-                datos[5] = alumnos.get(i).getStatus();
+                datos[4]=alumnos.get(i).getEmail();
+                datos[5] = alumnos.get(i).getCarrera();
+                datos[6] = alumnos.get(i).getStatus();
                 modelo.addRow(datos);
 
             }
@@ -290,6 +309,7 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(JInternalConsulta.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
 
 
     }//GEN-LAST:event_txtmatriculaKeyReleased
@@ -311,6 +331,7 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
             txtnombre.setText(alumno.getNombre());
             txtapellido.setText(alumno.getApellido());
             txttelefono.setText(alumno.getTelefono());
+            txtemail.setText(alumno.getEmail());
             bytesImagen = alumno.getFotografia();
             bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
             BufferedImage img = null;
@@ -338,11 +359,12 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         nombre = txtnombre.getText();
         apellido = txtapellido.getText();
         telefono = txttelefono.getText();
+        email=txtemail.getText();
         Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
         idcarrera = cr.getIdcarrera();
         Status st = (Status) this.cbbstatus.getSelectedItem();
         idstatus = st.getIdstatus();
-        alumno = new Alumno(matricula, nombre, apellido, telefono, idcarrera, idstatus);
+        alumno = new Alumno(matricula, nombre, apellido, telefono,email, idcarrera, idstatus);
         try {
             calumno.actualizaralumno(Conexion.obtener(), alumno);
             JOptionPane.showMessageDialog(this,
@@ -417,12 +439,14 @@ public void llena_combo_status() { // static para poder llamarlo desde el otro f
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblimagen;
     private javax.swing.JLabel lblmatricula;
     private javax.swing.JTable tblalumnos;
     private javax.swing.JTextField txtapellido;
+    private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtmatricula;
     private javax.swing.JTextField txtnombre;
     private javax.swing.JTextField txttelefono;

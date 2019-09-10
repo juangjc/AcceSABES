@@ -57,7 +57,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     String idtarjeta = null;
     String dato;
     static DefaultComboBoxModel modelo, modelo2;
-    String matricula, nombre, apellido, telefono, tarjeta;
+    String matricula, nombre, apellido, telefono, tarjeta,email;
     int idcarrera, idstatus, control;
     Blob fotografia = null;
     byte[] imagen;
@@ -300,6 +300,8 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         panelcamara = new javax.swing.JPanel();
         btnactivar = new javax.swing.JButton();
         btntomar = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        txtemail = new javax.swing.JTextField();
 
         setClosable(true);
         setTitle("Registro alumnos");
@@ -394,30 +396,14 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel8.setText("Email:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel7)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txttarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(24, 24, 24)
-                                .addComponent(jButton2))))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -444,8 +430,31 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                                             .addGroup(layout.createSequentialGroup()
                                                 .addGap(4, 4, 4)
                                                 .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                        .addGap(3, 3, 3)))))))
-                .addGap(26, 26, 26)
+                                        .addGap(3, 3, 3))))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addGap(18, 18, 18)
+                                .addComponent(cbbstatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txttarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(24, 24, 24)
+                                .addComponent(jButton2))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtemail)))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
@@ -486,6 +495,10 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel4)
                             .addComponent(txttelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(22, 22, 22)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(cbbcarrera, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -497,10 +510,10 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel7)
-                            .addComponent(txttarjeta, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE))
+                            .addComponent(txttarjeta, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jButton2)))
-                .addContainerGap(87, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         pack();
@@ -520,6 +533,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         nombre = txtnombre.getText();
         apellido = txtapellidos.getText();
         telefono = txttelefono.getText();
+        email=txtemail.getText();
         Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
         idcarrera = cr.getIdcarrera();
         Status st = (Status) this.cbbstatus.getSelectedItem();
@@ -531,12 +545,12 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         } catch (SQLException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        alumno = new Alumno(matricula, nombre, apellido, telefono, idcarrera, idstatus, fotografia);
+        alumno = new Alumno(matricula, nombre, apellido, telefono,email, idcarrera, idstatus, fotografia);
         alumnotarjeta = new Alumnotarjeta(matricula, tarjeta);
         try {
             calumno.guardar(Conexion.obtener(), alumno);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
                 calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
                 JOptionPane.showMessageDialog(this,
         "Registro Insertado correctamente",
@@ -628,23 +642,25 @@ imagen=convertir2(frame);
     }//GEN-LAST:event_txtapellidosActionPerformed
 
     private void txtapellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyTyped
-        char c = evt.getKeyChar();
-        if (Character.isDigit(c) == false) {
-        }else{
-            evt.consume();
+       int k = (int) evt.getKeyChar();
+        System.out.println(k);
+
+        if ((k >= 65 && k <= 90)||(k >= 97 && k <= 122 ) || (k==32)||(k==165)) {
+
+        } else {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
         }
     }//GEN-LAST:event_txtapellidosKeyTyped
 
     private void txttelefonoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttelefonoKeyTyped
-        int k=(int)evt.getKeyChar();
+        int k = (int) evt.getKeyChar();
         System.out.println(k);
-        
-        if (k>=48 && k<=57)
-        {
-       // evt.setKeyChar((char)KeyEvent.VK_CLEAR);
+
+        if (k >= 48 && k <= 57) {
+
+        } else {
+            evt.setKeyChar((char) KeyEvent.VK_CLEAR);
         }
-        else
-             evt.setKeyChar((char)KeyEvent.VK_CLEAR);
             
 //if (k >= 97 && k <= 122 || k>=65 && k<=90){
 //evt.setKeyChar((char)KeyEvent.VK_CLEAR);
@@ -671,8 +687,10 @@ imagen=convertir2(frame);
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel panelcamara;
     private javax.swing.JTextField txtapellidos;
+    private javax.swing.JTextField txtemail;
     private javax.swing.JTextField txtmatricula;
     private javax.swing.JTextField txtnombre;
     private javax.swing.JLabel txttarjeta;

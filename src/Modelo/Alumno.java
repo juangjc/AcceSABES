@@ -16,6 +16,7 @@ public class Alumno {
     private String nombre;
     private String apellido;
     private String telefono;
+    private String email;
     private int idcarrera;
     private int idstatus;
     private Blob fotografia;
@@ -24,11 +25,12 @@ public class Alumno {
     public Alumno() {
     }
 
-    public Alumno(String matricula, String nombre, String apellido, String telefono, int idcarrera, int idstatus) {
+    public Alumno(String matricula, String nombre, String apellido, String telefono, String email,int idcarrera, int idstatus) {
         this.matricula = matricula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
+        this.email=email;
         this.idcarrera = idcarrera;
         this.idstatus = idstatus;
     }
@@ -44,12 +46,32 @@ public class Alumno {
         this.fotografia = fotografia;
     }
 
+    public Alumno(String matricula, String nombre, String apellido, String telefono, String email, int idcarrera, int idstatus, Blob fotografia) {
+        this.matricula = matricula;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.email = email;
+        this.idcarrera = idcarrera;
+        this.idstatus = idstatus;
+        this.fotografia = fotografia;
+    }
+    
+
     public Blob getFotografia() {
         return fotografia;
     }
 
     public void setFotografia(Blob fotografia) {
         this.fotografia = fotografia;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
    

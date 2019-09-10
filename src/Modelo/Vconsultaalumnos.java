@@ -19,6 +19,15 @@ public class Vconsultaalumnos {
      private String carrera;
      private String status;
      private Blob fotografia;
+     private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public Vconsultaalumnos(String matricula, String nombre, String apellidos, String telefono, String carrera, String status, Blob fotografia) {
         this.matricula = matricula;
@@ -29,6 +38,19 @@ public class Vconsultaalumnos {
         this.status = status;
         this.fotografia = fotografia;
     }
+
+    public Vconsultaalumnos(String matricula, String nombre, String apellidos, String telefono, String carrera, String status, Blob fotografia, String email) {
+        this.matricula = matricula;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.carrera = carrera;
+        this.status = status;
+        this.fotografia = fotografia;
+        this.email = email;
+    }
+    
+    
 
     public Vconsultaalumnos() {
     }

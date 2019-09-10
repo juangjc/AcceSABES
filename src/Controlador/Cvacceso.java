@@ -24,7 +24,7 @@ public class Cvacceso {
         Vacceso vacceso = new Vacceso();
         PreparedStatement consulta;
         try {
-            consulta = conexion.prepareStatement("SELECT matricula,nombre,apellido,fotografia FROM vacceso where status='Inscrito' and codigotarjeta='" + codigo + "'");
+            consulta = conexion.prepareStatement("SELECT matricula,nombre,apellido,fotografia FROM vacceso where status='Inscrito' and codigotarjeta='" + codigo + "' and tstatus=1");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 vacceso.setMatricula(resultado.getString("matricula"));

@@ -12,10 +12,25 @@ package Modelo;
 public class Alumnotarjeta {
     private String matricula;
     private String codigotarjeta;
+    private String status;
 
     public Alumnotarjeta(String matricula, String codigotarjeta) {
         this.matricula = matricula;
         this.codigotarjeta = codigotarjeta;
+    }
+
+    public Alumnotarjeta(String matricula, String codigotarjeta, String status) {
+        this.matricula = matricula;
+        this.codigotarjeta = codigotarjeta;
+        this.status = status;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     
 
