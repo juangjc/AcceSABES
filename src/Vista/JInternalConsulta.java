@@ -332,6 +332,8 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
             txtapellido.setText(alumno.getApellido());
             txttelefono.setText(alumno.getTelefono());
             txtemail.setText(alumno.getEmail());
+            cbbcarrera.setSelectedIndex(alumno.getIdcarrera()-1);
+            cbbstatus.setSelectedIndex(alumno.getIdstatus()-1);
             bytesImagen = alumno.getFotografia();
             bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
             BufferedImage img = null;

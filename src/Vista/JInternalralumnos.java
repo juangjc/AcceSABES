@@ -85,18 +85,13 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                         try
                         {
                             //webSource.retrieve(frame);
-                          webSource.read(frame);
-                            
-            
-			   Imgcodecs.imencode(".jpg", frame, mem);
+                          webSource.read(frame);                           
+            			   Imgcodecs.imencode(".jpg", frame, mem);
                            
 			    Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
-
 			    BufferedImage buff = (BufferedImage) im;
-			    Graphics g=panelcamara.getGraphics();
-                            
-                           
-			   // if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -10 , 0, 0, buff.getWidth(), buff.getHeight(), null))
+			    Graphics g=panelcamara.getGraphics();                           
+                           			   // if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -10 , 0, 0, buff.getWidth(), buff.getHeight(), null))
 			    g.drawImage(buff, 0,0,550,400,0,0,buff.getWidth(),buff.getHeight(), null);
 			    if(runnable == false)
                             {
@@ -191,7 +186,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                     txttarjeta.setBackground(Color.GREEN);
 
                     txttarjeta.setText("Registrada");
-                    arduino.killArduinoConnection();
+                    //arduino.killArduinoConnection();
 
                     System.out.println("entro al label");
                 }
@@ -553,6 +548,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             try {
                 Thread.sleep(500);
                 calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
+                borrarcampos();
                 JOptionPane.showMessageDialog(this,
         "Registro Insertado correctamente",
         "Inserción de registro",
@@ -692,6 +688,17 @@ imagen=convertir2(frame);
           else 
               return true;
       }
+    
+    public void borrarcampos(){
+    txtmatricula.setText("");
+    txtnombre.setText("");
+    txtapellidos.setText("");
+    txttelefono.setText("");
+    txtemail.setText("");
+    txttarjeta.setText("");
+    txttarjeta.setBackground(Color.LIGHT_GRAY);
+    
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnactivar;
