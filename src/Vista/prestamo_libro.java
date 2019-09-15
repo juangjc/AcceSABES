@@ -128,7 +128,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                     .addComponent(diseñoCuadro4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(diseñoCuadro5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(diseñoCuadro6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -282,6 +282,25 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
          
          int libro = Integer.valueOf(txtnom_libro.getText());
          txtcodigo.setText(""+libro);
+         txtnom_libro.setText("");
+            try{
+                
+                clibro.consulta_libro(Conexion.obtener(), consulta);
+                txtcodigo.setText(""+consulta.getId_libro());
+                txtnom_libro.setText(consulta.getNombre_libro());
+                txtclasificacion.setText(consulta.getClasificacion());
+                txtautor.setText(consulta.getAutor());
+                txtedicion.setText(consulta.getEdicion());
+                txtisbn.setText(consulta.getIsbn());
+               
+            }catch(SQLException ex){
+                System.out.println(""+ex);
+                JOptionPane.showMessageDialog(this,"Codigo de barras existente");
+            } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    }
+         
+         
     }//GEN-LAST:event_txtnom_libroActionPerformed
 
 
