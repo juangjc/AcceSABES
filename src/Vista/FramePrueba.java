@@ -22,6 +22,7 @@ public class FramePrueba extends javax.swing.JFrame {
 JInternalralumnos ralumno ;
 JInternalacceso acceso;
 Jinternalalta_libro accebiblioteca;
+prestamo_libro prestamo;
     /**
      * Creates new form FramePrueba
      */
@@ -49,6 +50,7 @@ Jinternalalta_libro accebiblioteca;
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -93,13 +95,21 @@ Jinternalalta_libro accebiblioteca;
 
         jMenu2.setText("Biblioteca");
 
-        jMenuItem4.setText("jMenuItem4");
+        jMenuItem4.setText("Alta de libros");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
             }
         });
         jMenu2.add(jMenuItem4);
+
+        jMenuItem5.setText("Prestamos de libros");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -184,6 +194,21 @@ Jinternalalta_libro accebiblioteca;
         }
         accebiblioteca.show();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
+         prestamo = new prestamo_libro();
+        dp.removeAll();
+        dp.add(prestamo, BorderLayout.CENTER);
+        dp.revalidate();
+        dp.repaint();
+        try {
+            prestamo.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        prestamo.show();
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
     public void cerrarventanas(){
         try {            
              if(ralumno.isShowing()){             
@@ -269,5 +294,6 @@ Jinternalalta_libro accebiblioteca;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
 }
