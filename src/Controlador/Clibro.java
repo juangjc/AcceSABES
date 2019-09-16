@@ -32,6 +32,24 @@ public class Clibro {
         }
 
     }
+    
+    
+    public void consulta_libro(Connection conexion, Alta_libro busqueda) throws SQLException {
+        PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("SELECT*FROM libro WHERE id_libro = '"+busqueda+"';");
+            consulta.setInt(1, busqueda.getId_libro());
+            consulta.setString(2, busqueda.getNombre_libro());
+            consulta.setString(3, busqueda.getClasificacion());
+             consulta.setString(4, busqueda.getClasificacion());
+            consulta.setString(5, busqueda.getEdicion());
+            consulta.setString(6, busqueda.getIsbn());
+            consulta.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+
+    }
 
    
    
