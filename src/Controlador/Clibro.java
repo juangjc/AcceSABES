@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.Alta_libro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -34,21 +35,24 @@ public class Clibro {
     }
     
     
-    public void consulta_libro(Connection conexion, Alta_libro busqueda) throws SQLException {
-        PreparedStatement consulta;
+    public Alta_libro consulta_libro(Connection conexion, int id_libro) throws SQLException {
+        Alta_libro libro = new Alta_libro();
         try {
-            consulta = conexion.prepareStatement("SELECT*FROM libro WHERE id_libro = '"+busqueda+"';");
-            consulta.setInt(1, busqueda.getId_libro());
-            consulta.setString(2, busqueda.getNombre_libro());
-            consulta.setString(3, busqueda.getClasificacion());
-             consulta.setString(4, busqueda.getClasificacion());
-            consulta.setString(5, busqueda.getEdicion());
-            consulta.setString(6, busqueda.getIsbn());
-            consulta.executeUpdate();
+            PreparedStatement consulta = conexion.prepareStatement("select * from libro WHERE id_libro= '"+id_libro+"'");
+            ResultSet resultado = consulta.executeQuery();
+            while (resultado.next()) {
+                
+                libro.setId_libro(resultado.getInt("id_libro"));
+               libro.setAutor(resultado.getString("autor"));
+               libro.setNombre_libro(resultado.getString("nombre"));
+               libro.setClasificacion(resultado.getString("clasificacion"));
+               libro.setEdicion(resultado.getString("edicion"));
+               libro.setIsbn(resultado.getString("isbn"));
+            }
         } catch (SQLException ex) {
             throw new SQLException(ex);
         }
-
+        return libro;
     }
 
    

@@ -26,6 +26,9 @@ public class Alta_libro {
         this.isbn = isbn;
     }
 
+    public Alta_libro() {
+    }
+
     public int getId_libro() {
         return id_libro;
     }

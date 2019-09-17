@@ -23,15 +23,17 @@ import javax.swing.JOptionPane;
  */
 public class prestamo_libro extends javax.swing.JInternalFrame {
 String  nombre_libro, clasificacion, autor, edicion, isbn;
-    int cod_libro;
-    Alta_libro consulta;
+    int cod_libro,consulta2;
+    String  consulta;
+    
     Clibro clibro = new Clibro();
+    Alta_libro libros = new Alta_libro();
     /**
      * Creates new form prestamo_libro
      */
     public prestamo_libro() {
         initComponents();
-       
+        txtnom_libro.setEnabled(false);
         
         
     }
@@ -107,6 +109,12 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
         diseñoCuadro1.setEnabled(false);
 
+        diseñoCuadro2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                diseñoCuadro2ActionPerformed(evt);
+            }
+        });
+
         diseñoCuadro3.setEnabled(false);
 
         diseñoCuadro4.setEnabled(false);
@@ -176,8 +184,18 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jButton1.setText("Guardar");
 
         jButton2.setText("Cancelar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Modificar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -269,7 +287,75 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
     private void txtnom_libroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnom_libroActionPerformed
         // TODO add your handling code here:
-         Date date = new Date();
+         
+         
+         
+         int libro = Integer.valueOf(txtnom_libro.getText());
+         txtcodigo.setText(""+libro);
+         txtnom_libro.setText("");
+         
+         consulta2= libro;
+         
+            try{
+                
+               libros = clibro.consulta_libro(Conexion.obtener(),consulta2);
+               
+               
+      txtcodigo.setText(""+libros.getId_libro());
+               txtnom_libro.setText(libros.getNombre_libro());
+                System.out.println(libros.getNombre_libro());
+               txtclasificacion.setText(libros.getAutor());
+                txtautor.setText(libros.getClasificacion());
+                txtedicion.setText(libros.getEdicion());
+                txtisbn.setText(libros.getIsbn());
+                this.fechas();
+                this.bloqueo();
+            }catch(SQLException ex){
+                System.out.println(""+ex);
+               // JOptionPane.showMessageDialog(this,"Codigo de barras existente");
+            } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+        
+      
+    }
+        
+         
+    }//GEN-LAST:event_txtnom_libroActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+          txtnom_libro.setEnabled(true);
+           txtnom_libro.setText("");
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void diseñoCuadro2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diseñoCuadro2ActionPerformed
+        // TODO add your handling code here:
+         txtnom_libro.setEnabled(true);
+         
+         
+         
+         
+         
+         
+         
+         
+         
+         
+    }//GEN-LAST:event_diseñoCuadro2ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+         txtnom_libro.setText("");
+         txtcodigo.setText("");
+         txtclasificacion.setText("");
+         txtautor.setText("");
+         txtedicion.setText("");
+         txtisbn.setText("");
+         fecha_prestamo.setText("");
+         fecha_entrega.setText("");
+    }//GEN-LAST:event_jButton2ActionPerformed
+public void fechas(){
+Date date = new Date();
         DateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");//fecha actual de la computadora
          DateFormat fecha2 = new SimpleDateFormat("dd");//dia actual
          DateFormat fecha3 = new SimpleDateFormat("/MM/yyyy");//mes y año 
@@ -278,34 +364,11 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         int c;
               c=  a+8;//suma el dia actual + 8
          fecha_entrega.setText(""+c+fecha3.format(date));//agrega el dia mes y año para la entrega
-         
-         
-         int libro = Integer.valueOf(txtnom_libro.getText());
-         txtcodigo.setText(""+libro);
-         txtnom_libro.setText("");
-         
-         
-         consulta = new Alta_libro(cod_libro, nombre_libro, clasificacion, autor,edicion, isbn );
-            try{
-                
-                clibro.consulta_libro(Conexion.obtener(), consulta);
-                txtcodigo.setText(""+consulta.getId_libro());
-                txtnom_libro.setText(consulta.getNombre_libro());
-                txtclasificacion.setText(consulta.getClasificacion());
-                txtautor.setText(consulta.getAutor());
-                txtedicion.setText(consulta.getEdicion());
-                txtisbn.setText(consulta.getIsbn());
-               
-            }catch(SQLException ex){
-                System.out.println(""+ex);
-               // JOptionPane.showMessageDialog(this,"Codigo de barras existente");
-            } catch (ClassNotFoundException ex) {
-        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
-    }
-         
-         
-    }//GEN-LAST:event_txtnom_libroActionPerformed
+}
 
+public void bloqueo(){
+    txtnom_libro.setEnabled(false);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private Vista.DiseñoCuadro diseñoCuadro1;
