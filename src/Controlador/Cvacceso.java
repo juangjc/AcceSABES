@@ -57,5 +57,25 @@ public class Cvacceso {
     
     
     }
+    
+    public void registraraccesocc(Connection conexion, Accesom acceso) throws SQLException
+    {
+        
+        PreparedStatement consulta;
+         try {
+             consulta = conexion.prepareStatement("INSERT INTO accesocc (codigotarjeta,acceso,idcc) VALUES(?,?,3)");
+             consulta.setString(1,acceso.getCodigotarjeta());
+             consulta.setString(2, acceso.getEntrada());
+             System.out.println(acceso.getCodigotarjeta());
+             System.out.println(acceso.getEntrada());
+             consulta.executeUpdate();
+         } catch (SQLException ex) {
+             throw new SQLException(ex);
+            
+         }
+    
+    
+    
+    }
 
 }

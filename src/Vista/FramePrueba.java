@@ -23,6 +23,7 @@ JInternalralumnos ralumno ;
 JInternalacceso acceso;
 Jinternalalta_libro accebiblioteca;
 prestamo_libro prestamo;
+JInternalaccesocc acessocc;
     /**
      * Creates new form FramePrueba
      */
@@ -48,6 +49,7 @@ prestamo_libro prestamo;
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
@@ -90,6 +92,14 @@ prestamo_libro prestamo;
             }
         });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem6.setText("Acceso CC");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem6);
 
         jMenuBar1.add(jMenu1);
 
@@ -209,6 +219,21 @@ prestamo_libro prestamo;
         }
         prestamo.show();
     }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+    cerrarventanas();
+    acessocc = new JInternalaccesocc();        // TODO add your handling code here:
+    dp.removeAll();
+        dp.add(acessocc, BorderLayout.CENTER);
+        dp.revalidate();
+        dp.repaint();
+         try {
+            acessocc.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        acessocc.show();
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
     public void cerrarventanas(){
         try {            
              if(ralumno.isShowing()){             
@@ -217,6 +242,10 @@ prestamo_libro prestamo;
              if(acceso.isShowing()){             
              acceso.dispose();            
             }
+              if(acessocc.isShowing()){             
+             acessocc.dispose();            
+            }
+             
             }
         catch(Exception ex){
            ex.printStackTrace();
@@ -295,5 +324,6 @@ prestamo_libro prestamo;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     // End of variables declaration//GEN-END:variables
 }

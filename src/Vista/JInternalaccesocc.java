@@ -124,7 +124,7 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
                             //registro de entrdas descomentar las lineas de abajo 
                             horaentrada = Generales.getDateTime();
                             accesom = new Accesom(codtarjeta, horaentrada);
-                            cvacceso.registraracceso(Conexion.obtener(), accesom);
+                            cvacceso.registraraccesocc(Conexion.obtener(), accesom);
 
                             inicial();
 
