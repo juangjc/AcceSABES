@@ -23,8 +23,8 @@ import javax.swing.JOptionPane;
  */
 public class prestamo_libro extends javax.swing.JInternalFrame {
 String  nombre_libro, clasificacion, autor, edicion, isbn;
-    int cod_libro,consulta2;
-    String  consulta;
+    int cod_libro, consulta2;
+    String   consulta;
     
     Clibro clibro = new Clibro();
     Alta_libro libros = new Alta_libro();
@@ -331,15 +331,6 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
     private void diseñoCuadro2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diseñoCuadro2ActionPerformed
         // TODO add your handling code here:
          txtnom_libro.setEnabled(true);
-         
-         
-         
-         
-         
-         
-         
-         
-         
          
     }//GEN-LAST:event_diseñoCuadro2ActionPerformed
 
