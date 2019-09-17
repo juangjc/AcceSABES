@@ -276,13 +276,16 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         fecha_prestamo.setText(""+fecha.format(date));//ingresa la fecha actual
         int  a = Integer.valueOf(""+fecha2.format(date));//realiza un parseo de int a string para tomar el dia
         int c;
-              c=  a+8;//incrementa el dia 
+              c=  a+8;//suma el dia actual + 8
          fecha_entrega.setText(""+c+fecha3.format(date));//agrega el dia mes y año para la entrega
          
          
          int libro = Integer.valueOf(txtnom_libro.getText());
          txtcodigo.setText(""+libro);
          txtnom_libro.setText("");
+         
+         
+         consulta = new Alta_libro(cod_libro, nombre_libro, clasificacion, autor,edicion, isbn );
             try{
                 
                 clibro.consulta_libro(Conexion.obtener(), consulta);
@@ -295,7 +298,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                
             }catch(SQLException ex){
                 System.out.println(""+ex);
-                JOptionPane.showMessageDialog(this,"Codigo de barras existente");
+               // JOptionPane.showMessageDialog(this,"Codigo de barras existente");
             } catch (ClassNotFoundException ex) {
         Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
     }
