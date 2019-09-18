@@ -146,7 +146,7 @@ JInternalConsulta consulta;
        // cerrarventanas();
       
         ralumno = new JInternalralumnos();
-        
+ 
         // Thread.sleep(2000);
         dp.removeAll();
         dp.add(ralumno, BorderLayout.CENTER);
@@ -171,6 +171,7 @@ JInternalConsulta consulta;
         dp.add(acceso, BorderLayout.CENTER);
         dp.revalidate();
         dp.repaint();
+         
         try {
             acceso.setMaximum(true);
         } catch (PropertyVetoException ex) {

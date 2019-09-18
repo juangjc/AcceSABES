@@ -5,11 +5,13 @@
  */
 package Controlador;
 
+import Modelo.Alta_libro;
 import Modelo.Valumnos;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,5 +42,19 @@ public class Cbiblioteca {
         
    
     }
-    
+  public ArrayList<Alta_libro> consultalibro(Connection conexion, int id_libro) throws SQLException {
+      ArrayList<Alta_libro> libro = new ArrayList();
+      
+      try {
+            PreparedStatement consulta = conexion.prepareStatement("select * from libro where id_libro like '" + id_libro + "%'");
+            ResultSet resultado = consulta.executeQuery();
+            while (resultado.next()) {
+                libro.add(new Alta_libro(resultado.getInt("id_libro"),resultado.getString("nombre"), resultado.getString("clasificacion"), resultado.getString("autor"), resultado.getString("edicion"), resultado.getString("ISBN")));
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+
+        return libro;
+  }  
 }
