@@ -10,9 +10,12 @@ import Controlador.Conexion;
 import Modelo.Alta_libro;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -23,11 +26,24 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
     int cod_libro;
     Alta_libro libro;
     Clibro clibro = new Clibro();
+    
+    
+   DefaultTableModel modelo = new DefaultTableModel();
+   List<Alta_libro> altasL = new ArrayList();
+   Object[] lista = new Object[6];
     /**
      * Creates new form Registro_libro
      */
     public Jinternalalta_libro() {
         initComponents();
+        lista[0] = "Codigo";
+        lista[1] ="Nombre del libro";
+        lista[2] ="Clasificacion";
+        lista[3] = "Autor";
+        lista[4] = "Edicion";
+        lista[5] = "ISBN";
+        modelo.setColumnIdentifiers(lista);
+        tbllibro.setModel(modelo);
     }
 
     /**
@@ -54,7 +70,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbllibro = new javax.swing.JTable();
 
         txtCodigo.setEnabled(false);
 
@@ -85,7 +101,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
         jButton2.setText("Borrar");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbllibro.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -96,7 +112,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbllibro);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -226,7 +242,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tbllibro;
     private Vista.DiseñoCuadro txtCodigo;
     private Vista.DiseñoCuadro txtEdicion;
     private Vista.DiseñoCuadro txtIsbn;

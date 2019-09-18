@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Modelo.Alta_libro;
 import Modelo.Valumnos;
 import Modelo.Vconsultaalumnos;
 import Modelo.Vprestamolibro;
@@ -43,6 +44,7 @@ public class Cbiblioteca {
         
    
     }
+
      public ArrayList<Vprestamolibro> consultaprestamos (Connection conexion, String matricula) throws SQLException{
      ArrayList<Vprestamolibro> prestamoslibros = new ArrayList();
      try {
@@ -58,4 +60,21 @@ public class Cbiblioteca {
      
      return prestamoslibros;
      }
+
+  public ArrayList<Alta_libro> consultalibro(Connection conexion, int id_libro) throws SQLException {
+      ArrayList<Alta_libro> libro = new ArrayList();
+      
+      try {
+            PreparedStatement consulta = conexion.prepareStatement("select * from libro where id_libro like '" + id_libro + "%'");
+            ResultSet resultado = consulta.executeQuery();
+            while (resultado.next()) {
+                libro.add(new Alta_libro(resultado.getInt("id_libro"),resultado.getString("nombre"), resultado.getString("clasificacion"), resultado.getString("autor"), resultado.getString("edicion"), resultado.getString("ISBN")));
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+
+        return libro;
+  }  
+
 }
