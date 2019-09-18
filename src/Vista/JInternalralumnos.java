@@ -53,15 +53,16 @@ import org.opencv.videoio.VideoCapture;
  * @author Kalas
  */
 public class JInternalralumnos extends javax.swing.JInternalFrame {
+
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
     String idtarjeta = null;
     String dato;
     static DefaultComboBoxModel modelo, modelo2;
-    String matricula, nombre, apellido, telefono, tarjeta,email;
+    String matricula, nombre, apellido, telefono, tarjeta, email;
     int idcarrera, idstatus, control;
     Blob fotografia = null;
     byte[] imagen;
-    long  imagen2;
+    long imagen2;
     Alumno alumno;
     Alumnotarjeta alumnotarjeta;
     Calumno calumno = new Calumno();
@@ -71,7 +72,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     VideoCapture webSource = null;
     Mat frame = new Mat();
     MatOfByte mem = new MatOfByte();
-    
+
     class DaemonThread implements Runnable {
 
         protected volatile boolean runnable = false;
@@ -81,37 +82,28 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
             synchronized (this) {
                 while (runnable) {
                     if (webSource.grab()) {
-                        
-                        try
-                        {
+                        try {
                             //webSource.retrieve(frame);
-                          webSource.read(frame);                           
-            			   Imgcodecs.imencode(".jpg", frame, mem);
-                           
-			    Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
-			    BufferedImage buff = (BufferedImage) im;
-			    Graphics g=panelcamara.getGraphics();                           
-                           			   // if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -10 , 0, 0, buff.getWidth(), buff.getHeight(), null))
-			    g.drawImage(buff, 0,0,550,400,0,0,buff.getWidth(),buff.getHeight(), null);
-			    if(runnable == false)
-                            {
-			    	System.out.println("Going to wait()");
-			    	this.wait();
-			    }
-			 }
-			 catch(Exception ex)
-                         {
-			    System.out.println(ex.toString());
-                         }
-
-
+                            webSource.read(frame);
+                            Imgcodecs.imencode(".jpg", frame, mem);
+                            Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
+                            BufferedImage buff = (BufferedImage) im;
+                            Graphics g = panelcamara.getGraphics();
+                            // if (g.drawImage(buff, 0, 0, getWidth(), getHeight() -10 , 0, 0, buff.getWidth(), buff.getHeight(), null))
+                            g.drawImage(buff, 0, 0, 550, 400, 0, 0, buff.getWidth(), buff.getHeight(), null);
+                            if (runnable == false) {
+                                System.out.println("Going to wait()");
+                                this.wait();
+                            }
+                        } catch (Exception ex) {
+                            System.out.println(ex.toString());
+                        }
                     }
                 }
             }
         }
     }
-    
-    
+
     InternalFrameListener listener1 = new InternalFrameListener() {
         @Override
         public void internalFrameOpened(InternalFrameEvent e) {
@@ -120,23 +112,29 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
 
         @Override
         public void internalFrameClosing(InternalFrameEvent e) {
-            webSource.release();
+            
             try {
                 arduino.killArduinoConnection();
-
+                
             } catch (ArduinoException ex) {
                 Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
             }
+          
+           
         }
 
         @Override
         public void internalFrameClosed(InternalFrameEvent e) {
-            webSource.release();
+            
             try {
                 arduino.killArduinoConnection();
+                
             } catch (ArduinoException ex) {
                 Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
             }
+             
+             
+            
 
         }
 
@@ -165,27 +163,29 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         @Override
         public void serialEvent(SerialPortEvent spe) {
             try {
-
                 if (arduino.isMessageAvailable()) {
-
                     idtarjeta = arduino.printMessage();
-                    System.out.println(idtarjeta);
+                    txttarjeta.setBackground(Color.orange);
+                    txttarjeta.setText("Registrando.");
+                    Thread.sleep(750);
+                    txttarjeta.setText("Registrando..");
+                    Thread.sleep(750);
+                    txttarjeta.setText("Registrando...");
+                    Thread.sleep(750);
+                    txttarjeta.setText("Registrando....");
+                    Thread.sleep(750);
                     txttarjeta.setBackground(Color.GREEN);
-
                     txttarjeta.setText("Registrada");
-                    //arduino.killArduinoConnection();
-
-                    System.out.println("entro al label");
                 }
             } catch (SerialPortException | ArduinoException ex) {
                 txttarjeta.setBackground(Color.RED);
-
                 txttarjeta.setText("Ocurrio un problema");
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JInternalralumnos.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
     };
-    
 
     /**
      * Creates new form JInternalralumnos
@@ -193,14 +193,10 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     public JInternalralumnos() {
         initComponents();
         addInternalFrameListener(listener1);
-        
         try {
-
             arduino.arduinoRXTX("COM4", 9600, listener);
-
-            //System.out.println(arduino.getInputBytesAvailable());
         } catch (Exception ex) {
-            // Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
 
         }
         modelo = new DefaultComboBoxModel();
@@ -286,6 +282,7 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         txtemail = new javax.swing.JTextField();
 
         setClosable(true);
+        setIconifiable(true);
         setTitle("Registro alumnos");
         setOpaque(true);
 
@@ -504,76 +501,70 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
     private void cbbstatusItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbstatusItemStateChanged
         Status st = (Status) this.cbbstatus.getSelectedItem();
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-
             int id = st.getIdstatus();
-
         }
     }//GEN-LAST:event_cbbstatusItemStateChanged
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (comprobarnombre()){
-        matricula = txtmatricula.getText();
-        nombre = txtnombre.getText();
-        apellido = txtapellidos.getText();
-        telefono = txttelefono.getText();
-        email=txtemail.getText();
-        Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
-        idcarrera = cr.getIdcarrera();
-        Status st = (Status) this.cbbstatus.getSelectedItem();
-        idstatus = st.getIdstatus();
-        tarjeta = idtarjeta;
-        try {
-            fotografia = new SerialBlob(imagen);
-           
-        } catch (SQLException ex) {
-            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        alumno = new Alumno(matricula, nombre, apellido, telefono,email, idcarrera, idstatus, fotografia);
-        alumnotarjeta = new Alumnotarjeta(matricula, tarjeta);
-        try {
-            calumno.guardar(Conexion.obtener(), alumno);
+        if (comprobarnombre()) {
+            matricula = txtmatricula.getText();
+            nombre = txtnombre.getText();
+            apellido = txtapellidos.getText();
+            telefono = txttelefono.getText();
+            email = txtemail.getText();
+            Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
+            idcarrera = cr.getIdcarrera();
+            Status st = (Status) this.cbbstatus.getSelectedItem();
+            idstatus = st.getIdstatus();
+            tarjeta = idtarjeta;
             try {
-                Thread.sleep(500);
-                calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
-                borrarcampos();
-                JOptionPane.showMessageDialog(this,
-        "Registro Insertado correctamente",
-        "Inserción de registro",
-        JOptionPane.INFORMATION_MESSAGE);
-            } catch (InterruptedException ex) {
+                fotografia = new SerialBlob(imagen);
+
+            } catch (SQLException ex) {
                 Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println("hilo");
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+            alumno = new Alumno(matricula, nombre, apellido, telefono, email, idcarrera, idstatus, fotografia);
+            alumnotarjeta = new Alumnotarjeta(matricula, tarjeta);
+            try {
+                calumno.guardar(Conexion.obtener(), alumno);
+                try {
+                    Thread.sleep(500);
+                    calumno.guardartarjeta(Conexion.obtener(), alumnotarjeta);
+                    borrarcampos();
+                    JOptionPane.showMessageDialog(this,
+                            "Registro Insertado correctamente",
+                            "Inserción de registro",
+                            JOptionPane.INFORMATION_MESSAGE);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+                    System.out.println("hilo");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,
+                        "Error al insertar registro, compruebe que la matricula a insertar no este ya registrada",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this,
+                        "Error al insertar tarjeta",
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
             JOptionPane.showMessageDialog(this,
-        "Error al insertar registro, compruebe que la matricula a insertar no este ya registrada",
-        "Error",
-        JOptionPane.ERROR_MESSAGE);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(this,
-        "Error al insertar tarjeta",
-        "Error",
-        JOptionPane.ERROR_MESSAGE);
-        }
-        }
-        else
-        {
-        JOptionPane.showMessageDialog(this,
-        "Error al insertar registro, compruebe que todos los campos tengas datos a introducir",
-        "Campos vacios",
-        JOptionPane.INFORMATION_MESSAGE);
-        
+                    "Error al insertar registro, compruebe que todos los campos tengas datos a introducir",
+                    "Campos vacios",
+                    JOptionPane.INFORMATION_MESSAGE);
+
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cbbcarreraItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbcarreraItemStateChanged
         Carrera cr = (Carrera) this.cbbcarrera.getSelectedItem();
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-
             int id = cr.getIdcarrera();
-
         }
     }//GEN-LAST:event_cbbcarreraItemStateChanged
 
@@ -588,13 +579,14 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         btnactivar.setEnabled(false);
     }//GEN-LAST:event_btnactivarActionPerformed
 
-  public static byte[] long2bytearray(long l) {
-  byte b[] = new byte[8];
-  
-  ByteBuffer buf = ByteBuffer.wrap(b);
-  buf.putLong(l);
-  return b;
-}
+    public static byte[] long2bytearray(long l) {
+        byte b[] = new byte[8];
+
+        ByteBuffer buf = ByteBuffer.wrap(b);
+        buf.putLong(l);
+        return b;
+    }
+
     private byte[] convertir2(Mat imagen) {
         MatOfByte mem2 = new MatOfByte();
         Imgcodecs.imencode(".bmp", imagen, mem2);
@@ -610,14 +602,9 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
         return byteArray;
     }
     private void btntomarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btntomarActionPerformed
-//       imagen2=frame.nativeObj;
-//       
-//        imagen = long2bytearray(imagen2);
-//        System.out.println(imagen);
-imagen=null;
-imagen=convertir2(frame);
+        imagen = null;
+        imagen = convertir2(frame);
         webSource.release();
-        
         btnactivar.setEnabled(true);
         btntomar.setEnabled(false);
     }//GEN-LAST:event_btntomarActionPerformed
@@ -625,20 +612,20 @@ imagen=convertir2(frame);
     private void txtnombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnombreKeyTyped
         char c = evt.getKeyChar();
         if (Character.isDigit(c) == false) {
-        }else{
+        } else {
             evt.consume();
         }
     }//GEN-LAST:event_txtnombreKeyTyped
 
     private void txtapellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtapellidosActionPerformed
-       
+
     }//GEN-LAST:event_txtapellidosActionPerformed
 
     private void txtapellidosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtapellidosKeyTyped
-       int k = (int) evt.getKeyChar();
+        int k = (int) evt.getKeyChar();
         System.out.println(k);
 
-        if ((k >= 65 && k <= 90)||(k >= 97 && k <= 122 ) || (k==32)||(k==165)) {
+        if ((k >= 65 && k <= 90) || (k >= 97 && k <= 122) || (k == 32) || (k == 165)) {
 
         } else {
             evt.setKeyChar((char) KeyEvent.VK_CLEAR);
@@ -654,9 +641,7 @@ imagen=convertir2(frame);
         } else {
             evt.setKeyChar((char) KeyEvent.VK_CLEAR);
         }
-        
-      
-            
+
 //if (k >= 97 && k <= 122 || k>=65 && k<=90){
 //evt.setKeyChar((char)KeyEvent.VK_CLEAR);
 ////JOptionPane.showMessageDialog(null,"No puede ingresar letras!!!","Ventana Error Datos",JOptionPane.ERROR_MESSAGE);
@@ -668,23 +653,24 @@ imagen=convertir2(frame);
 
     }//GEN-LAST:event_txttelefonoKeyTyped
 
-    public boolean comprobarnombre(){
-          if(txtmatricula.getText().isEmpty() || txtnombre.getText().isEmpty()||txtapellidos.getText().isEmpty()||
-                  txttelefono.getText().isEmpty()||txtemail.getText().isEmpty() || txttarjeta.getText().isEmpty())
-      return false;
-          else 
-              return true;
-      }
-    
-    public void borrarcampos(){
-    txtmatricula.setText("");
-    txtnombre.setText("");
-    txtapellidos.setText("");
-    txttelefono.setText("");
-    txtemail.setText("");
-    txttarjeta.setText("");
-    txttarjeta.setBackground(Color.LIGHT_GRAY);
-    
+    public boolean comprobarnombre() {
+        if (txtmatricula.getText().isEmpty() || txtnombre.getText().isEmpty() || txtapellidos.getText().isEmpty()
+                || txttelefono.getText().isEmpty() || txtemail.getText().isEmpty() || txttarjeta.getText().isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public void borrarcampos() {
+        txtmatricula.setText("");
+        txtnombre.setText("");
+        txtapellidos.setText("");
+        txttelefono.setText("");
+        txtemail.setText("");
+        txttarjeta.setText("");
+        txttarjeta.setBackground(Color.LIGHT_GRAY);
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

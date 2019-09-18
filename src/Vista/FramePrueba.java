@@ -19,11 +19,13 @@ import org.opencv.core.Core;
  * @author Kalas
  */
 public class FramePrueba extends javax.swing.JFrame {
-JInternalralumnos ralumno ;
+JInternalralumnos ralumno;
 JInternalacceso acceso;
 Jinternalalta_libro accebiblioteca;
 prestamo_libro prestamo;
 JInternalaccesocc acessocc;
+JInternalConsulta consulta;
+
     /**
      * Creates new form FramePrueba
      */
@@ -141,7 +143,9 @@ JInternalaccesocc acessocc;
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
        
-        cerrarventanas();
+       // cerrarventanas();
+       ralumno.dispose();
+       ralumno=null;
         ralumno = new JInternalralumnos();
         
         // Thread.sleep(2000);
@@ -161,7 +165,8 @@ JInternalaccesocc acessocc;
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        cerrarventanas();
+    //  cerrarventanas();
+      
         acceso = new JInternalacceso();
         dp.removeAll();
         dp.add(acceso, BorderLayout.CENTER);
@@ -176,8 +181,8 @@ JInternalaccesocc acessocc;
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        cerrarventanas(); 
-        JInternalConsulta consulta = new JInternalConsulta();
+      
+        consulta = new JInternalConsulta();
         dp.removeAll();
         dp.add(consulta, BorderLayout.CENTER);
         dp.revalidate();
@@ -206,7 +211,7 @@ JInternalaccesocc acessocc;
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // TODO add your handling code here:
+   
          prestamo = new prestamo_libro();
         dp.removeAll();
         dp.add(prestamo, BorderLayout.CENTER);
@@ -221,7 +226,7 @@ JInternalaccesocc acessocc;
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-    cerrarventanas();
+   ;
     acessocc = new JInternalaccesocc();        // TODO add your handling code here:
     dp.removeAll();
         dp.add(acessocc, BorderLayout.CENTER);
@@ -235,21 +240,32 @@ JInternalaccesocc acessocc;
         acessocc.show();
     }//GEN-LAST:event_jMenuItem6ActionPerformed
     public void cerrarventanas(){
-        try {            
-             if(ralumno.isShowing()){             
-             ralumno.dispose();            
-            } 
-             if(acceso.isShowing()){             
-             acceso.dispose();            
-            }
-              if(acessocc.isShowing()){             
-             acessocc.dispose();            
-            }
+       
+            if(ralumno.isDisplayable()){
+                System.out.println(ralumno.isDisplayable()+"hhhhhhh");
+            ralumno.dispose();}
+             if(acceso.isDisplayable()){   
+                 System.out.println(acceso.isDisplayable()+"acceso");
+              acceso.dispose();   }
+            
+//             if(ralumno.is){             
+//             ralumno.dispose(); 
+//                 System.out.println("se cerro alumno");
+         //   } 
+//             if(acceso.isDisplayable()){             
+//             acceso.dispose();   
+//                 System.out.println("Se cerro acceso");
+//            }
+//              if(acessocc.isDisplayable()){             
+//             acessocc.dispose();    
+//                  System.out.println("Se cerro accesocc");
+//            }
+//              if(prestamo.isDisplayable()){             
+//             prestamo.dispose(); 
+//                  System.out.println("Se cerro prestamo");
+//            }
              
-            }
-        catch(Exception ex){
-           ex.printStackTrace();
-           }
+       
     }
     private static void loadLibraries() {
 

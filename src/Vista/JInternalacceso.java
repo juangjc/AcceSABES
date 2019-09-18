@@ -57,7 +57,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
         @Override
         public void internalFrameClosing(InternalFrameEvent e) {
             try {
-                System.out.println("framedeac");
+                System.out.println("la conexion con arduino se cerro");
                 arduino.killArduinoConnection();
             } catch (ArduinoException ex) {
                 Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,7 +67,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
         @Override
         public void internalFrameClosed(InternalFrameEvent e) {
             try {
-                System.out.println("closed");
+                System.out.println("la conexion con arduino se cerro");
                 arduino.killArduinoConnection();
             } catch (ArduinoException ex) {
                 Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
@@ -86,12 +86,10 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
 
         @Override
         public void internalFrameActivated(InternalFrameEvent e) {
-            try {
+            
                 //  arduino.arduinoRXTX("COM4", 9600, listener);
                 System.out.println("frameacti");
-            } catch (Exception ex) {
-                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
-            }
+           
         }
 
         @Override
@@ -142,10 +140,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                             inicial();
                         }
 
-//                  txttarjeta.setBackground(Color.GREEN);
-//                 
-//                   txttarjeta.setText("Registrada");
-// arduino.killArduinoConnection();
+
                     } catch (SQLException ex) {
                         lblpaso.setBackground(Color.red);
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
@@ -209,6 +204,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
         lblimagen = new javax.swing.JLabel();
 
         setClosable(true);
+        setIconifiable(true);
         setTitle("Acceso");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N

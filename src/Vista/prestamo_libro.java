@@ -217,6 +217,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jPanel4 = new javax.swing.JPanel();
         lblimagen = new javax.swing.JLabel();
 
+        setClosable(true);
         setTitle("Prestamos de libros");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -568,6 +569,7 @@ public void cajavacia(){
         fecha_entrega.setText("");
         txtcodigo.setText("");
         txtnom_libro.setEnabled(true);
+        txtnom_libro.requestFocus();
     }
     
 }
