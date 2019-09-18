@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -116,6 +117,9 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
                    idtarjeta = arduino.printMessage();
                    try {
+                       
+                       txtnom_libro.setEnabled(true);
+                       borrar();
             valumno=cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
             txtmatricula.setText(valumno.getMatricula());
             txtnombre.setText(valumno.getNombre());
@@ -175,6 +179,14 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
        // txtnom_libro.setEnabled(false);
         
         
+    }
+    public void borrar(){
+        txtcodigo.setText("");
+        txtnom_libro.setText("");
+        txtclasificacion.setText("");
+        txtautor.setText("");
+        txtedicion.setText("");
+        txtisbn.setText("");
     }
 
     /**
@@ -329,6 +341,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
         txtcodigo.setEnabled(false);
 
+        txtnom_libro.setEnabled(false);
         txtnom_libro.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtnom_libroActionPerformed(evt);
@@ -528,6 +541,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        this.borrar();
           txtnom_libro.setEnabled(true);
            txtnom_libro.setText("");
            txtnom_libro.requestFocus();
@@ -557,7 +571,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+        this.borrar();
         String  matricula = txtmatricula.getText();
         int id_libro = Integer.valueOf(txtcodigo.getText());
         String fecha_inicio = fecha_prestamo.getText();

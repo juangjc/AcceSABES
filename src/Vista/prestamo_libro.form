@@ -287,6 +287,9 @@
           </Properties>
         </Component>
         <Component class="Vista.Dise&#xf1;oCuadro" name="txtnom_libro">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtnom_libroActionPerformed"/>
           </Events>

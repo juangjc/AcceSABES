@@ -24,7 +24,7 @@ public class Clibro {
             consulta.setInt(1, libro.getId_libro());
             consulta.setString(2, libro.getNombre_libro());
             consulta.setString(3, libro.getClasificacion());
-             consulta.setString(4, libro.getClasificacion());
+             consulta.setString(4, libro.getAutor());
             consulta.setString(5, libro.getEdicion());
             consulta.setString(6, libro.getIsbn());
             consulta.executeUpdate();
