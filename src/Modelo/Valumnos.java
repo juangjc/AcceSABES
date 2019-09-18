@@ -21,6 +21,9 @@ public class Valumnos {
     private String codigotarjeta;
     private int tstatus;
 
+    public Valumnos() {
+    }
+
     public String getMatricula() {
         return matricula;
     }

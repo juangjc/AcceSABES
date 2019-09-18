@@ -103,21 +103,8 @@ public class JInternalralumnos extends javax.swing.JInternalFrame {
                          {
 			    System.out.println(ex.toString());
                          }
-//                        try {
-//                            webSource.read(frame);
-//                            Imgcodecs.imencode(".bmp", frame, mem);
-//                            Image im = ImageIO.read(new ByteArrayInputStream(mem.toArray()));
-//                            BufferedImage buff = (BufferedImage) im;
-//                            Graphics g = panelcamara.getGraphics();
-//                            g.drawImage(buff, 0, 0, 550,400, 0, 0, buff.getWidth(), buff.getHeight(), null);
-//                                if (runnable == false) {
-//                                    System.out.println("Going to wait()");
-//                                    this.wait();
-//                                }
-//                            
-//                        } catch (Exception ex) {
-//                            System.out.println(ex.toString());
-//                        }
+
+
                     }
                 }
             }

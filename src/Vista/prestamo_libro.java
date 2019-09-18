@@ -5,9 +5,19 @@
  */
 package Vista;
 
+import Controlador.Cbiblioteca;
 import Controlador.Clibro;
 import Controlador.Conexion;
 import Modelo.Alta_libro;
+import Modelo.Valumnos;
+import com.panamahitek.ArduinoException;
+import com.panamahitek.PanamaHitek_Arduino;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -15,24 +25,149 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
+import jssc.SerialPortEvent;
+import jssc.SerialPortEventListener;
+import jssc.SerialPortException;
 
 /**
  *
  * @author MUÑOZ
  */
 public class prestamo_libro extends javax.swing.JInternalFrame {
+    PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
+    String idtarjeta = null;
+    Cbiblioteca cbiblioteca= new Cbiblioteca();
+    Valumnos valumno= new Valumnos();
 String  nombre_libro, clasificacion, autor, edicion, isbn;
     int cod_libro, consulta2;
     String   consulta;
+    ImageIcon imageicon;
+    Blob bytesImagen;
     
     Clibro clibro = new Clibro();
     Alta_libro libros = new Alta_libro();
-    /**
-     * Creates new form prestamo_libro
-     */
+    InternalFrameListener listener1 = new InternalFrameListener() {
+        @Override
+        public void internalFrameOpened(InternalFrameEvent e) {
+            System.out.println("opened");
+        }
+
+        @Override
+        public void internalFrameClosing(InternalFrameEvent e) {
+            try {
+                System.out.println("framedeac");
+                arduino.killArduinoConnection();
+            } catch (ArduinoException ex) {
+                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override
+        public void internalFrameClosed(InternalFrameEvent e) {
+            try {
+                System.out.println("closed");
+                arduino.killArduinoConnection();
+            } catch (ArduinoException ex) {
+                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override
+        public void internalFrameIconified(InternalFrameEvent e) {
+            System.out.println("iconi");
+        }
+
+        @Override
+        public void internalFrameDeiconified(InternalFrameEvent e) {
+            System.out.println("deico");
+        }
+
+        @Override
+        public void internalFrameActivated(InternalFrameEvent e) {
+            try {
+                //  arduino.arduinoRXTX("COM4", 9600, listener);
+                System.out.println("frameacti");
+            } catch (Exception ex) {
+                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        @Override
+        public void internalFrameDeactivated(InternalFrameEvent e) {
+            System.out.println("deac");
+        }
+    };
+    private SerialPortEventListener listener = new SerialPortEventListener() {
+        @Override
+        public void serialEvent(SerialPortEvent spe) {
+            try {
+
+                if (arduino.isMessageAvailable()) {
+
+                   idtarjeta = arduino.printMessage();
+                   try {
+            valumno=cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
+            txtmatricula.setText(valumno.getMatricula());
+            txtnombre.setText(valumno.getNombre());
+            txtapellido.setText(valumno.getApellido());
+            txtemail.setText(valumno.getEmail());
+             bytesImagen = valumno.getFotografia();
+                            byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
+                            BufferedImage img = null;
+                            try {
+                                img = ImageIO.read(new ByteArrayInputStream(bytesLeidos));
+                            } catch (IOException ex) {
+                                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            imageicon = new ImageIcon(img);
+                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(184, 152, Image.SCALE_SMOOTH));
+                            lblimagen.setIcon(icono);
+                            txtnom_libro.requestFocus();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+        }           catch (SQLException ex) { 
+                        Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+              System.out.println(idtarjeta);      
+                }
+            }catch (SerialPortException | ArduinoException ex) {
+                ex.printStackTrace();
+          } 
+
+        }
+
+    };
+    public void consultar(String idtarjeta) throws SQLException{
+        try {
+            valumno=cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
+            txtmatricula.setText(valumno.getMatricula());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    
+    }
+    
     public prestamo_libro() {
         initComponents();
+        addInternalFrameListener(listener1);
+        
+        try {
+
+            arduino.arduinoRXTX("COM4", 9600, listener);
+
+            //System.out.println(arduino.getInputBytesAvailable());
+        } catch (Exception ex) {
+            
+          Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
        // txtnom_libro.setEnabled(false);
         
         
@@ -51,10 +186,10 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        diseñoCuadro1 = new Vista.DiseñoCuadro();
-        diseñoCuadro2 = new Vista.DiseñoCuadro();
-        diseñoCuadro3 = new Vista.DiseñoCuadro();
-        diseñoCuadro4 = new Vista.DiseñoCuadro();
+        txtmatricula = new Vista.DiseñoCuadro();
+        txtnombre = new Vista.DiseñoCuadro();
+        txtapellido = new Vista.DiseñoCuadro();
+        txtemail = new Vista.DiseñoCuadro();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -80,8 +215,9 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblimagen = new javax.swing.JLabel();
 
+        setTitle("Prestamos de libros");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setBorder(javax.swing.BorderFactory.createTitledBorder("Libros prestados"));
@@ -115,18 +251,23 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos generales del alumno"));
 
-        diseñoCuadro1.setEnabled(false);
-
-        diseñoCuadro2.setEnabled(false);
-        diseñoCuadro2.addActionListener(new java.awt.event.ActionListener() {
+        txtmatricula.setEnabled(false);
+        txtmatricula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                diseñoCuadro2ActionPerformed(evt);
+                txtmatriculaActionPerformed(evt);
             }
         });
 
-        diseñoCuadro3.setEnabled(false);
+        txtnombre.setEnabled(false);
+        txtnombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtnombreActionPerformed(evt);
+            }
+        });
 
-        diseñoCuadro4.setEnabled(false);
+        txtapellido.setEnabled(false);
+
+        txtemail.setEnabled(false);
 
         jLabel2.setText("Matricula:");
 
@@ -149,10 +290,10 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                     .addComponent(jLabel7))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(diseñoCuadro2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
-                    .addComponent(diseñoCuadro1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(diseñoCuadro3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(diseñoCuadro4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtnombre, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                    .addComponent(txtmatricula, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtapellido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtemail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(59, 59, 59))
         );
         jPanel2Layout.setVerticalGroup(
@@ -160,19 +301,19 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(diseñoCuadro1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtmatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(diseñoCuadro2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtnombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(diseñoCuadro3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtapellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(diseñoCuadro4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtemail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -309,7 +450,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jLabel6.setText("Fecha de entrega");
         getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(1030, 240, -1, -1));
 
-        jLabel1.setText("IMG");
+        jPanel4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -317,18 +458,18 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
+                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 30, 360, 180));
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 30, 210, 180));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -379,13 +520,14 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         // TODO add your handling code here:
           txtnom_libro.setEnabled(true);
            txtnom_libro.setText("");
+           txtnom_libro.requestFocus();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void diseñoCuadro2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diseñoCuadro2ActionPerformed
+    private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
         // TODO add your handling code here:
          txtnom_libro.setEnabled(true);
          
-    }//GEN-LAST:event_diseñoCuadro2ActionPerformed
+    }//GEN-LAST:event_txtnombreActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -398,6 +540,10 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
          fecha_prestamo.setText("");
          fecha_entrega.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void txtmatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmatriculaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtmatriculaActionPerformed
 public void fechas(){
 Date date = new Date();
         DateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");//fecha actual de la computadora
@@ -427,16 +573,11 @@ public void cajavacia(){
 }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private Vista.DiseñoCuadro diseñoCuadro1;
-    private Vista.DiseñoCuadro diseñoCuadro2;
-    private Vista.DiseñoCuadro diseñoCuadro3;
-    private Vista.DiseñoCuadro diseñoCuadro4;
     private javax.swing.JLabel fecha_entrega;
     private javax.swing.JLabel fecha_prestamo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -455,11 +596,16 @@ public void cajavacia(){
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblimagen;
+    private Vista.DiseñoCuadro txtapellido;
     private Vista.DiseñoCuadro txtautor;
     private Vista.DiseñoCuadro txtclasificacion;
     private Vista.DiseñoCuadro txtcodigo;
     private Vista.DiseñoCuadro txtedicion;
+    private Vista.DiseñoCuadro txtemail;
     private Vista.DiseñoCuadro txtisbn;
+    private Vista.DiseñoCuadro txtmatricula;
     private Vista.DiseñoCuadro txtnom_libro;
+    private Vista.DiseñoCuadro txtnombre;
     // End of variables declaration//GEN-END:variables
 }
