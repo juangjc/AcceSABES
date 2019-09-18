@@ -62,13 +62,14 @@ public class Cbiblioteca {
      return prestamoslibros;
      }
 
-  public ArrayList<Alta_libro> consultalibro(Connection conexion, int id_libro) throws SQLException {
+  public ArrayList<Alta_libro> registro(Connection conexion) throws SQLException {
       ArrayList<Alta_libro> libro = new ArrayList();
       
       try {
-            PreparedStatement consulta = conexion.prepareStatement("select * from libro where id_libro like '" + id_libro + "%'");
+            PreparedStatement consulta = conexion.prepareStatement("select * from libro");//javier
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
+                
                 libro.add(new Alta_libro(resultado.getInt("id_libro"),resultado.getString("nombre"), resultado.getString("clasificacion"), resultado.getString("autor"), resultado.getString("edicion"), resultado.getString("ISBN")));
             }
         } catch (SQLException ex) {
