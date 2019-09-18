@@ -11,7 +11,9 @@ import Controlador.Conexion;
 import Controlador.Cprestamo_biblioteca;
 import Modelo.Alta_libro;
 import Modelo.Valumnos;
+import Modelo.Vconsultaalumnos;
 import Modelo.Vprestamo_biblioteca;
+import Modelo.Vprestamolibro;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.Color;
@@ -23,9 +25,11 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -34,6 +38,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import javax.swing.table.DefaultTableModel;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
@@ -43,18 +48,24 @@ import jssc.SerialPortException;
  * @author MUÑOZ
  */
 public class prestamo_libro extends javax.swing.JInternalFrame {
-    Cprestamo_biblioteca Caltas =new Cprestamo_biblioteca();
+
+    Cprestamo_biblioteca Caltas = new Cprestamo_biblioteca();
     Vprestamo_biblioteca prestamo;
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
     String idtarjeta = null;
-    Cbiblioteca cbiblioteca= new Cbiblioteca();
-    Valumnos valumno= new Valumnos();
-String  nombre_libro, clasificacion, autor, edicion, isbn;
+    Cbiblioteca cbiblioteca = new Cbiblioteca();
+    Valumnos valumno = new Valumnos();
+    DefaultTableModel modelo = new DefaultTableModel();
+    List<Vprestamolibro> prestamolibro = new ArrayList<>();
+    Object[] columnas = new Object[5];
+    Object[] datos = new Object[5];
+
+    String nombre_libro, clasificacion, autor, edicion, isbn;
     int cod_libro, consulta2;
-    String   consulta;
+    String consulta;
     ImageIcon imageicon;
     Blob bytesImagen;
-    
+
     Clibro clibro = new Clibro();
     Alta_libro libros = new Alta_libro();
     InternalFrameListener listener1 = new InternalFrameListener() {
@@ -115,72 +126,100 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
                 if (arduino.isMessageAvailable()) {
 
-                   idtarjeta = arduino.printMessage();
-                   try {
-                       
-                       txtnom_libro.setEnabled(true);
-                       borrar();
-            valumno=cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
-            txtmatricula.setText(valumno.getMatricula());
-            txtnombre.setText(valumno.getNombre());
-            txtapellido.setText(valumno.getApellido());
-            txtemail.setText(valumno.getEmail());
-             bytesImagen = valumno.getFotografia();
-                            byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
-                            BufferedImage img = null;
-                            try {
-                                img = ImageIO.read(new ByteArrayInputStream(bytesLeidos));
-                            } catch (IOException ex) {
-                                Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            imageicon = new ImageIcon(img);
-                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(184, 152, Image.SCALE_SMOOTH));
-                            lblimagen.setIcon(icono);
-                            txtnom_libro.requestFocus();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
-        }           catch (SQLException ex) { 
+                    idtarjeta = arduino.printMessage();
+                    try {
+
+                        txtnom_libro.setEnabled(true);
+                        borrar();
+                        valumno = cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
+                        txtmatricula.setText(valumno.getMatricula());
+                        txtnombre.setText(valumno.getNombre());
+                        txtapellido.setText(valumno.getApellido());
+                        txtemail.setText(valumno.getEmail());
+                        bytesImagen = valumno.getFotografia();
+                        byte[] bytesLeidos = bytesImagen.getBytes(1, (int) bytesImagen.length());
+                        BufferedImage img = null;
+                        try {
+                            img = ImageIO.read(new ByteArrayInputStream(bytesLeidos));
+                        } catch (IOException ex) {
+                            Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        imageicon = new ImageIcon(img);
+                        Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(184, 152, Image.SCALE_SMOOTH));
+                        lblimagen.setIcon(icono);
+                        txtnom_libro.requestFocus();
+                        datoslibro(valumno.getMatricula());
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (SQLException ex) {
                         Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
                     }
-              System.out.println(idtarjeta);      
+                    System.out.println(idtarjeta);
                 }
-            }catch (SerialPortException | ArduinoException ex) {
+            } catch (SerialPortException | ArduinoException ex) {
                 ex.printStackTrace();
-          } 
+            }
 
         }
 
     };
-    public void consultar(String idtarjeta) throws SQLException{
+
+    public void datoslibro(String matricula) throws SQLException, ClassNotFoundException {
+        modelo.setRowCount(0);
+        prestamolibro = cbiblioteca.consultaprestamos(Conexion.obtener(), matricula);
+
+        // modelo.setRowCount(0);
+        for (int i = 0; i <= prestamolibro.size() - 1; i++) {
+            datos[0] = prestamolibro.get(i).getIdprestamo();
+            datos[1] = prestamolibro.get(i).getIdlibro();
+            datos[2] = prestamolibro.get(i).getNombrelibro();
+            datos[3] = prestamolibro.get(i).getFechaprestamo();
+            datos[4] = prestamolibro.get(i).getFechaentrega();
+
+            modelo.addRow(datos);
+        }
+
+        tblprestamo.setModel(modelo);
+
+    }
+
+    public void consultar(String idtarjeta) throws SQLException {
         try {
-            valumno=cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
+            valumno = cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
             txtmatricula.setText(valumno.getMatricula());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
         }
-    
-    
+
     }
-    
+
     public prestamo_libro() {
         initComponents();
+        columnas[0] = "Num. prestamo";
+        columnas[1] = "Num. libro";
+        columnas[2] = "Nombre libro";
+        columnas[3] = "Fecha prestamo";
+        columnas[4] = "Fecha entrega";
+        modelo.setColumnIdentifiers(columnas);
+        tblprestamo.setModel(modelo);
+
         addInternalFrameListener(listener1);
-        
+
         try {
 
             arduino.arduinoRXTX("COM4", 9600, listener);
 
             //System.out.println(arduino.getInputBytesAvailable());
         } catch (Exception ex) {
-            
-          Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+
+            Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-       // txtnom_libro.setEnabled(false);
-        
-        
+        // txtnom_libro.setEnabled(false);
+
     }
-    public void borrar(){
+
+    public void borrar() {
         txtcodigo.setText("");
         txtnom_libro.setText("");
         txtclasificacion.setText("");
@@ -199,7 +238,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblprestamo = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         txtmatricula = new Vista.DiseñoCuadro();
@@ -237,8 +276,8 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         setTitle("Prestamos de libros");
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setBorder(javax.swing.BorderFactory.createTitledBorder("Libros prestados"));
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblprestamo.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        tblprestamo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -249,7 +288,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblprestamo);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 360, 575, 210));
 
@@ -503,66 +542,62 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
     private void txtnom_libroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnom_libroActionPerformed
         // TODO add your handling code here:
-         
-         
-         
-         int libro = Integer.valueOf(txtnom_libro.getText());
-         txtcodigo.setText(""+libro);
-         txtnom_libro.setText("");
-         
-         consulta2= libro;
-         
-            try{
-                
-               libros = clibro.consulta_libro(Conexion.obtener(),consulta2);
-               
-               
-      txtcodigo.setText(""+libros.getId_libro());
-               txtnom_libro.setText(libros.getNombre_libro());
-                System.out.println(libros.getNombre_libro());
-               txtclasificacion.setText(libros.getAutor());
-                txtautor.setText(libros.getClasificacion());
-                txtedicion.setText(libros.getEdicion());
-                txtisbn.setText(libros.getIsbn());
-                this.fechas();
-                this.bloqueo();
-                this.cajavacia();
-            }catch(SQLException ex){
-                System.out.println(""+ex);
-               // JOptionPane.showMessageDialog(this,"Codigo de barras existente");
-            } catch (ClassNotFoundException ex) {
-        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
-        
-      
-    }
-        
-         
+
+        int libro = Integer.valueOf(txtnom_libro.getText());
+        txtcodigo.setText("" + libro);
+        txtnom_libro.setText("");
+
+        consulta2 = libro;
+
+        try {
+
+            libros = clibro.consulta_libro(Conexion.obtener(), consulta2);
+
+            txtcodigo.setText("" + libros.getId_libro());
+            txtnom_libro.setText(libros.getNombre_libro());
+            System.out.println(libros.getNombre_libro());
+            txtclasificacion.setText(libros.getAutor());
+            txtautor.setText(libros.getClasificacion());
+            txtedicion.setText(libros.getEdicion());
+            txtisbn.setText(libros.getIsbn());
+            this.fechas();
+            this.bloqueo();
+            this.cajavacia();
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+            // JOptionPane.showMessageDialog(this,"Codigo de barras existente");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+
+
     }//GEN-LAST:event_txtnom_libroActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         this.borrar();
-          txtnom_libro.setEnabled(true);
-           txtnom_libro.setText("");
-           txtnom_libro.requestFocus();
+        txtnom_libro.setEnabled(true);
+        txtnom_libro.setText("");
+        txtnom_libro.requestFocus();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void txtnombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnombreActionPerformed
         // TODO add your handling code here:
-         txtnom_libro.setEnabled(true);
-         
+        txtnom_libro.setEnabled(true);
+
     }//GEN-LAST:event_txtnombreActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-         txtnom_libro.setText("");
-         txtcodigo.setText("");
-         txtclasificacion.setText("");
-         txtautor.setText("");
-         txtedicion.setText("");
-         txtisbn.setText("");
-         fecha_prestamo.setText("");
-         fecha_entrega.setText("");
+        txtnom_libro.setText("");
+        txtcodigo.setText("");
+        txtclasificacion.setText("");
+        txtautor.setText("");
+        txtedicion.setText("");
+        txtisbn.setText("");
+        fecha_prestamo.setText("");
+        fecha_entrega.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void txtmatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmatriculaActionPerformed
@@ -571,58 +606,58 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-        String  matricula = txtmatricula.getText();
+
+        String matricula = txtmatricula.getText();
         int id_libro = Integer.valueOf(txtcodigo.getText());
         String fecha_inicio = fecha_prestamo.getText();
         String fecha_final = fecha_entrega.getText();
-        
-       
-            
-        prestamo = new Vprestamo_biblioteca(id_libro,matricula, fecha_inicio, fecha_final);
-             try{
-                
-                Caltas.Guardarinfo(Conexion.obtener(), prestamo);
-                JOptionPane.showMessageDialog(this, "Guardado");
-            }catch(SQLException ex){
-                System.out.println(""+ex);
-                JOptionPane.showMessageDialog(this,"Codigo de barras existente");
-            } catch (ClassNotFoundException ex) {
-        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
-    }
-         this.borrar(); 
-            
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
-public void fechas(){
-Date date = new Date();
-        DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");//fecha actual de la computadora
-         DateFormat fecha2 = new SimpleDateFormat("dd");//dia actual
-         DateFormat fecha3 = new SimpleDateFormat("yyyy-MM-");//mes y año 
-        fecha_prestamo.setText(""+fecha.format(date));//ingresa la fecha actual
-        int  a = Integer.valueOf(""+fecha2.format(date));//realiza un parseo de int a string para tomar el dia
-        int c;
-              c=  a+8;//suma el dia actual + 8
-         fecha_entrega.setText(""+fecha3.format(date)+c);//agrega el dia mes y año para la entrega
-}
 
-public void bloqueo(){
-    txtnom_libro.setEnabled(false);
-}
-public void cajavacia(){
-    int a = Integer.parseInt( txtcodigo.getText());
-    int b =0;
-    if (a==b) {
-        JOptionPane.showMessageDialog(this, "Libro no existente", "",JOptionPane.ERROR_MESSAGE);
-        fecha_prestamo.setText("");
-        fecha_entrega.setText("");
-        txtcodigo.setText("");
-        txtnom_libro.setEnabled(true);
-        txtnom_libro.requestFocus();
+        prestamo = new Vprestamo_biblioteca(id_libro, matricula, fecha_inicio, fecha_final);
+        try {
+
+            Caltas.Guardarinfo(Conexion.obtener(), prestamo);
+            datoslibro(matricula);
+            JOptionPane.showMessageDialog(this, "Guardado");
+        } catch (SQLException ex) {
+            System.out.println("" + ex);
+            JOptionPane.showMessageDialog(this, "Codigo de barras existente");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        this.borrar();
+
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+    public void fechas() {
+        Date date = new Date();
+        DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");//fecha actual de la computadora
+        DateFormat fecha2 = new SimpleDateFormat("dd");//dia actual
+        DateFormat fecha3 = new SimpleDateFormat("yyyy-MM-");//mes y año 
+        fecha_prestamo.setText("" + fecha.format(date));//ingresa la fecha actual
+        int a = Integer.valueOf("" + fecha2.format(date));//realiza un parseo de int a string para tomar el dia
+        int c;
+        c = a + 8;//suma el dia actual + 8
+        fecha_entrega.setText("" + fecha3.format(date) + c);//agrega el dia mes y año para la entrega
     }
-    
-}
+
+    public void bloqueo() {
+        txtnom_libro.setEnabled(false);
+    }
+
+    public void cajavacia() {
+        int a = Integer.parseInt(txtcodigo.getText());
+        int b = 0;
+        if (a == b) {
+            JOptionPane.showMessageDialog(this, "Libro no existente", "", JOptionPane.ERROR_MESSAGE);
+            fecha_prestamo.setText("");
+            fecha_entrega.setText("");
+            txtcodigo.setText("");
+            txtnom_libro.setEnabled(true);
+            txtnom_libro.requestFocus();
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel fecha_entrega;
@@ -647,8 +682,8 @@ public void cajavacia(){
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblimagen;
+    private javax.swing.JTable tblprestamo;
     private Vista.DiseñoCuadro txtapellido;
     private Vista.DiseñoCuadro txtautor;
     private Vista.DiseñoCuadro txtclasificacion;

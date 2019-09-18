@@ -6,10 +6,13 @@
 package Controlador;
 
 import Modelo.Valumnos;
+import Modelo.Vconsultaalumnos;
+import Modelo.Vprestamolibro;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -40,5 +43,19 @@ public class Cbiblioteca {
         
    
     }
-    
+     public ArrayList<Vprestamolibro> consultaprestamos (Connection conexion, String matricula) throws SQLException{
+     ArrayList<Vprestamolibro> prestamoslibros = new ArrayList();
+     try {
+            PreparedStatement consulta = conexion.prepareStatement("select * from vprestamolibro where matricula = '" + matricula + "'");
+            ResultSet resultado = consulta.executeQuery();
+            while (resultado.next()) {
+                prestamoslibros.add(new Vprestamolibro(resultado.getInt("id_prestamo"), resultado.getString("matricula"), resultado.getInt("id_libro"), resultado.getString("nombre"), resultado.getString("fecha_prestamo"),
+                        resultado.getString("fecha_entrega"),resultado.getString("status_pre")));
+            }
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+     
+     return prestamoslibros;
+     }
 }

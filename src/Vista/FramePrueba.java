@@ -154,6 +154,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             ralumno.setMaximum(true);
+            
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,6 +174,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             acceso.setMaximum(true);
+            
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
