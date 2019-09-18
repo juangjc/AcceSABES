@@ -571,7 +571,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        this.borrar();
+        
         String  matricula = txtmatricula.getText();
         int id_libro = Integer.valueOf(txtcodigo.getText());
         String fecha_inicio = fecha_prestamo.getText();
@@ -590,7 +590,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
             } catch (ClassNotFoundException ex) {
         Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
     }
-          
+         this.borrar(); 
             
         
         
