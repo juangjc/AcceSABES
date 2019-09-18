@@ -144,8 +144,7 @@ JInternalConsulta consulta;
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
        
        // cerrarventanas();
-       ralumno.dispose();
-       ralumno=null;
+      
         ralumno = new JInternalralumnos();
         
         // Thread.sleep(2000);
