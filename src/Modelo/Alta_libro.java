@@ -26,6 +26,16 @@ public class Alta_libro {
         this.isbn = isbn;
     }
 
+    public Alta_libro(String nombre_libro, String clasificacion, String autor, String edicion, String isbn) {
+        this.nombre_libro = nombre_libro;
+        this.clasificacion = clasificacion;
+        this.autor = autor;
+        this.edicion = edicion;
+        this.isbn = isbn;
+    }
+    
+    
+
     public Alta_libro() {
         
     }

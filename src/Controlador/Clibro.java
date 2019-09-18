@@ -55,7 +55,26 @@ public class Clibro {
         return libro;
     }
 
+   public void actualizarlibro (Connection conexion,Alta_libro libro) throws SQLException
+   {
+   PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("update libro set nombre=?,clasificacion=?,autor=?,edicion=?,ISBN=? where id_libro=?");
+            
+            consulta.setString(1, libro.getNombre_libro());
+            consulta.setString(2, libro.getClasificacion());
+            consulta.setString(3, libro.getAutor());
+            consulta.setString(4, libro.getEdicion());
+            consulta.setString(5, libro.getIsbn());
+            consulta.setInt(6, libro.getId_libro());
+            
+            consulta.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
    
+   
+   }
 
    
    

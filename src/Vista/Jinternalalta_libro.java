@@ -34,6 +34,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
    Object[] lista = new Object[6];
    Object[] lista2 = new Object[6]; 
     Cbiblioteca biblioteca = new Cbiblioteca();
+    
     /**
      * Creates new form Registro_libro
      */
@@ -99,6 +100,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbllibro = new javax.swing.JTable();
+        btnactualizar = new javax.swing.JButton();
 
         txtCodigo.setEnabled(false);
 
@@ -140,7 +142,20 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbllibro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbllibroMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbllibro);
+
+        btnactualizar.setText("Actualizar");
+        btnactualizar.setEnabled(false);
+        btnactualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnactualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,27 +163,31 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(59, 59, 59)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel6))
-                .addGap(29, 29, 29)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabel1)
+                        .addComponent(jLabel2)
+                        .addComponent(jLabel3)
+                        .addComponent(jLabel4)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel6))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                        .addGap(44, 44, 44)
+                        .addComponent(jButton1)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnactualizar)
+                        .addGap(27, 27, 27)
                         .addComponent(jButton2))
-                    .addComponent(txtIsbn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtIsbn, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
                     .addComponent(txtEdicion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtautor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtclasificacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtNombrelibro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -201,9 +220,10 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                 .addGap(34, 34, 34)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jButton2)
+                    .addComponent(btnactualizar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
         );
 
         pack();
@@ -247,16 +267,65 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
                 clibro.guardar(Conexion.obtener(), libro);
                 this.borrar();
                 JOptionPane.showMessageDialog(this, "Guardado");
+                consulta();
             }catch(SQLException ex){
                 System.out.println(""+ex);
-                JOptionPane.showMessageDialog(this,"Codigo de barras existente");
+                JOptionPane.showMessageDialog(this,"Hubo un error al insertar");
             } catch (ClassNotFoundException ex) {
         Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
     }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void tbllibroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbllibroMouseClicked
+       String idlibro;
+        int y = tbllibro.getSelectedRow();
+        idlibro=String.valueOf(tbllibro.getValueAt(y, 0));
+        
+    try {
+        libro=clibro.consulta_libro(Conexion.obtener(), Integer.parseInt(idlibro));
+        txtCodigo.setText(String.valueOf(libro.getId_libro()));
+        txtNombrelibro.setText(libro.getNombre_libro());
+        txtclasificacion.setText(libro.getClasificacion());
+        txtautor.setText(libro.getAutor());
+        txtEdicion.setText(libro.getEdicion());
+        txtIsbn.setText(libro.getIsbn());
+        btnactualizar.setEnabled(true);
+        jButton1.setEnabled(false);
+    } catch (SQLException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_tbllibroMouseClicked
+
+    private void btnactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnactualizarActionPerformed
+        cod_libro = Integer.valueOf(txtCodigo.getText());
+            nombre_libro = txtNombrelibro.getText();
+            clasificacion = txtclasificacion.getText();
+            autor = txtautor.getText();
+            edicion = txtEdicion.getText();
+            isbn = txtIsbn.getText();
+        libro = new Alta_libro(cod_libro,nombre_libro,clasificacion,autor,edicion,isbn);
+    try {
+        clibro.actualizarlibro(Conexion.obtener(), libro);
+        JOptionPane.showMessageDialog(this,
+                            "Registro actualizado correctamente",
+                            "Actualización de registro",
+                            JOptionPane.INFORMATION_MESSAGE);
+        jButton1.setEnabled(true);
+        btnactualizar.setEnabled(false);
+        borrar();
+        consulta();
+    } catch (SQLException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_btnactualizarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnactualizar;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;

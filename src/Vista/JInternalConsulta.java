@@ -322,8 +322,7 @@ public class JInternalConsulta extends javax.swing.JInternalFrame {
         
             int y = tblalumnos.getSelectedRow();
             int x = tblalumnos.getSelectedColumn();
-            System.out.println(x);
-            System.out.println(y);
+           
             matricula=(String) tblalumnos.getValueAt(y, 0);
             try {
             alumno=calumno.recuperaralumno(Conexion.obtener(), matricula);
