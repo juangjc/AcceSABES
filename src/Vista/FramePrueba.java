@@ -154,6 +154,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             ralumno.setMaximum(true);
+            dispose();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,6 +174,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             acceso.setMaximum(true);
+            dispose();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -188,6 +190,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             consulta.setMaximum(true);
+            dispose();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -203,6 +206,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             accebiblioteca.setMaximum(true);
+            dispose();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -218,6 +222,7 @@ JInternalConsulta consulta;
         dp.repaint();
         try {
             prestamo.setMaximum(true);
+            dispose();
         } catch (PropertyVetoException ex) {
             Logger.getLogger(FramePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -231,6 +236,7 @@ JInternalConsulta consulta;
         dp.add(acessocc, BorderLayout.CENTER);
         dp.revalidate();
         dp.repaint();
+        dispose();
          try {
             acessocc.setMaximum(true);
         } catch (PropertyVetoException ex) {
