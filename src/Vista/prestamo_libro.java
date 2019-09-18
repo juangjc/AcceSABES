@@ -8,8 +8,10 @@ package Vista;
 import Controlador.Cbiblioteca;
 import Controlador.Clibro;
 import Controlador.Conexion;
+import Controlador.Cprestamo_biblioteca;
 import Modelo.Alta_libro;
 import Modelo.Valumnos;
+import Modelo.Vprestamo_biblioteca;
 import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.Color;
@@ -40,6 +42,8 @@ import jssc.SerialPortException;
  * @author MUÑOZ
  */
 public class prestamo_libro extends javax.swing.JInternalFrame {
+    Cprestamo_biblioteca Caltas =new Cprestamo_biblioteca();
+    Vprestamo_biblioteca prestamo;
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
     String idtarjeta = null;
     Cbiblioteca cbiblioteca= new Cbiblioteca();
@@ -344,6 +348,11 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         });
 
         jButton1.setText("Guardar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Cancelar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -544,6 +553,33 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
     private void txtmatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtmatriculaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtmatriculaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        
+        String  matricula = txtmatricula.getText();
+        int id_libro = Integer.valueOf(txtcodigo.getText());
+        String fecha_inicio = fecha_prestamo.getText();
+        String fecha_final = fecha_entrega.getText();
+        
+       
+            
+        prestamo = new Vprestamo_biblioteca(matricula, id_libro, fecha_inicio, fecha_final);
+             try{
+                
+                Caltas.Guardarinfo(Conexion.obtener(), prestamo);
+                JOptionPane.showMessageDialog(this, "Guardado");
+            }catch(SQLException ex){
+                System.out.println(""+ex);
+                JOptionPane.showMessageDialog(this,"Codigo de barras existente");
+            } catch (ClassNotFoundException ex) {
+        Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
+    }
+          
+            
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
 public void fechas(){
 Date date = new Date();
         DateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");//fecha actual de la computadora
