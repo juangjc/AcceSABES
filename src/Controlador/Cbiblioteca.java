@@ -51,9 +51,10 @@ public class Cbiblioteca {
             PreparedStatement consulta = conexion.prepareStatement("select * from vprestamolibro where matricula = '" + matricula + "'");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
+                
                 prestamoslibros.add(new Vprestamolibro(resultado.getInt("id_prestamo"), resultado.getString("matricula"), resultado.getInt("id_libro"), resultado.getString("nombre"), resultado.getString("fecha_prestamo"),
                         resultado.getString("fecha_entrega"),resultado.getString("status_pre")));
-            }
+            } 
         } catch (SQLException ex) {
             throw new SQLException(ex);
         }
