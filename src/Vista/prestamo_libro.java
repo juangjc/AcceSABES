@@ -583,14 +583,14 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
     }//GEN-LAST:event_jButton1ActionPerformed
 public void fechas(){
 Date date = new Date();
-        DateFormat fecha = new SimpleDateFormat("dd/MM/yyyy");//fecha actual de la computadora
+        DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");//fecha actual de la computadora
          DateFormat fecha2 = new SimpleDateFormat("dd");//dia actual
-         DateFormat fecha3 = new SimpleDateFormat("/MM/yyyy");//mes y año 
+         DateFormat fecha3 = new SimpleDateFormat("yyyy-MM-");//mes y año 
         fecha_prestamo.setText(""+fecha.format(date));//ingresa la fecha actual
         int  a = Integer.valueOf(""+fecha2.format(date));//realiza un parseo de int a string para tomar el dia
         int c;
               c=  a+8;//suma el dia actual + 8
-         fecha_entrega.setText(""+c+fecha3.format(date));//agrega el dia mes y año para la entrega
+         fecha_entrega.setText(""+fecha3.format(date)+c);//agrega el dia mes y año para la entrega
 }
 
 public void bloqueo(){
