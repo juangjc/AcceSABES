@@ -15,7 +15,16 @@ public class Vprestamo_biblioteca {
     private String matricula;
     private String fecha_inicio;
     private String fecha_final;
+    private int status;
 
+    public Vprestamo_biblioteca(int id_libro, String matricula, String fecha_inicio, String fecha_final, int status) {
+        this.id_libro = id_libro;
+        this.matricula = matricula;
+        this.fecha_inicio = fecha_inicio;
+        this.fecha_final = fecha_final;
+        this.status = status;
+    }
+    
     public Vprestamo_biblioteca(int id_libro, String matricula, String fecha_inicio, String fecha_final) {
         
         this.id_libro = id_libro;
@@ -58,6 +67,14 @@ public class Vprestamo_biblioteca {
 
     public void setFecha_final(String fecha_final) {
         this.fecha_final = fecha_final;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
     
            
