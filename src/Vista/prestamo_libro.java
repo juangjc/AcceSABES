@@ -565,7 +565,7 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         
        
             
-        prestamo = new Vprestamo_biblioteca(matricula, id_libro, fecha_inicio, fecha_final);
+        prestamo = new Vprestamo_biblioteca(id_libro,matricula, fecha_inicio, fecha_final);
              try{
                 
                 Caltas.Guardarinfo(Conexion.obtener(), prestamo);

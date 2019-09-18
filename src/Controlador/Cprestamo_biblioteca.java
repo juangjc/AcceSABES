@@ -21,12 +21,11 @@ public class Cprestamo_biblioteca {
     public void Guardarinfo (Connection conexion, Vprestamo_biblioteca id_prestamo) throws SQLException{
         PreparedStatement consulta;
         try {
-            consulta = conexion.prepareStatement("INSERT INTO prestamo_libro_alumno VALUES(?,?,?,?,?)");
-            consulta.setInt(1, biblioteca.getId_prestamo());
-            consulta.setInt(2, biblioteca.getId_libro());
-            consulta.setString(3,biblioteca.getMatricula());
-             consulta.setString(4, biblioteca.getFecha_inicio());
-            consulta.setString(5, biblioteca.getFecha_final());
+            consulta = conexion.prepareStatement("INSERT INTO prestamo_libro_alumno VALUES(?,?,?,?)");
+            consulta.setInt(1, biblioteca.getId_libro());
+            consulta.setString(2,biblioteca.getMatricula());
+             consulta.setString(3, biblioteca.getFecha_inicio());
+            consulta.setString(4, biblioteca.getFecha_final());
            
             consulta.executeUpdate();
 

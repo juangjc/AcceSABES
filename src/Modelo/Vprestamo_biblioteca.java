@@ -10,14 +10,14 @@ package Modelo;
  * @author MUÑOZ
  */
 public class Vprestamo_biblioteca {
-    private int id_prestamo;
+  
     private int id_libro;
     private String matricula;
     private String fecha_inicio;
     private String fecha_final;
 
-    public Vprestamo_biblioteca(int id_prestamo, int id_libro, String matricula, String fecha_inicio, String fecha_final) {
-        this.id_prestamo = id_prestamo;
+    public Vprestamo_biblioteca(int id_libro, String matricula, String fecha_inicio, String fecha_final) {
+        
         this.id_libro = id_libro;
         this.matricula = matricula;
         this.fecha_inicio = fecha_inicio;
@@ -26,18 +26,6 @@ public class Vprestamo_biblioteca {
 
     public Vprestamo_biblioteca() {
         
-    }
-
-    public Vprestamo_biblioteca(String matricula, int id_libro, String fecha_inicio, String fecha_final) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public int getId_prestamo() {
-        return id_prestamo;
-    }
-
-    public void setId_prestamo(int id_prestamo) {
-        this.id_prestamo = id_prestamo;
     }
 
     public int getId_libro() {
