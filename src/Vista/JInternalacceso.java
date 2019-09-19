@@ -47,6 +47,9 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
     Accesom accesom;
     ImageIcon imageicon;
     Blob bytesImagen;
+    String path = "/fondos/amarillo.jpg";  
+URL url = this.getClass().getResource(path);  
+ImageIcon icon = new ImageIcon(url);  
 
     InternalFrameListener listener1 = new InternalFrameListener() {
         @Override
@@ -120,9 +123,10 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                                 Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             imageicon = new ImageIcon(img);
-                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
-                            lblimagen.setIcon(imageicon);
+                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(512,384, Image.SCALE_DEFAULT));
+                            lblimagen.setIcon(icono);
                             lblpaso.setBackground(Color.GREEN);
+                            semaforo("verde");
                             lblnombre.setText(nombrecompleto);
 
                             //registro de entrdas descomentar las lineas de abajo 
@@ -136,6 +140,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                             lblpaso.setBackground(Color.red);
                             lblnombre.setText("usuario no registrado o en situacion de baja ");
                             lblnombre.setForeground(Color.red);
+                            semaforo("rojo");
                             lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
                             inicial();
                         }
@@ -165,7 +170,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
      */
     public JInternalacceso() {
         initComponents();
-
+        semaforo("amarillo");
         addInternalFrameListener(listener1);
         try {
             arduino.arduinoRXTX("COM4", 9600, listener);
@@ -181,11 +186,21 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
             Thread.sleep(2300);
             lblnombre.setText("");
             lblpaso.setBackground(Color.gray);
+            semaforo("amarillo");
             lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
         } catch (InterruptedException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("hilo");
         }
+
+    }
+    
+    private void semaforo(String color) {
+        String path = "/fondos/" + color + ".jpg";
+        URL url = this.getClass().getResource(path);
+        ImageIcon icon = new ImageIcon(url);
+        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(307, 382, Image.SCALE_DEFAULT));
+        lblpaso.setIcon(icono);
 
     }
 
@@ -211,6 +226,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
         jLabel1.setText("Bienvenido:");
 
         lblnombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblnombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         lblpaso.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         lblpaso.setOpaque(true);
@@ -225,31 +241,33 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(116, 116, 116)
-                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
-                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(166, Short.MAX_VALUE))
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(84, 84, 84)
+                        .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(121, 121, 121)
+                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(166, 166, 166)
+                .addComponent(lblimagen)
+                .addContainerGap(111, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addComponent(jLabel1)
-                .addGap(53, 53, 53)
-                .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
-                .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(236, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(96, Short.MAX_VALUE))
         );
 
         pack();

@@ -6,11 +6,15 @@
 package Vista;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import org.opencv.core.Core;
 
@@ -25,6 +29,10 @@ Jinternalalta_libro accebiblioteca;
 prestamo_libro prestamo;
 JInternalaccesocc acessocc;
 JInternalConsulta consulta;
+String path = "/fondos/SABES-logo.jpg";  
+URL url = this.getClass().getResource(path);  
+ImageIcon icon = new ImageIcon(url);  
+
 
     /**
      * Creates new form FramePrueba
@@ -32,7 +40,9 @@ JInternalConsulta consulta;
     public FramePrueba() {
         initComponents();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        
+        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(455, 637, Image.SCALE_DEFAULT));
+                            lblimagen.setIcon(icono);
+
         
     }
 
@@ -46,6 +56,7 @@ JInternalConsulta consulta;
     private void initComponents() {
 
         dp = new javax.swing.JDesktopPane();
+        lblimagen = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -57,17 +68,28 @@ JInternalConsulta consulta;
         jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        dp.setLayer(lblimagen, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout dpLayout = new javax.swing.GroupLayout(dp);
         dp.setLayout(dpLayout);
         dpLayout.setHorizontalGroup(
             dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 715, Short.MAX_VALUE)
+            .addGroup(dpLayout.createSequentialGroup()
+                .addGap(426, 426, 426)
+                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(489, Short.MAX_VALUE))
         );
         dpLayout.setVerticalGroup(
             dpLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 416, Short.MAX_VALUE)
+            .addGroup(dpLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(43, Short.MAX_VALUE))
         );
+
+        getContentPane().add(dp, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 0, 1370, 710));
 
         jMenu1.setText("Accesos");
 
@@ -126,17 +148,6 @@ JInternalConsulta consulta;
         jMenuBar1.add(jMenu2);
 
         setJMenuBar(jMenuBar1);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dp)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dp)
-        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -343,5 +354,6 @@ JInternalConsulta consulta;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JLabel lblimagen;
     // End of variables declaration//GEN-END:variables
 }

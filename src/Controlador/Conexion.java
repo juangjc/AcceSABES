@@ -21,8 +21,8 @@ public class Conexion {
         //if (cnx == null) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            cnx = DriverManager.getConnection("jdbc:mysql://gilbertojc.com/Escuela", "juan", "Berlin01");
-            //cnx = DriverManager.getConnection("jdbc:mysql://localhost/escuela", "root", "Berlin01");
+           // cnx = DriverManager.getConnection("jdbc:mysql://gilbertojc.com/Escuela", "juan", "Berlin01");
+            cnx = DriverManager.getConnection("jdbc:mysql://localhost/escuela", "root", "");
         } catch (SQLException ex) {
             throw new SQLException(ex);
         } catch (ClassNotFoundException ex) {
