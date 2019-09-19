@@ -102,6 +102,8 @@ String  nombre_libro, clasificacion, autor, edicion, isbn;
         tbllibro = new javax.swing.JTable();
         btnactualizar = new javax.swing.JButton();
 
+        setClosable(true);
+
         txtCodigo.setEnabled(false);
 
         txtNombrelibro.addActionListener(new java.awt.event.ActionListener() {
