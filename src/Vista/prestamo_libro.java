@@ -18,6 +18,7 @@ import com.panamahitek.ArduinoException;
 import com.panamahitek.PanamaHitek_Arduino;
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Panel;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -30,9 +31,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -624,7 +633,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Jinternalalta_libro.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        this.Correo();
         this.borrar();
 
 
@@ -657,6 +666,44 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
             txtnom_libro.requestFocus();
         }
 
+    }
+    
+    public void Correo(){
+        Properties mensaje = new Properties();
+        mensaje.setProperty("mail.smtp.host","smtp.gmail.com");
+         mensaje.setProperty("mail.smtp.starttls.enable","true");
+          mensaje.setProperty("mail.smtp.port","587");
+           mensaje.setProperty("mail.smtp.auth","true");
+           
+           Session sesion = Session.getInstance(mensaje);
+           String  correoEnvia = "sabesunivers@gmail.com";
+           String contraseña ="Temporal001";
+           
+           String destinatario = txtemail.getText();
+           String asunto = "TICKET DE PRESTAMO DE LIBRO ";
+           String mensajeS = "Hola "+txtnombre.getText()+"\n Te enviamos la informacion del prestamo que realizaste en la biblioteca \n Codigo: "+txtcodigo.getText()+"\n Nombre del libro: "+txtnom_libro.getText()+"\n Fecha de prestamo: "+fecha_prestamo.getText()+"\n Fecha de entrega "+fecha_entrega.getText();
+           Message mail  = new MimeMessage(sesion);
+            try {
+            mail.setFrom(new InternetAddress (correoEnvia));
+            mail.addRecipient(Message.RecipientType.TO, new InternetAddress (destinatario));
+            mail.setSubject(asunto);
+            mail.setText(mensajeS);
+            
+            Transport transportar = sesion.getTransport("smtp");
+            transportar.connect(correoEnvia,contraseña);
+            transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));          
+            transportar.close();
+            
+            JOptionPane.showMessageDialog(null, "Listo, revise su correo");
+            
+            
+        } catch (AddressException ex) {
+            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
