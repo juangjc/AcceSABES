@@ -19,6 +19,9 @@ public class Alumnotarjeta {
         this.codigotarjeta = codigotarjeta;
     }
 
+    public Alumnotarjeta() {
+    }
+
     public Alumnotarjeta(String matricula, String codigotarjeta, String status) {
         this.matricula = matricula;
         this.codigotarjeta = codigotarjeta;

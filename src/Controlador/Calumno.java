@@ -50,6 +50,30 @@ public class Calumno {
             throw new SQLException(ex);
         }
     }
+    
+    public boolean verificartarjeta(Connection conexion, String tarjeta) throws SQLException
+    {
+        Alumnotarjeta alumnotarjeta= new Alumnotarjeta();
+        PreparedStatement consulta;
+        try{
+        consulta=conexion.prepareStatement("select * from alumno_tarjeta where codigotarjeta = '" + tarjeta + "'");
+        ResultSet resultado = consulta.executeQuery();
+        if(resultado.next()){
+        return true;
+        }
+        else{
+        return false;
+        }
+        
+        }
+        catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+       
+            
+           
+    
+    }
 
     public ArrayList<Vconsultaalumnos> consulta(Connection conexion, String matricula) throws SQLException {
         ArrayList<Vconsultaalumnos> alumnos = new ArrayList();

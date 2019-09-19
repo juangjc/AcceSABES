@@ -201,6 +201,7 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
         lblnombre = new javax.swing.JLabel();
         lblimagen = new javax.swing.JLabel();
 
+        setClosable(true);
         setTitle("Acceso centro de computo");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
