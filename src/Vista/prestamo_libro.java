@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Controlador.Calumno;
 import Controlador.Cbiblioteca;
 import Controlador.Clibro;
 import Controlador.Conexion;
@@ -68,6 +69,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
     List<Vprestamolibro> prestamolibro = new ArrayList<>();
     Object[] columnas = new Object[5];
     Object[] datos = new Object[5];
+    Calumno calumno = new Calumno();
 
     String nombre_libro, clasificacion, autor, edicion, isbn;
     int cod_libro, consulta2;
@@ -137,7 +139,8 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
 
                     idtarjeta = arduino.printMessage();
                     try {
-
+                        if(calumno.verificartarjeta(Conexion.obtener(), idtarjeta)){
+                        lblmensaje.setText("");
                         txtnom_libro.setEnabled(true);
                         borrar();
                         valumno = cbiblioteca.consultaralumno(Conexion.obtener(), idtarjeta);
@@ -158,6 +161,12 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
                         lblimagen.setIcon(icono);
                         txtnom_libro.requestFocus();
                         datoslibro(valumno.getMatricula());
+                        }
+                        else
+                        {
+                            borraralumno();
+                            lblmensaje.setText("Usuario no registrado");
+                        }
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (SQLException ex) {
@@ -280,6 +289,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         lblimagen = new javax.swing.JLabel();
+        lblmensaje = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Prestamos de libros");
@@ -542,6 +552,10 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
 
         getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 30, 210, 180));
 
+        lblmensaje.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        lblmensaje.setForeground(new java.awt.Color(255, 0, 0));
+        getContentPane().add(lblmensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, 190, 30));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -653,7 +667,14 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
     public void bloqueo() {
         txtnom_libro.setEnabled(false);
     }
-
+  public void borraralumno()
+  {
+      txtapellido.setText("");
+      txtnombre.setText("");
+      txtmatricula.setText("");
+      txtemail.setText("");
+      lblimagen.setIcon(null);
+  }
     public void cajavacia() {
         int a = Integer.parseInt(txtcodigo.getText());
         int b = 0;
@@ -730,6 +751,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblimagen;
+    private javax.swing.JLabel lblmensaje;
     private javax.swing.JTable tblprestamo;
     private Vista.DiseñoCuadro txtapellido;
     private Vista.DiseñoCuadro txtautor;

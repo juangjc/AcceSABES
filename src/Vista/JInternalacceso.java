@@ -48,7 +48,6 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
     Accesom accesom;
     ImageIcon imageicon;
     Blob bytesImagen;
-     
 
     InternalFrameListener listener1 = new InternalFrameListener() {
         @Override
@@ -88,10 +87,10 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
 
         @Override
         public void internalFrameActivated(InternalFrameEvent e) {
-            
-                //  arduino.arduinoRXTX("COM4", 9600, listener);
-                System.out.println("frameacti");
-           
+
+            //  arduino.arduinoRXTX("COM4", 9600, listener);
+            System.out.println("frameacti");
+
         }
 
         @Override
@@ -122,7 +121,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                                 Logger.getLogger(JInternalacceso.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             imageicon = new ImageIcon(img);
-                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(512,384, Image.SCALE_DEFAULT));
+                            Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(512, 384, Image.SCALE_DEFAULT));
                             lblimagen.setIcon(imageicon);
                             System.out.println(imageicon.getIconHeight());
                             System.out.println(imageicon.getIconWidth());
@@ -146,7 +145,6 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                             inicial();
                         }
 
-
                     } catch (SQLException ex) {
                         lblpaso.setBackground(Color.red);
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
@@ -158,9 +156,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
                 }
             } catch (SerialPortException | ArduinoException ex) {
                 lblpaso.setBackground(Color.red);
-                // txttarjeta.setBackground(Color.RED);
 
-                //txttarjeta.setText("Ocurrio un problema");
             }
         }
 
@@ -199,7 +195,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
         }
 
     }
-    
+
     private void semaforo(String color) {
         String path = "/fondos/" + color + ".jpg";
         URL url = this.getClass().getResource(path);
