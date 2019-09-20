@@ -680,6 +680,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
            if(c==0)
              Caltas.devolverlibro(Conexion.obtener(), Integer.parseInt(idprestamo));
            datoslibro(txtmatricula.getText());
+           this.Devolver();
            btndevolver.setEnabled(false);
            
         } catch (SQLException ex) {
@@ -750,6 +751,47 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
            String destinatario = txtemail.getText();
            String asunto = "TICKET DE PRESTAMO DE LIBRO ";
            String mensajeS = "Hola "+txtnombre.getText()+"\n Te enviamos la informacion del prestamo que realizaste en la biblioteca \n Codigo: "+txtcodigo.getText()+"\n Nombre del libro: "+txtnom_libro.getText()+"\n Fecha de prestamo: "+fecha_prestamo.getText()+"\n Fecha de entrega "+fecha_entrega.getText();
+           Message mail  = new MimeMessage(sesion);
+            try {
+            mail.setFrom(new InternetAddress (correoEnvia));
+            mail.addRecipient(Message.RecipientType.TO, new InternetAddress (destinatario));
+            mail.setSubject(asunto);
+            mail.setText(mensajeS);
+            
+            Transport transportar = sesion.getTransport("smtp");
+            transportar.connect(correoEnvia,contraseña);
+            transportar.sendMessage(mail, mail.getRecipients(Message.RecipientType.TO));          
+            transportar.close();
+            
+            JOptionPane.showMessageDialog(null, "Listo, revise su correo");
+            
+            
+        } catch (AddressException ex) {
+            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MessagingException ex) {
+            Logger.getLogger(Panel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    
+    }
+    
+    
+    
+    
+    public void Devolver(){
+        Properties mensaje = new Properties();
+        mensaje.setProperty("mail.smtp.host","smtp.gmail.com");
+         mensaje.setProperty("mail.smtp.starttls.enable","true");
+          mensaje.setProperty("mail.smtp.port","587");
+           mensaje.setProperty("mail.smtp.auth","true");
+           
+           Session sesion = Session.getInstance(mensaje);
+           String  correoEnvia = "sabesunivers@gmail.com";
+           String contraseña ="Temporal001";
+           
+           String destinatario = txtemail.getText();
+           String asunto = "TICKET BAJA DE LIBRO ";
+           String mensajeS = "Hola "+txtnombre.getText()+"\n Gracias por devolver el libro  \n Codigo: "+txtcodigo.getText()+"\n Nombre del libro: "+txtnom_libro.getText()+"\n Entregado "+fecha_entrega.getText();
            Message mail  = new MimeMessage(sesion);
             try {
             mail.setFrom(new InternetAddress (correoEnvia));
