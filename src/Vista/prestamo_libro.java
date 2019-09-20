@@ -290,6 +290,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
         jPanel4 = new javax.swing.JPanel();
         lblimagen = new javax.swing.JLabel();
         lblmensaje = new javax.swing.JLabel();
+        btndevolver = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Prestamos de libros");
@@ -307,6 +308,11 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tblprestamo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblprestamoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblprestamo);
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 360, 575, 210));
@@ -357,7 +363,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(31, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
@@ -556,6 +562,15 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
         lblmensaje.setForeground(new java.awt.Color(255, 0, 0));
         getContentPane().add(lblmensaje, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, 190, 30));
 
+        btndevolver.setText("Devolver Libro");
+        btndevolver.setEnabled(false);
+        btndevolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btndevolverActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btndevolver, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 590, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -652,6 +667,24 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btndevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndevolverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btndevolverActionPerformed
+
+    private void tblprestamoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblprestamoMouseClicked
+        String idprestamo;
+        int y = tblprestamo.getSelectedRow();
+        idprestamo=String.valueOf(tblprestamo.getValueAt(y, 0));
+        try {
+            Caltas.devolverlibro(Conexion.obtener(), Integer.parseInt(idprestamo));
+        } catch (SQLException ex) {
+            Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_tblprestamoMouseClicked
     public void fechas() {
         Date date = new Date();
         DateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");//fecha actual de la computadora
@@ -728,6 +761,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btndevolver;
     private javax.swing.JLabel fecha_entrega;
     private javax.swing.JLabel fecha_prestamo;
     private javax.swing.JButton jButton1;

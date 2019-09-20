@@ -33,4 +33,24 @@ public class Cprestamo_biblioteca {
             throw new SQLException(ex);
         }
     }
+      
+      public void devolverlibro (Connection conexion,int idprestamo) throws SQLException
+  {
+  PreparedStatement consulta;
+        try {
+            consulta = conexion.prepareStatement("update prestamo_libro_alumno set id_status=0,fecha_devolucion="+Generales.getDate()+" where id_prestamo='"+idprestamo+"'");
+            
+//            consulta.setString(1, libro.getNombre_libro());
+//            consulta.setString(2, libro.getClasificacion());
+//            consulta.setString(3, libro.getAutor());
+//            consulta.setString(4, libro.getEdicion());
+//            consulta.setString(5, libro.getIsbn());
+//            consulta.setInt(6, libro.getId_libro());
+            
+            consulta.executeUpdate();
+        } catch (SQLException ex) {
+            throw new SQLException(ex);
+        }
+  
+  }
 }
