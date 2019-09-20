@@ -48,7 +48,7 @@ public class Cbiblioteca {
      public ArrayList<Vprestamolibro> consultaprestamos (Connection conexion, String matricula) throws SQLException{
      ArrayList<Vprestamolibro> prestamoslibros = new ArrayList();
      try {
-            PreparedStatement consulta = conexion.prepareStatement("select * from vprestamolibro where matricula = '" + matricula + "'");
+            PreparedStatement consulta = conexion.prepareStatement("select * from vprestamolibro where matricula = '" + matricula + "' and status_pre='prestamo'");
             ResultSet resultado = consulta.executeQuery();
             while (resultado.next()) {
                 

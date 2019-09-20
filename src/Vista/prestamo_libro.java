@@ -63,6 +63,7 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
     Vprestamo_biblioteca prestamo;
     PanamaHitek_Arduino arduino = new PanamaHitek_Arduino();
     String idtarjeta = null;
+    String idprestamo=null;
     Cbiblioteca cbiblioteca = new Cbiblioteca();
     Valumnos valumno = new Valumnos();
     DefaultTableModel modelo = new DefaultTableModel();
@@ -669,20 +670,33 @@ public class prestamo_libro extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btndevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btndevolverActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btndevolverActionPerformed
-
-    private void tblprestamoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblprestamoMouseClicked
-        String idprestamo;
-        int y = tblprestamo.getSelectedRow();
-        idprestamo=String.valueOf(tblprestamo.getValueAt(y, 0));
         try {
-            Caltas.devolverlibro(Conexion.obtener(), Integer.parseInt(idprestamo));
+            
+          
+           int c= JOptionPane.showConfirmDialog(this,
+                            "Confirma para la devolución del libre",
+                            "Inserción de registro",
+                            JOptionPane.INFORMATION_MESSAGE,JOptionPane.OK_CANCEL_OPTION);
+           if(c==0)
+             Caltas.devolverlibro(Conexion.obtener(), Integer.parseInt(idprestamo));
+           datoslibro(txtmatricula.getText());
+           btndevolver.setEnabled(false);
+           
         } catch (SQLException ex) {
             Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(prestamo_libro.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }//GEN-LAST:event_btndevolverActionPerformed
+
+    private void tblprestamoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblprestamoMouseClicked
+        
+        int y = tblprestamo.getSelectedRow();
+        idprestamo=String.valueOf(tblprestamo.getValueAt(y, 0));
+       if(idprestamo!=null)
+       {
+       btndevolver.setEnabled(true);
+       }
         
     }//GEN-LAST:event_tblprestamoMouseClicked
     public void fechas() {

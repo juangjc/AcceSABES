@@ -38,7 +38,7 @@ public class Cprestamo_biblioteca {
   {
   PreparedStatement consulta;
         try {
-            consulta = conexion.prepareStatement("update prestamo_libro_alumno set id_status=0,fecha_devolucion="+Generales.getDate()+" where id_prestamo='"+idprestamo+"'");
+            consulta = conexion.prepareStatement("update prestamo_libro_alumno set id_status=2,fecha_devolucion='"+Generales.getDate()+"' where id_prestamo='"+idprestamo+"'");
             
 //            consulta.setString(1, libro.getNombre_libro());
 //            consulta.setString(2, libro.getClasificacion());
