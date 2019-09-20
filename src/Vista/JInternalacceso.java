@@ -28,6 +28,7 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import jssc.SerialPortEvent;
@@ -47,9 +48,7 @@ public class JInternalacceso extends javax.swing.JInternalFrame {
     Accesom accesom;
     ImageIcon imageicon;
     Blob bytesImagen;
-    String path = "/fondos/amarillo.jpg";  
-URL url = this.getClass().getResource(path);  
-ImageIcon icon = new ImageIcon(url);  
+     
 
     InternalFrameListener listener1 = new InternalFrameListener() {
         @Override
@@ -124,7 +123,9 @@ ImageIcon icon = new ImageIcon(url);
                             }
                             imageicon = new ImageIcon(img);
                             Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(512,384, Image.SCALE_DEFAULT));
-                            lblimagen.setIcon(icono);
+                            lblimagen.setIcon(imageicon);
+                            System.out.println(imageicon.getIconHeight());
+                            System.out.println(imageicon.getIconWidth());
                             lblpaso.setBackground(Color.GREEN);
                             semaforo("verde");
                             lblnombre.setText(nombrecompleto);
@@ -171,6 +172,10 @@ ImageIcon icon = new ImageIcon(url);
     public JInternalacceso() {
         initComponents();
         semaforo("amarillo");
+        lblimagen.setHorizontalAlignment(JLabel.CENTER);
+        lblimagen.setVerticalAlignment(JLabel.CENTER);
+        lblnombre.setHorizontalAlignment(JLabel.CENTER);
+        lblnombre.setVerticalAlignment(JLabel.CENTER);
         addInternalFrameListener(listener1);
         try {
             arduino.arduinoRXTX("COM4", 9600, listener);
@@ -249,20 +254,18 @@ ImageIcon icon = new ImageIcon(url);
                     .addGroup(layout.createSequentialGroup()
                         .addGap(121, 121, 121)
                         .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(166, 166, 166)
-                .addComponent(lblimagen)
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(143, 143, 143))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jLabel1)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
                         .addGap(28, 28, 28)
                         .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)

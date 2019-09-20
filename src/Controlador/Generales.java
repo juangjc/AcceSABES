@@ -19,4 +19,9 @@ public class Generales {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return myDateObj.format(myFormatObj);
     }
+     public static String gethour() {
+        LocalDateTime myDateObj = LocalDateTime.now();
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return myDateObj.format(myFormatObj);
+    }
 }

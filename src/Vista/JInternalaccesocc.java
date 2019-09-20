@@ -17,6 +17,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 import jssc.SerialPortEvent;
@@ -118,9 +120,10 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
                             imageicon = new ImageIcon(img);
                             Icon icono = new ImageIcon(imageicon.getImage().getScaledInstance(300, 300, Image.SCALE_DEFAULT));
                             lblimagen.setIcon(imageicon);
+                            semaforo("verde");
                             lblpaso.setBackground(Color.GREEN);
                             lblnombre.setText(nombrecompleto);
-
+                            lblhora.setText("Tu hora de entrada es: "+Generales.gethour());
                             //registro de entrdas descomentar las lineas de abajo 
                             horaentrada = Generales.getDateTime();
                             accesom = new Accesom(codtarjeta, horaentrada);
@@ -130,6 +133,7 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
 
                         } else {
                             lblpaso.setBackground(Color.red);
+                            semaforo("rojo");
                             lblnombre.setText("usuario no registrado o en situacion de baja ");
                             lblnombre.setForeground(Color.red);
                             lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
@@ -142,9 +146,11 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
 // arduino.killArduinoConnection();
                     } catch (SQLException ex) {
                         lblpaso.setBackground(Color.red);
+                        semaforo("rojo");
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (ClassNotFoundException ex) {
                         lblpaso.setBackground(Color.red);
+                        semaforo("rojo");
                         Logger.getLogger(Acceso.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
@@ -163,12 +169,21 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
         try {
             Thread.sleep(2300);
             lblnombre.setText("");
-            lblpaso.setBackground(Color.gray);
+            lblhora.setText("");
+            semaforo("amarillo");
             lblimagen.setIcon(new ImageIcon(getClass().getResource("/iconos/sn.png")));
         } catch (InterruptedException ex) {
             Logger.getLogger(Ralumnos.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("hilo");
         }
+
+    }
+     private void semaforo(String color) {
+        String path = "/fondos/" + color + ".jpg";
+        URL url = this.getClass().getResource(path);
+        ImageIcon icon = new ImageIcon(url);
+        Icon icono = new ImageIcon(icon.getImage().getScaledInstance(307, 382, Image.SCALE_DEFAULT));
+        lblpaso.setIcon(icono);
 
     }
 
@@ -177,6 +192,11 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
      */
     public JInternalaccesocc() {
         initComponents();
+        semaforo("amarillo");
+        lblimagen.setVerticalAlignment(JLabel.CENTER);
+        lblimagen.setHorizontalAlignment(JLabel.CENTER);
+        lblnombre.setHorizontalAlignment(JLabel.CENTER);
+        lblnombre.setVerticalAlignment(JLabel.CENTER);
         addInternalFrameListener(listener1);
         try {
             arduino.arduinoRXTX("COM4", 9600, listener);
@@ -200,20 +220,26 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
         lblpaso = new javax.swing.JLabel();
         lblnombre = new javax.swing.JLabel();
         lblimagen = new javax.swing.JLabel();
+        lblhora = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Acceso centro de computo");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel1.setText("Bienvenido:");
+        jLabel1.setText("Bienvenido al centro de computo:");
 
         lblpaso.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         lblpaso.setOpaque(true);
 
         lblnombre.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblnombre.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        lblnombre.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         lblimagen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/iconos/sn.png"))); // NOI18N
         lblimagen.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        lblhora.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        lblhora.setForeground(new java.awt.Color(0, 153, 51));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -224,29 +250,32 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1)))
+                            .addComponent(jLabel1)
+                            .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 431, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
-                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40))
+                        .addGap(105, 105, 105)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblhora, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jLabel1)
-                .addGap(40, 40, 40)
-                .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179)
-                .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblimagen, javax.swing.GroupLayout.DEFAULT_SIZE, 612, Short.MAX_VALUE)
-                .addContainerGap(168, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblimagen, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblnombre, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lblpaso, javax.swing.GroupLayout.PREFERRED_SIZE, 382, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29)
+                .addComponent(lblhora, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(213, Short.MAX_VALUE))
         );
 
         pack();
@@ -255,6 +284,7 @@ public class JInternalaccesocc extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblhora;
     private javax.swing.JLabel lblimagen;
     private javax.swing.JLabel lblnombre;
     private javax.swing.JLabel lblpaso;
